@@ -14,7 +14,12 @@ const read = (): Appearance => {
     return { scheme: DEFAULT_SCHEME, wallpaperId: DEFAULT_WALLPAPER_ID };
   try {
     const raw = window.localStorage.getItem(KEY);
-    if (raw) return { ...JSON.parse(raw) };
+    if (raw)
+      return {
+        scheme: DEFAULT_SCHEME,
+        wallpaperId: DEFAULT_WALLPAPER_ID,
+        ...JSON.parse(raw),
+      };
   } catch {}
   return { scheme: DEFAULT_SCHEME, wallpaperId: DEFAULT_WALLPAPER_ID };
 };
