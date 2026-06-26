@@ -4,9 +4,9 @@ import type { FC } from "react";
 
 import { useDeskStamp } from "@/src/features/portfolio/hooks/use-desktop-clock";
 
-interface Props {}
-
-export const ClockApp: FC<Props> = () => {
+// No props — matches the codebase convention for nullary components (FetchPanel,
+// ContactSection, etc.); an empty Props interface trips no-empty-object-type.
+export const ClockApp: FC = () => {
   const stamp = useDeskStamp();
 
   return (
