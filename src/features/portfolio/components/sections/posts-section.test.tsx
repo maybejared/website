@@ -1,7 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { SelectionProvider } from "@/src/features/portfolio/providers/selection-provider";
 import { WindowFocusContext } from "@/src/features/portfolio/hooks/use-window-focus";
 import type { Post } from "@/src/shared/types/portfolio";
 
@@ -38,9 +37,7 @@ const press = (key: string) =>
 function renderWithFocus(focused: boolean) {
   render(
     <WindowFocusContext.Provider value={focused}>
-      <SelectionProvider>
-        <PostsSection posts={POSTS} />
-      </SelectionProvider>
+      <PostsSection posts={POSTS} />
     </WindowFocusContext.Provider>,
   );
 }
