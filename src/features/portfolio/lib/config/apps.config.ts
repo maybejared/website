@@ -40,9 +40,11 @@ export interface AppMeta {
   render: (ctx: { instanceId: string }) => ReactNode;
 }
 
-// ImageViewerPanel requires a scheme and enabled flag. The registry uses a
-// neutral default — the real scheme comes from the wallpaper context at
-// runtime when the window is actually mounted inside the workspace.
+// ImageViewerPanel requires a scheme and enabled flag. There is no wallpaper
+// context today and render's ctx is only { instanceId }, so it cannot receive a
+// scheme — imv currently renders empty (enabled:false). A later wiring task will
+// have imv read the selected wallpaperId from an AppearanceContext provided by
+// the shell.
 const imvRender = () =>
   h(ImageViewerPanel, { scheme: "mono", enabled: false });
 

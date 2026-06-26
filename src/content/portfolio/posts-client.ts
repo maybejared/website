@@ -1,6 +1,13 @@
 // Static post metadata for client-side use. Mirrors what getAllPosts() returns
 // at build time — sorted newest first, readTime calculated from content length.
-// Update this array whenever a post is added or its frontmatter changes.
+//
+// ponytail: this hardcoded POSTS array is a deploy-time staleness risk — adding
+// or editing an MDX post under src/content/posts/ silently leaves the
+// window-manager posts list stale, since nothing regenerates this file.
+//
+// Upgrade path: generate this at build time from getAllPosts() (e.g. a build
+// script emitting a posts.json the client imports), or move the posts window to
+// a server-fed path and delete this file entirely.
 import type { Post } from "@/src/shared/types/portfolio";
 
 export const POSTS: Post[] = [

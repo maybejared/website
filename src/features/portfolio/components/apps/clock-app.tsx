@@ -4,7 +4,9 @@ import type { FC } from "react";
 
 import { useDeskStamp } from "@/src/features/portfolio/hooks/use-desktop-clock";
 
-export const ClockApp: FC = () => {
+interface Props {}
+
+export const ClockApp: FC<Props> = () => {
   const stamp = useDeskStamp();
 
   return (
