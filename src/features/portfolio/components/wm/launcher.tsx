@@ -22,18 +22,11 @@ export const Launcher: FC<Props> = ({ open, onClose }) => {
     (a.label + " " + a.id).toLowerCase().includes(query.toLowerCase()),
   );
 
-  // Reset highlight to first row when the query changes.
+  // Focus the input on mount — the parent remounts this component on each open,
+  // so this runs exactly once per open cycle and avoids setState-in-effect.
   useEffect(() => {
-    setHighlight(0);
-  }, [query]);
-
-  // When the palette opens, clear any stale query and focus the input.
-  useEffect(() => {
-    if (!open) return;
-    setQuery("");
-    setHighlight(0);
     inputRef.current?.focus();
-  }, [open]);
+  }, []);
 
   if (!open) return null;
 
@@ -69,7 +62,7 @@ export const Launcher: FC<Props> = ({ open, onClose }) => {
             ref={inputRef}
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => { setQuery(e.target.value); setHighlight(0); }}
             onKeyDown={handleKeyDown}
             className="flex-1 bg-transparent text-[13px] text-fg-1 outline-none placeholder:text-fg-4"
             placeholder="type to filter…"

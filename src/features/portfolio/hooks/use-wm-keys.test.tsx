@@ -1,6 +1,6 @@
 "use client";
 
-import { act, render, renderHook } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useWmKeys } from "./use-wm-keys";

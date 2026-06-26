@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { createElement as h, Fragment } from "react";
+import { createElement as h } from "react";
 
 import { AboutSection } from "@/src/features/portfolio/components/sections/about-section";
 import { ContactSection } from "@/src/features/portfolio/components/sections/contact-section";

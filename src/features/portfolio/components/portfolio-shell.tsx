@@ -54,6 +54,7 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
   const appearance = useAppearance();
   const [mounted, setMounted] = useState(false);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional post-hydration flag: the WM is client-only and must mount after SSR
   useEffect(() => setMounted(true), []);
 
   const entryAppId = routeToAppId(pathname);

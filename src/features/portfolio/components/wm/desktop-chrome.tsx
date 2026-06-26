@@ -45,7 +45,7 @@ export const DesktopChrome: FC<Props> = ({ appearance }) => {
         <div className="absolute inset-x-0 bottom-0 top-0 lg:top-7">
           <Desktop />
         </div>
-        <Launcher open={launcherOpen} onClose={() => setLauncherOpen(false)} />
+        <Launcher key={launcherOpen ? 1 : 0} open={launcherOpen} onClose={() => setLauncherOpen(false)} />
         {/* CRT scanline + phosphor-glow overlay, carried over from the old shell. */}
         <div
           aria-hidden

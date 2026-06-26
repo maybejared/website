@@ -5,10 +5,7 @@ import type { FC } from "react";
 import { CONTENT_APPS } from "@/src/features/portfolio/lib/config/apps.config";
 import { useDeskStamp } from "@/src/features/portfolio/hooks/use-desktop-clock";
 import { useWorkspace } from "@/src/features/portfolio/providers/workspace-provider";
-import {
-  WORKSPACE_IDS,
-  type WorkspaceId,
-} from "@/src/features/portfolio/lib/wm/workspace-reducer";
+import { WORKSPACE_IDS } from "@/src/features/portfolio/lib/wm/workspace-reducer";
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
 import { ThemePanel } from "@/src/features/portfolio/components/wm/theme-panel";
 import type { SchemeName } from "@/src/shared/types/portfolio";
