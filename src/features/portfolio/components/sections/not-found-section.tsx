@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import type { FC } from "react";
 
 import { Panel } from "@/src/shared/ui/panel";
-import { useReportSelection } from "@/src/features/portfolio/providers/selection-provider";
 
 const H2 =
   "mb-4 font-mono text-[13px] font-medium uppercase tracking-[0.14em] text-red before:content-['>_']";
@@ -16,7 +15,6 @@ const LINK =
 
 export const NotFoundSection: FC = () => {
   const pathname = usePathname();
-  useReportSelection(0, null);
 
   return (
     <>

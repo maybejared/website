@@ -1,7 +1,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { useReportSelection } from "@/src/features/portfolio/providers/selection-provider";
+import { useWindowFocus } from "@/src/features/portfolio/hooks/use-window-focus";
 import {
   ITEM_PARAM,
   indexFromSlug,
@@ -35,6 +35,8 @@ export function useListNavigation(
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const focused = useWindowFocus();
+
   const slugs = useMemo(() => items.map((item) => item.slug), [items]);
   const slugParam = searchParams.get(ITEM_PARAM);
   const resolved = indexFromSlug(slugParam, slugs);
@@ -51,8 +53,6 @@ export function useListNavigation(
     setUrlSelected(resolved);
     setSelected(resolved);
   }
-
-  useReportSelection(selected, items.length);
 
   const open = useCallback(
     (index: number) => {
@@ -80,6 +80,7 @@ export function useListNavigation(
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (!focused) return;
       const target = e.target as HTMLElement | null;
       if (target?.tagName === "INPUT" || target?.tagName === "TEXTAREA") return;
 
@@ -100,7 +101,7 @@ export function useListNavigation(
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [items.length, open, close, opened, selected]);
+  }, [focused, items.length, open, close, opened, selected]);
 
   return { selected, setSelected, open, opened, close };
 }

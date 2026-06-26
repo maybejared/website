@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { MasterDetail } from "@/src/features/portfolio/components/sections/master-detail";
 import { PostRow } from "@/src/features/portfolio/components/sections/post-row";
-import { useReportSelection } from "@/src/features/portfolio/providers/selection-provider";
+import { useWindowFocus } from "@/src/features/portfolio/hooks/use-window-focus";
 import { formatDate } from "@/src/shared/lib/posts/format";
 import type { Post } from "@/src/shared/types/portfolio";
 
@@ -20,6 +20,7 @@ interface Props {
 
 export const PostsSection: FC<Props> = ({ posts, activeSlug, article }) => {
   const router = useRouter();
+  const focused = useWindowFocus();
 
   const activeIndex = activeSlug
     ? posts.findIndex((p) => p.slug === activeSlug)
@@ -39,8 +40,6 @@ export const PostsSection: FC<Props> = ({ posts, activeSlug, article }) => {
   const opened = activeIndex >= 0;
   const selected = opened ? activeIndex : highlight;
 
-  useReportSelection(selected, posts.length);
-
   const open = useCallback(
     (index: number) => {
       const post = posts[index];
@@ -53,6 +52,7 @@ export const PostsSection: FC<Props> = ({ posts, activeSlug, article }) => {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (!focused) return;
       const target = e.target as HTMLElement | null;
       if (target?.tagName === "INPUT" || target?.tagName === "TEXTAREA") return;
 
@@ -73,7 +73,7 @@ export const PostsSection: FC<Props> = ({ posts, activeSlug, article }) => {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [posts.length, open, close, opened, selected]);
+  }, [focused, posts.length, open, close, opened, selected]);
 
   return (
     <MasterDetail<Post>

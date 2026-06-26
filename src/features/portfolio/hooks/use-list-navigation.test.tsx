@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { SelectionProvider } from "@/src/features/portfolio/providers/selection-provider";
+import { WindowFocusContext } from "@/src/features/portfolio/hooks/use-window-focus";
 import type { Identifiable } from "@/src/shared/types/portfolio";
 
 import { useListNavigation } from "./use-list-navigation";
@@ -32,7 +32,7 @@ vi.mock("next/navigation", () => ({
 
 const ITEMS: Identifiable[] = [{ slug: "a" }, { slug: "b" }, { slug: "c" }];
 const wrapper = ({ children }: { children: ReactNode }) => (
-  <SelectionProvider>{children}</SelectionProvider>
+  <WindowFocusContext.Provider value={true}>{children}</WindowFocusContext.Provider>
 );
 const press = (key: string) =>
   act(() => {
@@ -141,5 +141,16 @@ describe("useListNavigation", () => {
     });
     expect(result.current.selected).toBe(0);
     input.remove();
+  });
+
+  it("does not respond to arrow keys when the enclosing window is not focused", () => {
+    const unfocusedWrapper = ({ children }: { children: ReactNode }) => (
+      <WindowFocusContext.Provider value={false}>{children}</WindowFocusContext.Provider>
+    );
+    const { result } = renderHook(() => useListNavigation(ITEMS), {
+      wrapper: unfocusedWrapper,
+    });
+    press("ArrowDown");
+    expect(result.current.selected).toBe(0);
   });
 });

@@ -4,7 +4,6 @@ import type { FC } from "react";
 
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
 import { Panel } from "@/src/shared/ui/panel";
-import { useReportSelection } from "@/src/features/portfolio/providers/selection-provider";
 
 const H2 =
   "mb-4 font-mono text-[13px] font-medium uppercase tracking-[0.14em] text-amber before:content-['>_']";
@@ -49,7 +48,6 @@ const ELSEWHERE: ElsewhereLink[] = [
 
 export const ContactSection: FC = () => {
   const c = portfolioContent.contact;
-  useReportSelection(0, null);
 
   return (
     <>
