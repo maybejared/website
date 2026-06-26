@@ -5,7 +5,6 @@ import "react-mosaic-component/react-mosaic-component.css";
 
 import { APP_BY_ID, type AppId } from "@/src/features/portfolio/lib/config/apps.config";
 import { WindowFrame } from "@/src/features/portfolio/components/wm/window-frame";
-import { WindowToolbar } from "@/src/features/portfolio/components/wm/window-toolbar";
 import { useWorkspace } from "@/src/features/portfolio/providers/workspace-provider";
 
 export const Desktop: FC = () => {
@@ -24,10 +23,19 @@ export const Desktop: FC = () => {
           <MosaicWindow<string>
             path={path}
             title={title}
-            // Mosaic wraps the toolbar element as the window's drag source, so
-            // our terminal title bar is both the chrome and the drag handle.
+            // react-dnd v16 requires a native element from renderToolbar — it
+            // rejects composite components. Render the toolbar as a plain <div>
+            // so the drag connector receives a DOM node.
             renderToolbar={() => (
-              <WindowToolbar title={title} onClose={() => closeApp(instanceId)} />
+              <div className="flex h-full flex-1 items-center gap-2 px-2 py-1 text-[11px] text-fg-2">
+                <button
+                  type="button"
+                  aria-label="close"
+                  onClick={() => closeApp(instanceId)}
+                  className="h-2 w-2 flex-none rounded-full bg-red-dim hover:bg-red"
+                />
+                <span className="truncate">{title}</span>
+              </div>
             )}
           >
             <WindowFrame
