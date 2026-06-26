@@ -4,17 +4,10 @@
 export type SectionKey =
   | "about"
   | "experience"
-  | "projects"
   | "posts"
   | "contact";
 
-export type SchemeName =
-  | "beige"
-  | "phosphor"
-  | "amber"
-  | "blueprint"
-  | "mono"
-  | "moonlit";
+export type SchemeName = "beige" | "mono" | "moonlit";
 
 export interface Tab {
   key: SectionKey;
@@ -64,13 +57,6 @@ export interface ExperienceEntry extends Identifiable {
   detail: string;
 }
 
-export interface Project extends Identifiable {
-  date: string;
-  name: string;
-  tag: string;
-  detail: string;
-}
-
 export interface Post extends Identifiable {
   /** ISO `YYYY-MM-DD`; formatted to dotted style for display. */
   date: string;
@@ -97,5 +83,4 @@ export interface PortfolioContent {
   now: NowContent;
   contact: Contact;
   experience: ExperienceEntry[];
-  projects: Project[];
 }
