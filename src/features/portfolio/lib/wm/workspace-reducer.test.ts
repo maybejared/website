@@ -31,6 +31,7 @@ describe("workspaceReducer", () => {
     const ids = Object.keys(s.instances);
     expect(ids).toEqual(["terminal:1", "terminal:2"]);
     expect(s.instances["terminal:2"]).toBe("terminal");
+    expect(s.layouts[1]).toEqual({ direction: "row", first: "terminal:1", second: "terminal:2" });
   });
 
   it("close removes the instance and clears focus if it was focused", () => {
@@ -39,6 +40,23 @@ describe("workspaceReducer", () => {
     expect(s.instances.posts).toBeUndefined();
     expect(s.layouts[1]).toBeNull();
     expect(s.focused).toBeNull();
+  });
+
+  it("close leaves focus untouched when a non-focused instance is closed", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about" });
+    s = workspaceReducer(s, { type: "close", instanceId: "posts" });
+    expect(s.instances.posts).toBeUndefined();
+    expect(s.focused).toBe("about");
+  });
+
+  it("close collapses a nested tree, replacing the parent with the surviving sibling", () => {
+    let s = workspaceReducer(base(), {
+      type: "setLayout",
+      node: { direction: "row", first: "a", second: { direction: "column", first: "b", second: "c" } },
+    });
+    s = workspaceReducer(s, { type: "close", instanceId: "b" });
+    expect(s.layouts[1]).toEqual({ direction: "row", first: "a", second: "c" });
   });
 
   it("switch changes the active workspace", () => {
