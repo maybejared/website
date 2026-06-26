@@ -41,6 +41,8 @@ export function initialWorkspaceState(seed: {
   };
 }
 
+export type WorkspaceSeed = Parameters<typeof initialWorkspaceState>[0];
+
 export function findInstanceWorkspace(
   state: WorkspaceState,
   instanceId: string,

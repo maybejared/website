@@ -6,14 +6,12 @@ import { usePathname } from "next/navigation";
 
 import { DesktopChrome } from "@/src/features/portfolio/components/wm/desktop-chrome";
 import { useAppearance } from "@/src/features/portfolio/hooks/use-appearance";
-import type { initialWorkspaceState } from "@/src/features/portfolio/lib/wm/workspace-reducer";
+import type { WorkspaceSeed } from "@/src/features/portfolio/lib/wm/workspace-reducer";
 import { WorkspaceProvider } from "@/src/features/portfolio/providers/workspace-provider";
 
 interface PortfolioShellProps {
   children: ReactNode;
 }
-
-type Seed = Parameters<typeof initialWorkspaceState>[0];
 
 // Which content app a route opens into when the desktop hydrates. Anything
 // under /posts (including reader articles) maps to the posts app.
@@ -31,7 +29,7 @@ const routeToAppId = (pathname: string | null): string => {
 
 // Seed the workspace with the route's content window plus the clock + fetch
 // decor, laid out as the entry app beside a stacked clock/fetch column.
-const buildSeed = (entryAppId: string): Seed => ({
+const buildSeed = (entryAppId: string): WorkspaceSeed => ({
   workspace: 1,
   instances: [
     { id: entryAppId, appId: entryAppId },

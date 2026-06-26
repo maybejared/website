@@ -9,11 +9,11 @@ import { Launcher } from "@/src/features/portfolio/components/wm/launcher";
 import { TopBar } from "@/src/features/portfolio/components/wm/top-bar";
 import { useWallpaperEnabled } from "@/src/features/portfolio/hooks/use-wallpaper-enabled";
 import { useWmKeys } from "@/src/features/portfolio/hooks/use-wm-keys";
-import type { useAppearance } from "@/src/features/portfolio/hooks/use-appearance";
+import type { AppearanceState } from "@/src/features/portfolio/hooks/use-appearance";
 import { AppearanceProvider } from "@/src/features/portfolio/providers/appearance-context";
 
 interface Props {
-  appearance: ReturnType<typeof useAppearance>;
+  appearance: AppearanceState;
 }
 
 /**
@@ -40,7 +40,9 @@ export const DesktopChrome: FC<Props> = ({ appearance }) => {
           appearance={appearance}
           onOpenLauncher={() => setLauncherOpen(true)}
         />
-        <div className="absolute inset-x-0 bottom-0 top-7">
+        {/* TopBar only renders at lg+ (hidden lg:flex); below lg the field fills
+            from the top, at lg+ it clears the 28px bar. */}
+        <div className="absolute inset-x-0 bottom-0 top-0 lg:top-7">
           <Desktop />
         </div>
         <Launcher open={launcherOpen} onClose={() => setLauncherOpen(false)} />

@@ -44,3 +44,5 @@ export function useAppearance() {
 
   return { scheme: state.scheme, setScheme, wallpaperId: state.wallpaperId, setWallpaperId };
 }
+
+export type AppearanceState = ReturnType<typeof useAppearance>;

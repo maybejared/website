@@ -9,6 +9,7 @@ import {
   initialWorkspaceState,
   workspaceReducer,
   type WorkspaceId,
+  type WorkspaceSeed,
   type WorkspaceState,
 } from "@/src/features/portfolio/lib/wm/workspace-reducer";
 
@@ -25,7 +26,7 @@ const Ctx = createContext<WorkspaceApi | undefined>(undefined);
 
 interface Props {
   children: ReactNode;
-  seed: Parameters<typeof initialWorkspaceState>[0];
+  seed: WorkspaceSeed;
 }
 
 export const WorkspaceProvider: FC<Props> = ({ children, seed }) => {
