@@ -7,11 +7,11 @@ import { ExperienceSection } from "@/src/features/portfolio/components/sections/
 import { PostsSection } from "@/src/features/portfolio/components/sections/posts-section";
 import { BtopPanel } from "@/src/features/portfolio/components/background/btop-panel";
 import { FetchPanel } from "@/src/features/portfolio/components/background/fetch-panel";
-import { ImageViewerPanel } from "@/src/features/portfolio/components/background/image-viewer-panel";
 import { PlaylistPanel } from "@/src/features/portfolio/components/background/playlist-panel";
 import { ScramblePanel } from "@/src/features/portfolio/components/background/scramble-panel";
 import { VimPanel } from "@/src/features/portfolio/components/background/vim-panel";
 import { ClockApp } from "@/src/features/portfolio/components/apps/clock-app";
+import { ImvApp } from "@/src/features/portfolio/components/apps/imv-app";
 import { TerminalApp } from "@/src/features/portfolio/components/apps/terminal/terminal-app";
 import { POSTS } from "@/src/content/portfolio/posts-client";
 
@@ -40,12 +40,6 @@ export interface AppMeta {
   multiInstance?: boolean;
   render: (ctx: { instanceId: string }) => ReactNode;
 }
-
-// ImageViewerPanel requires a wallpaperId and enabled flag. imv currently renders
-// empty (enabled:false); a later task will wire it to the active wallpaper from
-// an AppearanceContext provided by the shell.
-const imvRender = () =>
-  h(ImageViewerPanel, { wallpaperId: "none", enabled: false });
 
 // ScramblePanel requires a delay (ms before content resolves). Zero means the
 // scramble completes immediately — fine for a static registry placeholder.
@@ -154,7 +148,7 @@ export const APPS: AppMeta[] = [
     icon: "/icons/imv.svg",
     tint: "#36aca3",
     kind: "decor",
-    render: imvRender,
+    render: () => h(ImvApp, null),
   },
   {
     id: "terminal",

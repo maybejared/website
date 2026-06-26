@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={jetbrainsMono.variable} suppressHydrationWarning>
-      <body className="lowercase scheme-moonlit tracking-tighter text-[14px] flex h-dvh items-center justify-center overflow-hidden p-6 font-mono text-fg-1 max-md:p-0">
+      <body className="lowercase scheme-moonlit tracking-tighter text-[14px] min-h-dvh font-mono text-fg-1">
         <PortfolioShell>{children}</PortfolioShell>
       </body>
     </html>
