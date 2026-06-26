@@ -49,6 +49,9 @@ export const WALLPAPERS: WallpaperOption[] = [
 /** The wallpaper shown on first load. */
 export const DEFAULT_WALLPAPER_ID = "moonlit";
 
+/** The flat (no-image) fallback, resolved by id so it survives list reordering. */
+const NONE = WALLPAPERS.find((w) => w.id === "none")!;
+
 /** Returns the matching entry, or the "none" option if the id is unrecognised. */
 export const wallpaperById = (id: string): WallpaperOption =>
-  WALLPAPERS.find((w) => w.id === id) ?? WALLPAPERS[0];
+  WALLPAPERS.find((w) => w.id === id) ?? NONE;

@@ -6,8 +6,8 @@ import { preloadResponsiveImage, preloadScheme } from "./preload-image";
 
 const img: ResponsiveImage = {
   webp: [
-    { src: "bg/phosphor/original-1280.webp", width: 1280 },
-    { src: "bg/phosphor/original-1920.webp", width: 1920 },
+    { src: "bg/moonlit/original-1280.webp", width: 1280 },
+    { src: "bg/moonlit/original-1920.webp", width: 1920 },
   ],
 };
 
@@ -40,11 +40,11 @@ describe("preloadResponsiveImage", () => {
     const el = constructed[0];
     expect(el.sizes).toBe("100vw");
     expect(el.srcset).toBe(
-      "https://cdn.jtucker.io/bg/phosphor/original-1280.webp 1280w, " +
-        "https://cdn.jtucker.io/bg/phosphor/original-1920.webp 1920w",
+      "https://cdn.jtucker.io/bg/moonlit/original-1280.webp 1280w, " +
+        "https://cdn.jtucker.io/bg/moonlit/original-1920.webp 1920w",
     );
     expect(el.src).toBe(
-      "https://cdn.jtucker.io/bg/phosphor/original-1280.webp",
+      "https://cdn.jtucker.io/bg/moonlit/original-1280.webp",
     );
     expect(el.decode).toHaveBeenCalledOnce();
   });
@@ -66,13 +66,13 @@ describe("preloadResponsiveImage", () => {
 });
 
 describe("preloadScheme", () => {
-  it("warms both the wallpaper and the viewer tiers for a photo scheme", () => {
-    preloadScheme("phosphor");
+  it("warms both the wallpaper and the viewer tiers for a photo wallpaper", () => {
+    preloadScheme("mono");
     expect(constructed).toHaveLength(2);
   });
 
-  it("warms nothing for the flat beige scheme", () => {
-    preloadScheme("beige");
+  it("warms nothing for the none/unknown wallpaper", () => {
+    preloadScheme("none");
     expect(constructed).toHaveLength(0);
   });
 });
