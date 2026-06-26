@@ -11,6 +11,16 @@ export function useWmKeys(opts: { toggleLauncher: () => void }): void {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!e.altKey) return;
+
+      // Alt+Space toggles the launcher even when the launcher's own input has
+      // focus — handle it before the input guard so the user can close the
+      // launcher by pressing Alt+Space again while typing in it.
+      if (e.key === " ") {
+        e.preventDefault();
+        opts.toggleLauncher();
+        return;
+      }
+
       const t = e.target as HTMLElement | null;
       if (t?.tagName === "INPUT" || t?.tagName === "TEXTAREA") return;
 
@@ -23,9 +33,6 @@ export function useWmKeys(opts: { toggleLauncher: () => void }): void {
       } else if (e.key.toLowerCase() === "w") {
         e.preventDefault();
         if (state.focused) closeApp(state.focused);
-      } else if (e.key === " ") {
-        e.preventDefault();
-        opts.toggleLauncher();
       }
     };
 

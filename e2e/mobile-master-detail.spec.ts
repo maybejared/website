@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-// Runs at the iPhone 13 viewport (≈390px < md), so Tailwind's `max-md:hidden`
-// genuinely hides panes — the behavior jsdom cannot evaluate.
+// Runs at the iPhone 13 viewport (≈390px < lg). The WM does not mount below
+// lg so there is only the stacked page in the DOM — no duplicate elements.
 test.use({ viewport: { width: 390, height: 844 }, isMobile: true });
 
 const FIRST_POST = "On small models and small teams";
@@ -11,9 +11,6 @@ test.describe("mobile master/detail", () => {
   test("shows only the list, opens detail on tap, and goes back", async ({ page }) => {
     await page.goto("/posts");
 
-    // At mobile, the WM is hidden (hidden md:block) but still rendered in the DOM,
-    // so most selectors resolve to 2 elements. Use .first() to target the mobile-
-    // visible content. DOM order: children div (visible) precedes WM div (hidden).
     const listCmd = page.getByText("tail -f posts/").first();
     const backButton = page.getByRole("button", { name: /cd \.\./i }).first();
     // Title renders in both the list row and the (off-screen) detail pane.

@@ -82,6 +82,20 @@ describe("useWmKeys", () => {
     input.remove();
   });
 
+  it("Alt+Space dispatched from an INPUT still calls toggleLauncher", () => {
+    const toggleLauncher = vi.fn();
+    render(<Host toggleLauncher={toggleLauncher} />);
+    const input = document.createElement("input");
+    document.body.appendChild(input);
+    act(() => {
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: " ", altKey: true, bubbles: true }),
+      );
+    });
+    expect(toggleLauncher).toHaveBeenCalledTimes(1);
+    input.remove();
+  });
+
   it("ignores events without altKey", () => {
     const toggleLauncher = vi.fn();
     render(<Host toggleLauncher={toggleLauncher} />);

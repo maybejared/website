@@ -9,8 +9,8 @@ interface Props {
   children: ReactNode;
 }
 
-// Body wrapper only — the title bar lives in the Mosaic toolbar (see
-// window-toolbar.tsx) so it can double as the drag handle. This supplies the
+// Body wrapper only — the title bar is rendered inline via renderToolbar in
+// desktop.tsx so it doubles as the Mosaic drag handle. This supplies the
 // focused border and the scrollable content region.
 export const WindowFrame: FC<Props> = ({ focused, onFocus, children }) => (
   <div

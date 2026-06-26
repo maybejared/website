@@ -1,11 +1,13 @@
 "use client";
 
 import type { FC, ReactNode } from "react";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo } from "react";
 import { usePathname } from "next/navigation";
 
 import { DesktopChrome } from "@/src/features/portfolio/components/wm/desktop-chrome";
+import { MobileNav } from "@/src/features/portfolio/components/wm/mobile-nav";
 import { useAppearance } from "@/src/features/portfolio/hooks/use-appearance";
+import { useIsDesktop } from "@/src/features/portfolio/hooks/use-is-desktop";
 import type { WorkspaceSeed } from "@/src/features/portfolio/lib/wm/workspace-reducer";
 import { WorkspaceProvider } from "@/src/features/portfolio/providers/workspace-provider";
 
@@ -45,36 +47,36 @@ const buildSeed = (entryAppId: string): WorkspaceSeed => ({
 
 /**
  * Three render modes share one route tree:
- *  1. Mobile (`max-md`): the route children render as a plain stacked page.
- *  2. Desktop pre-hydration / no-JS: the same children render raw, for SEO.
- *  3. Desktop, hydrated: the window manager takes over.
+ *  1. Mobile/tablet (<lg): stacked page with a MobileNav above.
+ *  2. Pre-hydration / SSR: children render raw (no WM) for SEO.
+ *  3. Desktop (lg+), hydrated: WM mounts and takes over.
+ *
+ * The WM (WorkspaceProvider + Mosaic + react-dnd) never mounts below lg —
+ * react-dnd's HTML5 backend is desktop-only, and the TopBar only appears at lg.
  */
 export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
   const pathname = usePathname();
   const appearance = useAppearance();
-  const [mounted, setMounted] = useState(false);
-
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional post-hydration flag: the WM is client-only and must mount after SSR
-  useEffect(() => setMounted(true), []);
+  const isDesktop = useIsDesktop();
 
   const entryAppId = routeToAppId(pathname);
   const seed = useMemo(() => buildSeed(entryAppId), [entryAppId]);
 
   return (
     <>
-      {/* Mobile always; on desktop this is the pre-hydration static frame, then
-          hidden once the WM mounts. Sections call `useSearchParams` for
-          deep-linking, so one Suspense boundary covers every route. */}
-      <div className={mounted ? "md:hidden" : undefined}>
+      {/* Stacked page: always present for SSR/SEO. Hidden after desktop hydrates.
+          Sections call useSearchParams for deep-linking, so one Suspense boundary
+          covers every route. MobileNav only renders below lg (after hydration). */}
+      <div className={isDesktop ? "hidden" : undefined}>
+        {!isDesktop && <MobileNav appearance={appearance} />}
         <Suspense fallback={null}>{children}</Suspense>
       </div>
 
-      {mounted && (
-        <div className="hidden md:block">
-          <WorkspaceProvider seed={seed}>
-            <DesktopChrome appearance={appearance} />
-          </WorkspaceProvider>
-        </div>
+      {/* WM mounts only at lg+ — never on mobile/tablet. */}
+      {isDesktop && (
+        <WorkspaceProvider seed={seed}>
+          <DesktopChrome appearance={appearance} />
+        </WorkspaceProvider>
       )}
     </>
   );
