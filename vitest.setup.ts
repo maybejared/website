@@ -10,3 +10,16 @@ if (!('ResizeObserver' in globalThis)) {
   }
   globalThis.ResizeObserver = ResizeObserverStub as unknown as typeof ResizeObserver;
 }
+
+// localStorage polyfill for jsdom environment
+if (typeof localStorage === 'undefined') {
+  const store: Record<string, string> = {};
+  globalThis.localStorage = {
+    getItem: (key: string) => store[key] ?? null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { Object.keys(store).forEach(key => delete store[key]); },
+    key: (index: number) => Object.keys(store)[index] ?? null,
+    length: 0,
+  } as unknown as Storage;
+}
