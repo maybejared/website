@@ -12,6 +12,7 @@ import { PlaylistPanel } from "@/src/features/portfolio/components/background/pl
 import { ScramblePanel } from "@/src/features/portfolio/components/background/scramble-panel";
 import { VimPanel } from "@/src/features/portfolio/components/background/vim-panel";
 import { ClockApp } from "@/src/features/portfolio/components/apps/clock-app";
+import { TerminalApp } from "@/src/features/portfolio/components/apps/terminal/terminal-app";
 import { POSTS } from "@/src/content/portfolio/posts-client";
 
 export type AppId =
@@ -163,7 +164,7 @@ export const APPS: AppMeta[] = [
     tint: "#282a36",
     kind: "decor",
     multiInstance: true,
-    render: () => h(Fragment, null),
+    render: (ctx) => h(TerminalApp, { instanceId: ctx.instanceId }),
   },
 ];
 
