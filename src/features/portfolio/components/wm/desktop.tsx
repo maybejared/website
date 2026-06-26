@@ -5,6 +5,7 @@ import "react-mosaic-component/react-mosaic-component.css";
 
 import { APP_BY_ID, type AppId } from "@/src/features/portfolio/lib/config/apps.config";
 import { WindowFrame } from "@/src/features/portfolio/components/wm/window-frame";
+import { WindowToolbar } from "@/src/features/portfolio/components/wm/window-toolbar";
 import { useWorkspace } from "@/src/features/portfolio/providers/workspace-provider";
 
 export const Desktop: FC = () => {
@@ -18,17 +19,20 @@ export const Desktop: FC = () => {
       className="mosaic"
       renderTile={(instanceId, path) => {
         const meta = APP_BY_ID[state.instances[instanceId] as AppId];
+        const title = meta?.title ?? instanceId;
         return (
           <MosaicWindow<string>
             path={path}
-            title={meta?.title ?? instanceId}
-            renderToolbar={null}
+            title={title}
+            // Mosaic wraps the toolbar element as the window's drag source, so
+            // our terminal title bar is both the chrome and the drag handle.
+            renderToolbar={() => (
+              <WindowToolbar title={title} onClose={() => closeApp(instanceId)} />
+            )}
           >
             <WindowFrame
-              title={meta?.title ?? instanceId}
               focused={state.focused === instanceId}
               onFocus={() => focusApp(instanceId)}
-              onClose={() => closeApp(instanceId)}
             >
               {meta?.render({ instanceId })}
             </WindowFrame>
