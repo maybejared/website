@@ -1,11 +1,10 @@
 import {
   ORIGINAL_SIZES,
   WALLPAPER_SIZES,
-  WALLPAPERS,
+  wallpaperById,
   type ResponsiveImage,
 } from "@/src/features/portfolio/lib/config/wallpapers";
 import { buildSrcSet, getCdnUrl } from "@/src/shared/lib/cdn-image-loader";
-import type { SchemeName } from "@/src/shared/types/portfolio";
 
 /**
  * Best-effort warm of a responsive image's webp ladder into the browser cache,
@@ -30,12 +29,12 @@ export const preloadResponsiveImage = (
 };
 
 /**
- * Warm both of a scheme's assets (wallpaper + viewer preview) ahead of a switch.
+ * Warm both of a wallpaper's assets (full-bleed + viewer preview) ahead of a switch.
  * Wired to hover/focus on the desktop scheme switcher so the crossfade is
- * instant; flat schemes (null slots) warm nothing.
+ * instant; unknown ids and the "none" wallpaper warm nothing.
  */
-export const preloadScheme = (scheme: SchemeName): void => {
-  const image = WALLPAPERS[scheme];
+export const preloadScheme = (id: string): void => {
+  const { image } = wallpaperById(id);
   // One set, two consumers: warm both the wallpaper (large) and viewer (small) tiers.
   preloadResponsiveImage(image, WALLPAPER_SIZES);
   preloadResponsiveImage(image, ORIGINAL_SIZES);

@@ -40,18 +40,16 @@ export interface AppMeta {
   render: (ctx: { instanceId: string }) => ReactNode;
 }
 
-// ImageViewerPanel requires a scheme and enabled flag. There is no wallpaper
-// context today and render's ctx is only { instanceId }, so it cannot receive a
-// scheme — imv currently renders empty (enabled:false). A later wiring task will
-// have imv read the selected wallpaperId from an AppearanceContext provided by
-// the shell.
+// ImageViewerPanel requires a wallpaperId and enabled flag. imv currently renders
+// empty (enabled:false); a later task will wire it to the active wallpaper from
+// an AppearanceContext provided by the shell.
 const imvRender = () =>
-  h(ImageViewerPanel, { scheme: "mono", enabled: false });
+  h(ImageViewerPanel, { wallpaperId: "none", enabled: false });
 
 // ScramblePanel requires a delay (ms before content resolves). Zero means the
 // scramble completes immediately — fine for a static registry placeholder.
 const cavaRender = () =>
-  h(ScramblePanel, { delay: 0 }, h(BtopPanel, null));
+  h(ScramblePanel, { delay: 0, children: h(BtopPanel, null) });
 
 export const APPS: AppMeta[] = [
   {

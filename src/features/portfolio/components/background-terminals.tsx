@@ -14,6 +14,7 @@ import { WallpaperLayer } from "@/src/features/portfolio/components/background/w
 import { ZfsPanel } from "@/src/features/portfolio/components/background/zfs-panel";
 import { useWindowManager } from "@/src/features/portfolio/providers/window-manager-provider";
 import { useWallpaperEnabled } from "@/src/features/portfolio/hooks/use-wallpaper-enabled";
+import { DEFAULT_WALLPAPER_ID } from "@/src/features/portfolio/lib/config/wallpapers";
 import type { SchemeName } from "@/src/shared/types/portfolio";
 import { cn } from "@/src/shared/lib/utils";
 
@@ -59,7 +60,7 @@ const BackgroundTerminalsView: FC<BackgroundTerminalsProps> = ({ scheme }) => {
       )}
     >
       {/* Dithered photo wallpaper, behind the whole terminal cluster. */}
-      <WallpaperLayer scheme={scheme} enabled={enabled} />
+      <WallpaperLayer wallpaperId={DEFAULT_WALLPAPER_ID} enabled={enabled} />
 
       {/* On lg+ the dock occupies the left edge; nudge the whole cluster clear of
           it so the left-column windows' own controls stay reachable. */}
@@ -109,7 +110,7 @@ const BackgroundTerminalsView: FC<BackgroundTerminalsProps> = ({ scheme }) => {
           style={{ left: 0, bottom: 0 }}
           onClose={() => hide("imv")}
         >
-          <ImageViewerPanel scheme={scheme} enabled={enabled} />
+          <ImageViewerPanel wallpaperId={DEFAULT_WALLPAPER_ID} enabled={enabled} />
         </FauxTerminal>
 
         <FauxTerminal

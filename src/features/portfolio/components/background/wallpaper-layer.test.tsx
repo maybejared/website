@@ -11,20 +11,20 @@ afterEach(() => {
 });
 
 describe('WallpaperLayer', () => {
-  it('renders the scheme wallpaper when enabled', () => {
-    const { container } = render(<WallpaperLayer scheme="phosphor" enabled />);
+  it('renders the wallpaper image when enabled with a known id', () => {
+    const { container } = render(<WallpaperLayer wallpaperId="mono" enabled />);
     expect(container.querySelector('img')?.getAttribute('src')).toBe(
-      'https://cdn.jtucker.io/bg/phosphor/original-640.webp',
+      'https://cdn.jtucker.io/bg/mono/original-640.webp',
     );
   });
 
-  it('renders nothing but the vignette for the flat beige scheme', () => {
-    const { container } = render(<WallpaperLayer scheme="beige" enabled />);
+  it('renders nothing but the vignette for the "none" wallpaper', () => {
+    const { container } = render(<WallpaperLayer wallpaperId="none" enabled />);
     expect(container.querySelector('img')).toBeNull();
   });
 
   it('fetches no image when disabled (mobile / Save-Data)', () => {
-    const { container } = render(<WallpaperLayer scheme="phosphor" enabled={false} />);
+    const { container } = render(<WallpaperLayer wallpaperId="mono" enabled={false} />);
     expect(container.querySelector('img')).toBeNull();
   });
 });

@@ -1,16 +1,12 @@
 import type { ImageVariant } from "@/src/shared/lib/cdn-image-loader";
-import type { SchemeName } from "@/src/shared/types/portfolio";
 
 /**
- * Per-scheme background imagery — the single source of truth for which assets
- * exist and where they live on the CDN. One photographic set per scheme drives
- * both uses: the full-bleed wallpaper behind the desktop and the `imv` viewer
- * window. `null` means the scheme renders flat with no fetched image (beige).
+ * Background wallpaper catalogue — the single source of truth for which assets
+ * exist and where they live on the CDN. Wallpaper is now scheme-independent: any
+ * colour scheme can pair with any wallpaper (or none). Each entry drives both
+ * consumers: the full-bleed backdrop and the `imv` viewer window.
  *
- * Typed against `SchemeName`, so adding a scheme is a compile error until its
- * imagery decision (image set or explicit `null`) is recorded.
- *
- * To wire real assets: upload `bg/<scheme>/original-<width>.webp` to the CDN and
+ * To wire real assets: upload `bg/<id>/original-<width>.webp` to the CDN and
  * set `NEXT_PUBLIC_CDN_URL`. The full-bleed wallpaper picks the larger widths
  * (sizes 100vw); the small viewer picks the smaller ones (sizes ~30vw).
  */
@@ -30,18 +26,29 @@ export interface ResponsiveImage {
   avif?: ImageVariant[];
 }
 
-const photo = (scheme: SchemeName): ResponsiveImage => ({
+/** A selectable wallpaper entry. `image: null` means render flat (no asset fetched). */
+export interface WallpaperOption {
+  id: string;
+  label: string;
+  image: ResponsiveImage | null;
+}
+
+const photo = (id: string): ResponsiveImage => ({
   webp: IMAGE_WIDTHS.map((width) => ({
-    src: `bg/${scheme}/original-${width}.webp`,
+    src: `bg/${id}/original-${width}.webp`,
     width,
   })),
 });
 
-export const WALLPAPERS: Record<SchemeName, ResponsiveImage | null> = {
-  beige: null,
-  phosphor: photo("phosphor"),
-  amber: photo("amber"),
-  blueprint: null,
-  mono: photo("mono"),
-  moonlit: photo("moonlit"),
-};
+export const WALLPAPERS: WallpaperOption[] = [
+  { id: "none", label: "none", image: null },
+  { id: "mono", label: "mono", image: photo("mono") },
+  { id: "moonlit", label: "moonlit", image: photo("moonlit") },
+];
+
+/** The wallpaper shown on first load. */
+export const DEFAULT_WALLPAPER_ID = "moonlit";
+
+/** Returns the matching entry, or the "none" option if the id is unrecognised. */
+export const wallpaperById = (id: string): WallpaperOption =>
+  WALLPAPERS.find((w) => w.id === id) ?? WALLPAPERS[0];
