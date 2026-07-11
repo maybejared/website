@@ -84,21 +84,18 @@ export const Fastfetch: FC<FastfetchProps> = ({ className }) => {
   return (
     <div
       className={cn(
-        "flex h-full min-h-0 flex-col items-center gap-7 xl:h-auto xl:flex-row",
+        "flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:gap-12",
         className,
       )}
     >
       {/* Themed wolf crest. The SVG is a single-colour glyph map (transparent
           background) used as a mask so it inherits the theme's foreground
-          instead of its baked-in grey. On narrow panels it fills the remaining
-          height and `mask-size: contain` scales the art down to fit within the
-          available space — no fixed aspect ratio driving height off the width,
-          so it never overflows or forces a scroll. On xl it sits beside the
-          info column at a fixed proportion. The negative margin bleeds its
-          top-left flush into the terminal's corner. */}
+          instead of its baked-in grey. The aspect ratio plus a fixed height
+          sizes the art on stacked layouts; on lg it sits beside the info column
+          at a fixed proportion (`mask-size: contain` scales it to fit). */}
       <div
         aria-hidden
-        className="-ml-6 min-h-0 w-full flex-1 self-stretch max-md:h-[280px] max-md:flex-none xl:aspect-[1080/1344] xl:h-auto xl:max-w-2/5 xl:flex-none xl:self-auto"
+        className="aspect-[1080/1344] h-[300px] flex-none self-center lg:h-auto lg:w-2/5 lg:max-w-[340px] lg:self-start"
         style={{
           backgroundColor: "var(--crest)",
           // Two mask layers, intersected: the glyph shape AND a diagonal
@@ -123,7 +120,7 @@ export const Fastfetch: FC<FastfetchProps> = ({ className }) => {
           contain: "paint",
         }}
       />
-      <FastFetchInfo classname="hidden xl:block" />
+      <FastFetchInfo classname="w-full lg:flex-1" />
     </div>
   );
 };
