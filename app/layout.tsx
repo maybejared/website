@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { GeistSans } from "geist/font/sans";
 
 import { PortfolioShell } from "@/src/features/portfolio";
 
@@ -23,7 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={jetbrainsMono.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${jetbrainsMono.variable} ${GeistSans.variable}`}
+      suppressHydrationWarning
+    >
       <body className="lowercase scheme-moonlit tracking-tighter text-[14px] min-h-dvh font-mono text-fg-1">
         <PortfolioShell>{children}</PortfolioShell>
       </body>

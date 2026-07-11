@@ -238,6 +238,7 @@
   --font-mono:
     "Symbols Nerd Font Mono", var(--font-jetbrains-mono), "IBM Plex Mono",
     ui-monospace, Menlo, Consolas, monospace;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
 }
 
 @layer base {
@@ -381,4 +382,17 @@
   .wm-glass {
     backdrop-filter: none;
   }
+}
+
+/* ============ SHELL LAYER ============
+   The Quickshell-style shell: a solid base frame that hosts the rail and the
+   edge-pull overlays, with the wallpaper "wall" inset into it. Film grain
+   replaces the old CRT scanlines — 2025 rice, not 1985 terminal. */
+.wm-wall {
+  background: radial-gradient(ellipse at center, var(--bg-1) 0%, var(--bg-0) 80%);
+}
+
+.wm-grain {
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 }
