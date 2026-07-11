@@ -170,32 +170,39 @@ export const Desktop: FC<Props> = ({ leaderHeld }) => {
                 height: `${r.h}%`,
               }}
               className={cn(
-                "wm-window absolute flex flex-col p-[3px] shadow-[0_12px_30px_-8px_rgba(0,0,0,0.55)]",
+                "wm-window absolute flex flex-col p-1.5",
                 isPlaceholder && "opacity-40",
               )}
             >
               <div
                 className={cn(
-                  "wm-glass flex h-5 flex-none items-center gap-2 border border-b-0 px-2 text-[11px]",
-                  focused ? "border-amber/70 bg-bg-2/75 text-fg-1" : "border-fg-4 bg-bg-0/60 text-fg-2",
-                )}
-              >
-                <button
-                  type="button"
-                  aria-label="close"
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onClick={() => closeApp(id)}
-                  className="h-2 w-2 flex-none rounded-full bg-red-dim hover:bg-red"
-                />
-                <span className="truncate">{title}</span>
-              </div>
-              <div
-                className={cn(
-                  "min-h-0 flex-1",
+                  "flex h-full min-h-0 flex-col overflow-hidden rounded-xl border shadow-[0_18px_44px_-20px_rgba(0,0,0,0.7)] transition-[filter,border-color] duration-200",
+                  focused
+                    ? "border-amber/70"
+                    : "border-fg-4 brightness-[0.88] saturate-[0.9]",
                   isPlaceholder && "ring-2 ring-inset ring-amber",
                 )}
               >
-                <WindowFrame focused={focused}>{meta?.render({ instanceId: id })}</WindowFrame>
+                <div
+                  className={cn(
+                    "wm-glass flex h-7 flex-none items-center gap-2 border-b border-fg-4/50 px-2.5 text-[11px]",
+                    focused ? "bg-bg-2/75 text-fg-1" : "bg-bg-0/60 text-fg-2",
+                  )}
+                >
+                  <button
+                    type="button"
+                    aria-label="close"
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onClick={() => closeApp(id)}
+                    className="h-2.5 w-2.5 flex-none rounded-full bg-red-dim hover:bg-red"
+                  />
+                  <span className="truncate">{title}</span>
+                </div>
+                <div className="min-h-0 flex-1">
+                  <WindowFrame focused={focused}>
+                    {meta?.render({ instanceId: id })}
+                  </WindowFrame>
+                </div>
               </div>
             </div>
           );
