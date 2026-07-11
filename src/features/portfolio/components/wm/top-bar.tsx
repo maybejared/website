@@ -20,11 +20,18 @@ interface AppearanceProps {
 interface Props {
   appearance: AppearanceProps;
   onOpenLauncher: () => void;
+  onOpenKeymap: () => void;
+  armed: boolean;
 }
 
 const Divider: FC = () => <span className="text-fg-4">│</span>;
 
-export const TopBar: FC<Props> = ({ appearance, onOpenLauncher }) => {
+export const TopBar: FC<Props> = ({
+  appearance,
+  onOpenLauncher,
+  onOpenKeymap,
+  armed,
+}) => {
   const { state, switchWorkspace, openApp } = useWorkspace();
   const stamp = useDeskStamp();
   const { handle } = portfolioContent.user;
@@ -40,6 +47,13 @@ export const TopBar: FC<Props> = ({ appearance, onOpenLauncher }) => {
         >
           <span className="text-amber">◆</span>
           <span className="uppercase tracking-[0.12em]">apps</span>
+        </button>
+        <button
+          type="button"
+          onClick={onOpenKeymap}
+          className="uppercase tracking-[0.12em] text-fg-3 hover:text-fg-1"
+        >
+          keys
         </button>
         <Divider />
         <div className="flex items-center gap-1.5 text-[9px]">
@@ -71,8 +85,13 @@ export const TopBar: FC<Props> = ({ appearance, onOpenLauncher }) => {
         </div>
       </div>
 
-      {/* right: theme panel + clock + handle chip */}
+      {/* right: armed indicator + theme panel + clock + handle chip */}
       <div className="flex items-center gap-3">
+        {armed && (
+          <span className="uppercase tracking-[0.08em] text-amber">
+            leader…
+          </span>
+        )}
         <ThemePanel {...appearance} />
         <Divider />
         <span className="text-fg-1">{stamp}</span>

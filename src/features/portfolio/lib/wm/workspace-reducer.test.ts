@@ -31,7 +31,32 @@ describe("workspaceReducer", () => {
     const ids = Object.keys(s.instances);
     expect(ids).toEqual(["terminal:1", "terminal:2"]);
     expect(s.instances["terminal:2"]).toBe("terminal");
-    expect(s.layouts[1]).toEqual({ direction: "row", first: "terminal:1", second: "terminal:2" });
+    expect(s.layouts[1]).toEqual({
+      direction: "row",
+      first: "terminal:1",
+      second: "terminal:2",
+      splitPercentage: 50,
+    });
+  });
+
+  it("dwindle-tiles a third window by splitting the focused one along its long axis", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about" });
+    // posts | about; about is focused and now half-width/full-height, so the
+    // next window stacks beneath it rather than row-splitting the root.
+    s = workspaceReducer(s, { type: "open", appId: "contact" });
+    expect(s.layouts[1]).toEqual({
+      direction: "row",
+      first: "posts",
+      second: {
+        direction: "column",
+        first: "about",
+        second: "contact",
+        splitPercentage: 50,
+      },
+      splitPercentage: 50,
+    });
+    expect(s.focused).toBe("contact");
   });
 
   it("close removes the instance and clears focus if it was focused", () => {
@@ -40,6 +65,13 @@ describe("workspaceReducer", () => {
     expect(s.instances.posts).toBeUndefined();
     expect(s.layouts[1]).toBeNull();
     expect(s.focused).toBeNull();
+  });
+
+  it("closing the focused window hands focus to a surviving neighbour", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about" }); // focused: about
+    s = workspaceReducer(s, { type: "close", instanceId: "about" });
+    expect(s.focused).toBe("posts");
   });
 
   it("close leaves focus untouched when a non-focused instance is closed", () => {

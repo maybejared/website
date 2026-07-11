@@ -5,18 +5,16 @@ import { cn } from "@/src/shared/lib/utils";
 
 interface Props {
   focused: boolean;
-  onFocus: () => void;
   children: ReactNode;
 }
 
-// Body wrapper only — the title bar is rendered inline via renderToolbar in
-// desktop.tsx so it doubles as the Mosaic drag handle. This supplies the
-// focused border and the scrollable content region.
-export const WindowFrame: FC<Props> = ({ focused, onFocus, children }) => (
+// Body wrapper only — the title bar and focus/drag handling live in the leaf
+// wrapper in desktop.tsx. This supplies the focused border, the scrollable
+// content region, and the per-window focus context.
+export const WindowFrame: FC<Props> = ({ focused, children }) => (
   <div
-    onMouseDown={onFocus}
     className={cn(
-      "h-full min-h-0 flex-1 overflow-auto border bg-bg-1",
+      "wm-window-body wm-glass h-full min-h-0 flex-1 overflow-auto border border-t-0 bg-bg-1/85",
       focused ? "border-amber/70" : "border-fg-4",
     )}
   >

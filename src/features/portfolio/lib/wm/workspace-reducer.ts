@@ -1,5 +1,10 @@
 import { type MosaicNode, getLeaves } from "react-mosaic-component";
 
+import {
+  focusAfterClose,
+  insertDwindle,
+} from "@/src/features/portfolio/lib/wm/mosaic-geometry";
+
 export type WorkspaceId = 1 | 2 | 3 | 4;
 export const WORKSPACE_IDS: WorkspaceId[] = [1, 2, 3, 4];
 
@@ -54,13 +59,21 @@ export function findInstanceWorkspace(
   return null;
 }
 
-/** Add a leaf to a tree: null → leaf; existing → split row with the newcomer on the right. */
+/**
+ * Add a leaf via dwindle: an empty workspace becomes the leaf; otherwise split
+ * the focused window (or the last leaf when focus is elsewhere) along its longer
+ * axis, so windows tile in a Fibonacci spiral.
+ */
 function addLeaf(
   tree: MosaicNode<string> | null,
   leaf: string,
+  focused: string | null,
 ): MosaicNode<string> {
   if (tree === null) return leaf;
-  return { direction: "row", first: tree, second: leaf };
+  const leaves = getLeaves(tree);
+  const target =
+    focused && leaves.includes(focused) ? focused : leaves[leaves.length - 1];
+  return insertDwindle(tree, target, leaf);
 }
 
 /** Remove a leaf, collapsing its parent. Returns the remaining tree or null. */
@@ -98,7 +111,11 @@ export function workspaceReducer(
           const ws = findInstanceWorkspace(state, action.appId) ?? state.active;
           return { ...state, active: ws, focused: action.appId };
         }
-        const tree = addLeaf(state.layouts[state.active], action.appId);
+        const tree = addLeaf(
+          state.layouts[state.active],
+          action.appId,
+          state.focused,
+        );
         return {
           ...state,
           instances: { ...state.instances, [action.appId]: action.appId },
@@ -107,7 +124,7 @@ export function workspaceReducer(
         };
       }
       const id = nextInstanceId(state, action.appId);
-      const tree = addLeaf(state.layouts[state.active], id);
+      const tree = addLeaf(state.layouts[state.active], id, state.focused);
       return {
         ...state,
         instances: { ...state.instances, [id]: action.appId },
@@ -121,13 +138,15 @@ export function workspaceReducer(
       const instances = { ...state.instances };
       delete instances[action.instanceId];
       const layouts = { ...state.layouts };
+      const oldTree = ws ? state.layouts[ws] : null;
       if (ws) layouts[ws] = removeLeaf(layouts[ws], action.instanceId);
-      return {
-        ...state,
-        instances,
-        layouts,
-        focused: state.focused === action.instanceId ? null : state.focused,
-      };
+      // Closing the focused window hands focus to the nearest surviving window
+      // rather than leaving the desktop with nothing focused.
+      const focused =
+        state.focused === action.instanceId
+          ? focusAfterClose(oldTree, action.instanceId)
+          : state.focused;
+      return { ...state, instances, layouts, focused };
     }
 
     case "focus":

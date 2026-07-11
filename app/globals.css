@@ -325,3 +325,60 @@
     pointer-events: none;
   }
 }
+
+/* Window-manager tiling animations — smooth slide/grow on layout changes and a
+   subtle pop-in on open, in the spirit of a Hyprland animation curve. Position
+   transitions are suppressed mid-resize so the dragged edge tracks the pointer
+   1:1 instead of lagging behind the easing. */
+@keyframes wm-window-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.wm-window {
+  transition:
+    left 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.18s ease-out;
+  animation: wm-window-in 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wm-field[data-resizing="true"] .wm-window {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-window {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Glassmorphism for window surfaces — the translucent, backdrop-blurred panes
+   of a typical Linux rice. The wallpaper and windows behind blur through; a
+   faint top sheen and lift shadow give the pane depth. */
+.wm-glass {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Blur only on the photo schemes (beige stays flat/paper), desktop only — same
+   gate as .terminal-glass. Plain blur() so lightningcss keeps the declaration. */
+@media (min-width: 1024px) {
+  :is(.scheme-mono, .scheme-moonlit) .wm-glass {
+    backdrop-filter: blur(16px);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .wm-glass {
+    backdrop-filter: none;
+  }
+}

@@ -5,8 +5,10 @@ import { useState } from "react";
 
 import { WallpaperLayer } from "@/src/features/portfolio/components/background/wallpaper-layer";
 import { Desktop } from "@/src/features/portfolio/components/wm/desktop";
+import { KeymapPanel } from "@/src/features/portfolio/components/wm/keymap-panel";
 import { Launcher } from "@/src/features/portfolio/components/wm/launcher";
 import { TopBar } from "@/src/features/portfolio/components/wm/top-bar";
+import { useKeymap } from "@/src/features/portfolio/hooks/use-keymap";
 import { useWallpaperEnabled } from "@/src/features/portfolio/hooks/use-wallpaper-enabled";
 import { useWmKeys } from "@/src/features/portfolio/hooks/use-wm-keys";
 import type { AppearanceState } from "@/src/features/portfolio/hooks/use-appearance";
@@ -23,9 +25,15 @@ interface Props {
  */
 export const DesktopChrome: FC<Props> = ({ appearance }) => {
   const [launcherOpen, setLauncherOpen] = useState(false);
+  const [keymapOpen, setKeymapOpen] = useState(false);
   const wallpaperEnabled = useWallpaperEnabled();
+  const keymap = useKeymap();
 
-  useWmKeys({ toggleLauncher: () => setLauncherOpen((open) => !open) });
+  const { armed, leaderHeld } = useWmKeys({
+    keymap,
+    toggleLauncher: () => setLauncherOpen((open) => !open),
+    toggleKeymapPanel: () => setKeymapOpen((open) => !open),
+  });
 
   return (
     <AppearanceProvider
@@ -39,13 +47,21 @@ export const DesktopChrome: FC<Props> = ({ appearance }) => {
         <TopBar
           appearance={appearance}
           onOpenLauncher={() => setLauncherOpen(true)}
+          onOpenKeymap={() => setKeymapOpen(true)}
+          armed={armed}
         />
         {/* TopBar only renders at lg+ (hidden lg:flex); below lg the field fills
             from the top, at lg+ it clears the 28px bar. */}
         <div className="absolute inset-x-0 bottom-0 top-0 lg:top-7">
-          <Desktop />
+          <Desktop leaderHeld={leaderHeld} />
         </div>
-        <Launcher key={launcherOpen ? 1 : 0} open={launcherOpen} onClose={() => setLauncherOpen(false)} />
+        <Launcher key={`launcher-${launcherOpen ? 1 : 0}`} open={launcherOpen} onClose={() => setLauncherOpen(false)} />
+        <KeymapPanel
+          key={`keymap-${keymapOpen ? 1 : 0}`}
+          keymap={keymap}
+          open={keymapOpen}
+          onClose={() => setKeymapOpen(false)}
+        />
         {/* CRT scanline + phosphor-glow overlay, carried over from the old shell. */}
         <div
           aria-hidden

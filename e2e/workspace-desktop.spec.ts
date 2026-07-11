@@ -23,7 +23,7 @@ test.describe("workspace desktop", () => {
     // mosaic class so we scope to the WM and avoid matching the SSR article title
     // that sits in md:hidden once mounted.
     await expect(
-      page.locator(".mosaic-window-body").getByText(POST_TITLE).first(),
+      page.locator(".wm-window-body").getByText(POST_TITLE).first(),
     ).toBeVisible({ timeout: 10_000 });
 
     // After the WM hydrates, the posts window toolbar title confirms the workspace
@@ -43,7 +43,15 @@ test.describe("workspace desktop", () => {
     await expect(windowTitle(page, "~/posts")).toBeVisible();
   });
 
-  test("Alt+2 empties the workspace and Alt+1 restores it", async ({ page }) => {
+  // leader → key chord: press the leader (backtick), then the command key.
+  const chord = async (page: import("@playwright/test").Page, key: string) => {
+    await page.keyboard.press("Backquote");
+    await page.keyboard.press(key);
+  };
+
+  test("leader → 2 empties the workspace and leader → 1 restores it", async ({
+    page,
+  }) => {
     await page.goto("/");
 
     // Wait for the WM to hydrate by checking for the seeded about window toolbar.
@@ -51,15 +59,31 @@ test.describe("workspace desktop", () => {
     await expect(aboutTitle).toBeVisible({ timeout: 10_000 });
 
     // Switch to workspace 2 — it has no seeded windows, so the mosaic is empty.
-    await page.keyboard.press("Alt+2");
+    await chord(page, "2");
     await expect(aboutTitle).not.toBeVisible();
 
     // Switch back; workspace 1 layout is preserved.
-    await page.keyboard.press("Alt+1");
+    await chord(page, "1");
     await expect(aboutTitle).toBeVisible();
   });
 
-  test("Alt+q twice opens two terminal windows", async ({ page }) => {
+  test("holding the leader switches workspaces on each key without re-pressing", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const aboutTitle = windowTitle(page, "~/about");
+    await expect(aboutTitle).toBeVisible({ timeout: 10_000 });
+
+    // Hold the leader down, tap 2 then 1, then release — both fire under one hold.
+    await page.keyboard.down("Backquote");
+    await page.keyboard.press("2");
+    await expect(aboutTitle).not.toBeVisible();
+    await page.keyboard.press("1");
+    await expect(aboutTitle).toBeVisible();
+    await page.keyboard.up("Backquote");
+  });
+
+  test("leader → q twice opens two terminal windows", async ({ page }) => {
     await page.goto("/");
 
     // Wait for the WM to be ready.
@@ -70,8 +94,8 @@ test.describe("workspace desktop", () => {
     const closeButtons = page.getByRole("button", { name: "close" });
     const initialCount = await closeButtons.count();
 
-    await page.keyboard.press("Alt+q");
-    await page.keyboard.press("Alt+q");
+    await chord(page, "q");
+    await chord(page, "q");
 
     // Two new windows should have opened — each has exactly one close button.
     await expect(closeButtons).toHaveCount(initialCount + 2, { timeout: 5_000 });
@@ -81,5 +105,100 @@ test.describe("workspace desktop", () => {
       hasText: /^terminal$/,
     });
     await expect(terminalTitles).toHaveCount(2);
+  });
+
+  test("the keybind panel rebinds new-terminal and the new chord triggers it", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(windowTitle(page, "~/about")).toBeVisible({ timeout: 10_000 });
+
+    // Open the panel from the top bar.
+    await page.getByRole("button", { name: "keys" }).click();
+    await expect(page.getByText("keybinds", { exact: true })).toBeVisible();
+
+    // New terminal is the 6th rebind row (after leader + 4 workspaces).
+    await page.getByRole("button", { name: "rebind" }).nth(5).click();
+    await page.keyboard.press("t");
+    await expect(page.getByText("leader → T")).toBeVisible();
+
+    // Close the panel; the new chord should now spawn a terminal.
+    await page.keyboard.press("Escape");
+    const terminalTitles = page.locator("span.truncate", { hasText: /^terminal$/ });
+    await expect(terminalTitles).toHaveCount(0);
+    await chord(page, "t");
+    await expect(terminalTitles).toHaveCount(1);
+  });
+
+  // Open a second window so the field has two side-by-side leaves to gesture on.
+  const twoWindows = async (page: import("@playwright/test").Page) => {
+    await page.goto("/");
+    const postsBtn = page.getByRole("button", { name: "posts" });
+    await expect(postsBtn).toBeVisible({ timeout: 10_000 });
+    await postsBtn.click();
+    const about = page.locator('[data-leaf="about"]');
+    const posts = page.locator('[data-leaf="posts"]');
+    await expect(about).toBeVisible();
+    await expect(posts).toBeVisible();
+    return { about, posts };
+  };
+
+  const center = (b: { x: number; y: number; width: number; height: number }) => ({
+    x: b.x + b.width / 2,
+    y: b.y + b.height / 2,
+  });
+
+  test("leader + left-drag re-tiles onto a drop zone with a ghost overlay", async ({
+    page,
+  }) => {
+    const { about, posts } = await twoWindows(page);
+    await page.waitForTimeout(300); // settle the open/pop-in animation
+    const a0 = (await about.boundingBox())!;
+    const p0 = (await posts.boundingBox())!;
+
+    const from = center(a0);
+    // Aim at posts' right edge → about should re-tile to posts' right side.
+    const to = { x: p0.x + p0.width * 0.9, y: p0.y + p0.height / 2 };
+
+    await page.keyboard.down("Backquote");
+    await page.mouse.move(from.x, from.y);
+    await page.mouse.down();
+    await page.mouse.move(to.x, to.y, { steps: 8 });
+
+    // The floating ghost overlay is visible while dragging.
+    await expect(page.locator("[data-drag-overlay]")).toBeVisible();
+
+    await page.mouse.up();
+    await page.keyboard.up("Backquote");
+
+    // Ghost gone, and about now sits to the right of posts.
+    await expect(page.locator("[data-drag-overlay]")).toHaveCount(0);
+    await expect
+      .poll(async () => {
+        const a = (await about.boundingBox())!;
+        const p = (await posts.boundingBox())!;
+        return a.x > p.x;
+      })
+      .toBe(true);
+  });
+
+  test("leader + right-drag resizes the split", async ({ page }) => {
+    const { about } = await twoWindows(page);
+    await page.waitForTimeout(300); // let the open/pop-in animation settle
+    const a0 = (await about.boundingBox())!;
+    const c = center(a0);
+
+    await page.keyboard.down("Backquote");
+    await page.mouse.move(c.x, c.y);
+    await page.mouse.down({ button: "right" });
+    await page.mouse.move(c.x + 160, c.y, { steps: 8 });
+    await page.mouse.up({ button: "right" });
+    await page.keyboard.up("Backquote");
+
+    // A horizontal right-drag moves the nearest split, changing about's width.
+    // (Which way depends on the tree, so assert a meaningful change either way.)
+    await expect
+      .poll(async () => Math.abs((await about.boundingBox())!.width - a0.width))
+      .toBeGreaterThan(60);
   });
 });
