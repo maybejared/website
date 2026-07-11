@@ -45,13 +45,15 @@
   --glow-fg-rgb: 120, 110, 95;
   --glow-amber-rgb: 191, 90, 46;
   --glow-cyan-rgb: 63, 111, 122;
+  --glow-border-rgb: 22, 33, 62;
 
   /* Crest tint: a high-contrast inverse of the body so the ascii portrait
      stands proud of the background. On the warm paper scheme that means a
      deep blue; on the dark/blue schemes it lifts toward white. */
   --crest: #0c1733;
 
-  --active-border: linear-gradient(120deg, var(--cyan), var(--amber));
+  /* Monochrome focus ring: deep navy against the warm paper body. */
+  --active-border: #16213e;
 }
 
 /* Keep the decorative rice terminals beige even though the shell is now dark:
@@ -137,99 +139,6 @@
   background-color: var(--bg-1);
 }
 
-.scheme-phosphor {
-  --bg-0: #07090a;
-  --bg-1: #0d1210;
-  --bg-2: #131a17;
-  --bg-3: #1a2421;
-  --bg-glow: #0a1f15;
-
-  --fg-0: #c8f7d4;
-  --fg-1: #7ee787;
-  --fg-2: #4a9d5c;
-  --fg-3: #2f6b3d;
-  --fg-4: #1d4528;
-
-  --amber: #ff9b50;
-  --amber-dim: #b46a32;
-  --cyan: #67e8f9;
-  --cyan-dim: #3b8a98;
-  --magenta: #f471b5;
-  --red: #ff5c5c;
-  --red-dim: #8a3434;
-  --yellow: #f0c674;
-
-  --glow-fg-rgb: 126, 231, 135;
-  --glow-amber-rgb: 255, 155, 80;
-  --glow-cyan-rgb: 103, 232, 249;
-
-  --crest: #b6f5c4;
-
-  --active-border: linear-gradient(120deg, var(--fg-1), var(--cyan));
-}
-
-.scheme-amber {
-  --bg-0: #0a0805;
-  --bg-1: #14100a;
-  --bg-2: #1c1610;
-  --bg-3: #261e14;
-  --bg-glow: #1f1408;
-
-  --fg-0: #ffe9b8;
-  --fg-1: #ffb454;
-  --fg-2: #b07a2d;
-  --fg-3: #6b4818;
-  --fg-4: #3a2710;
-
-  --amber: #ff5c5c;
-  --amber-dim: #8a3434;
-  --cyan: #88ccff;
-  --cyan-dim: #4a6e9a;
-  --magenta: #f471b5;
-  --red: #ff5c5c;
-  --red-dim: #8a3434;
-  --yellow: #ffe9b8;
-
-  --glow-fg-rgb: 255, 180, 84;
-  --glow-amber-rgb: 255, 92, 92;
-  --glow-cyan-rgb: 136, 204, 255;
-
-  --crest: #ffd9a8;
-
-  --active-border: linear-gradient(120deg, var(--fg-1), var(--amber));
-}
-
-.scheme-blueprint {
-  --bg-0: #0a1838;
-  --bg-1: #14245a;
-  --bg-2: #1e2f70;
-  --bg-3: #2a3d85;
-  --bg-glow: #1a2a60;
-
-  --fg-0: #ffffff;
-  --fg-1: #dbe6ff;
-  --fg-2: #8aa3d8;
-  --fg-3: #5b76b0;
-  --fg-4: #34487a;
-
-  --amber: #ffc14a;
-  --amber-dim: #a37224;
-  --cyan: #88e3ff;
-  --cyan-dim: #4a8aa8;
-  --magenta: #ff9bd6;
-  --red: #ff8585;
-  --red-dim: #a04848;
-  --yellow: #ffd770;
-
-  --glow-fg-rgb: 219, 230, 255;
-  --glow-amber-rgb: 255, 193, 74;
-  --glow-cyan-rgb: 136, 227, 255;
-
-  --crest: #ffffff;
-
-  --active-border: linear-gradient(120deg, var(--cyan), var(--fg-1));
-}
-
 :root,
 .scheme-mono {
   --bg-0: #07070a;
@@ -256,10 +165,12 @@
   --glow-fg-rgb: 212, 212, 220;
   --glow-amber-rgb: 255, 155, 80;
   --glow-cyan-rgb: 168, 200, 255;
+  --glow-border-rgb: 212, 212, 220;
 
   --crest: #dfe8ff;
 
-  --active-border: linear-gradient(120deg, var(--cyan), var(--magenta));
+  /* Monochrome focus ring: light grey/white. */
+  --active-border: var(--fg-1);
 }
 
 /* "moonlit" scheme: a deep indigo night sky. Near-black navy panels lit by
@@ -290,10 +201,12 @@
   --glow-fg-rgb: 196, 208, 240;
   --glow-amber-rgb: 240, 184, 120;
   --glow-cyan-rgb: 143, 212, 232;
+  --glow-border-rgb: 196, 208, 240;
 
   --crest: #bcd0ff;
 
-  --active-border: linear-gradient(120deg, var(--cyan), var(--magenta));
+  /* Monochrome focus ring: light grey/white. */
+  --active-border: var(--fg-1);
 }
 
 /* Register palette + fonts as Tailwind theme tokens. `inline` keeps the
@@ -368,12 +281,12 @@
    nothing behind the shell to blur. Left unlayered so it overrides the Tailwind
    `bg-bg-*` utilities on these surfaces while beige keeps its flat panels. */
 @media (min-width: 768px) {
-  :is(.scheme-phosphor, .scheme-amber, .scheme-blueprint, .scheme-mono, .scheme-moonlit) .terminal-shell {
+  :is(.scheme-mono, .scheme-moonlit) .terminal-shell {
     background-color: color-mix(in srgb, var(--bg-1) 88%, transparent);
     backdrop-filter: blur(16px);
   }
 
-  :is(.scheme-phosphor, .scheme-amber, .scheme-blueprint, .scheme-mono, .scheme-moonlit) .terminal-glass {
+  :is(.scheme-mono, .scheme-moonlit) .terminal-glass {
     background-color: color-mix(in srgb, var(--bg-2) 82%, transparent);
     backdrop-filter: blur(16px);
   }
@@ -390,7 +303,7 @@
     border-color: transparent;
     box-shadow:
       0 10px 34px rgba(0, 0, 0, 0.45),
-      0 0 20px rgba(var(--glow-cyan-rgb), 0.32);
+      0 0 20px rgba(var(--glow-border-rgb), 0.32);
   }
 
   .terminal-shell::after {
