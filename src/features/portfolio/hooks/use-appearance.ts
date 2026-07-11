@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import {
   DEFAULT_SCHEME,
   SCHEMES,
@@ -9,23 +9,55 @@ import type { SchemeName } from "@/src/shared/types/portfolio";
 const KEY = "portfolio:appearance";
 interface Appearance { scheme: SchemeName; wallpaperId: string }
 
-const read = (): Appearance => {
-  if (typeof window === "undefined")
-    return { scheme: DEFAULT_SCHEME, wallpaperId: DEFAULT_WALLPAPER_ID };
+const DEFAULTS: Appearance = {
+  scheme: DEFAULT_SCHEME,
+  wallpaperId: DEFAULT_WALLPAPER_ID,
+};
+
+// A tiny external store over localStorage. useSyncExternalStore renders the
+// server snapshot (defaults) during hydration and swaps to the client snapshot
+// without a mismatch — the SSR-safe way to surface persisted appearance.
+let cache: Appearance = DEFAULTS;
+let cacheRaw: string | null = null;
+
+const getSnapshot = (): Appearance => {
+  let raw: string | null = null;
   try {
-    const raw = window.localStorage.getItem(KEY);
-    if (raw)
-      return {
-        scheme: DEFAULT_SCHEME,
-        wallpaperId: DEFAULT_WALLPAPER_ID,
-        ...JSON.parse(raw),
-      };
+    raw = window.localStorage.getItem(KEY);
   } catch {}
-  return { scheme: DEFAULT_SCHEME, wallpaperId: DEFAULT_WALLPAPER_ID };
+  if (raw === cacheRaw) return cache; // stable reference while unchanged
+  cacheRaw = raw;
+  try {
+    cache = raw ? { ...DEFAULTS, ...JSON.parse(raw) } : DEFAULTS;
+  } catch {
+    cache = DEFAULTS;
+  }
+  return cache;
+};
+
+const getServerSnapshot = (): Appearance => DEFAULTS;
+
+const listeners = new Set<() => void>();
+
+const subscribe = (cb: () => void): (() => void) => {
+  listeners.add(cb);
+  window.addEventListener("storage", cb); // sync across tabs
+  return () => {
+    listeners.delete(cb);
+    window.removeEventListener("storage", cb);
+  };
+};
+
+const write = (next: Appearance): void => {
+  try {
+    window.localStorage.setItem(KEY, JSON.stringify(next));
+  } catch {}
+  cacheRaw = null; // force re-parse on the next snapshot
+  listeners.forEach((l) => l());
 };
 
 export function useAppearance() {
-  const [state, setState] = useState<Appearance>(read);
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
     const body = document.body;
@@ -33,16 +65,21 @@ export function useAppearance() {
     body.classList.add("scheme-" + state.scheme);
   }, [state.scheme]);
 
-  useEffect(() => {
-    try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch {}
-  }, [state]);
-
   const setScheme = useCallback(
-    (scheme: SchemeName) => setState((s) => ({ ...s, scheme })), []);
+    (scheme: SchemeName) => write({ ...getSnapshot(), scheme }),
+    [],
+  );
   const setWallpaperId = useCallback(
-    (wallpaperId: string) => setState((s) => ({ ...s, wallpaperId })), []);
+    (wallpaperId: string) => write({ ...getSnapshot(), wallpaperId }),
+    [],
+  );
 
-  return { scheme: state.scheme, setScheme, wallpaperId: state.wallpaperId, setWallpaperId };
+  return {
+    scheme: state.scheme,
+    setScheme,
+    wallpaperId: state.wallpaperId,
+    setWallpaperId,
+  };
 }
 
 export type AppearanceState = ReturnType<typeof useAppearance>;
