@@ -72,8 +72,8 @@ export const KEYMAP_ACTIONS: KeymapAction[] = [
   },
   {
     id: "launcher",
-    label: "Launcher",
-    description: "Open the app launcher",
+    label: "Search",
+    description: "Open the search palette",
     default: { leader: true, key: " " },
   },
   {

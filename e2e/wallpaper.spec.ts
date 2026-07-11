@@ -20,6 +20,12 @@ test.describe("background wallpaper", () => {
       requested.push(new URL(route.request().url()).pathname);
       await route.fulfill({ status: 200, contentType: "image/gif", body: STUB_IMAGE });
     });
+    // Wallpaper thumbnails in the palette's action strip always request the
+    // 640-wide ladder entry through the image loader; the full-bleed backdrop
+    // picks larger widths at this viewport. Filter those out so opening the
+    // palette (which renders thumbnails for every wallpaper) doesn't look like
+    // a new full-bleed fetch.
+    const nonThumb = () => requested.filter((p) => !p.includes("-640.webp")).length;
 
     const crashes: string[] = [];
     page.on("pageerror", (err) => crashes.push(err.message));
@@ -37,24 +43,28 @@ test.describe("background wallpaper", () => {
 
     const moonlitCount = requested.filter((p) => p.startsWith("/bg/moonlit/")).length;
 
-    // Open the theme-panel popover and pick the 'none' wallpaper (no image).
-    // 'none' is unique in the panel so it is unambiguous.
-    await page.getByRole("button", { name: /theme/i }).click();
+    // Snapshot non-thumbnail fetches before opening the palette — the palette's
+    // wallpaper strip requests a 640px thumbnail for every wallpaper, which is
+    // not the "no new fetches" regression this assertion cares about.
+    const before = nonThumb();
+
+    // Open the search palette and pick the 'none' wallpaper (no image).
+    await page.keyboard.press("/");
+    await page.getByRole("textbox", { name: "search" }).fill(">wallpaper");
     await page.getByRole("button", { name: "none" }).click();
 
     // Allow a tick for any lazy loads that should NOT fire.
     await page.waitForTimeout(600);
     expect(
-      requested.length,
+      nonThumb(),
       "switching to none must not fetch any new bg assets",
-    ).toBe(moonlitCount);
+    ).toBe(before);
 
-    // Open the panel again and pick 'mono' wallpaper. The 'mono' label appears
-    // in both the scheme section and the wallpaper section; the wallpaper entry
-    // is rendered second in the DOM (after the scheme buttons), so nth(1) targets
-    // the correct one.
-    await page.getByRole("button", { name: /theme/i }).click();
-    await page.getByRole("button", { name: "mono" }).nth(1).click();
+    // Reopen and pick the 'mono' wallpaper — action mode lists wallpapers only,
+    // so the label is unambiguous (no scheme buttons in the strip).
+    await page.keyboard.press("/");
+    await page.getByRole("textbox", { name: "search" }).fill(">wallpaper");
+    await page.getByRole("button", { name: "mono" }).click();
 
     await expect
       .poll(() => requested.some((p) => p.startsWith("/bg/mono/")), {
@@ -62,8 +72,12 @@ test.describe("background wallpaper", () => {
       })
       .toBe(true);
 
-    // Laziness: moonlit assets were not re-fetched after switching away.
-    const moonlitAfter = requested.filter((p) => p.startsWith("/bg/moonlit/")).length;
+    // Laziness: moonlit assets were not re-fetched after switching away
+    // (thumbnails in the palette strip are excluded — only the full-bleed
+    // backdrop counts).
+    const moonlitAfter = requested.filter(
+      (p) => p.startsWith("/bg/moonlit/") && !p.includes("-640.webp"),
+    ).length;
     expect(moonlitAfter, "moonlit assets must not be re-fetched").toBe(moonlitCount);
 
     expect(crashes).toEqual([]);

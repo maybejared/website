@@ -1,12 +1,12 @@
 "use client";
 
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { WallpaperLayer } from "@/src/features/portfolio/components/background/wallpaper-layer";
 import { Desktop } from "@/src/features/portfolio/components/wm/desktop";
 import { KeymapPanel } from "@/src/features/portfolio/components/wm/keymap-panel";
-import { Launcher } from "@/src/features/portfolio/components/wm/launcher";
+import { Palette } from "@/src/features/portfolio/components/wm/palette";
 import { TopBar } from "@/src/features/portfolio/components/wm/top-bar";
 import { useKeymap } from "@/src/features/portfolio/hooks/use-keymap";
 import { useWallpaperEnabled } from "@/src/features/portfolio/hooks/use-wallpaper-enabled";
@@ -35,6 +35,20 @@ export const DesktopChrome: FC<Props> = ({ appearance }) => {
     toggleKeymapPanel: () => setKeymapOpen((open) => !open),
   });
 
+  // "/" opens the search palette from anywhere except a text field.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      const inField = t?.tagName === "INPUT" || t?.tagName === "TEXTAREA";
+      if (e.key === "/" && !inField && !launcherOpen) {
+        e.preventDefault();
+        setLauncherOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [launcherOpen]);
+
   return (
     <AppearanceProvider
       value={{ scheme: appearance.scheme, wallpaperId: appearance.wallpaperId }}
@@ -55,7 +69,12 @@ export const DesktopChrome: FC<Props> = ({ appearance }) => {
         <div className="absolute inset-x-0 bottom-0 top-0 lg:top-7">
           <Desktop leaderHeld={leaderHeld} />
         </div>
-        <Launcher key={`launcher-${launcherOpen ? 1 : 0}`} open={launcherOpen} onClose={() => setLauncherOpen(false)} />
+        <Palette
+          key={`palette-${launcherOpen ? 1 : 0}`}
+          open={launcherOpen}
+          onClose={() => setLauncherOpen(false)}
+          appearance={appearance}
+        />
         <KeymapPanel
           key={`keymap-${keymapOpen ? 1 : 0}`}
           keymap={keymap}
