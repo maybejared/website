@@ -31,10 +31,10 @@ test.describe("workspace desktop", () => {
     await expect(windowTitle(page, "~/posts")).toBeVisible({ timeout: 10_000 });
   });
 
-  test("top-bar posts button opens a posts window", async ({ page }) => {
+  test("rail posts button opens a posts window", async ({ page }) => {
     await page.goto("/");
 
-    // The top bar is only rendered at lg+ after hydration. Wait for it.
+    // The rail is only rendered at lg+ after hydration. Wait for it.
     const postsBtn = page.getByRole("button", { name: "posts" });
     await expect(postsBtn).toBeVisible({ timeout: 10_000 });
 
@@ -113,8 +113,9 @@ test.describe("workspace desktop", () => {
     await page.goto("/");
     await expect(windowTitle(page, "~/about")).toBeVisible({ timeout: 10_000 });
 
-    // Open the panel from the top bar.
-    await page.getByRole("button", { name: "keys" }).click();
+    // Open the panel from the quick menu (right edge pull).
+    await page.getByRole("button", { name: "toggle quick menu" }).click();
+    await page.getByRole("button", { name: "keybinds" }).click();
     await expect(page.getByText("keybinds", { exact: true })).toBeVisible();
 
     // New terminal is the 6th rebind row (after leader + 4 workspaces).

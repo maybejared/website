@@ -29,20 +29,12 @@ const routeToAppId = (pathname: string | null): string => {
   return ROUTE_APP[pathname ?? "/"] ?? "about";
 };
 
-// Seed the workspace with the route's content window plus the clock + fetch
-// decor, laid out as the entry app beside a stacked clock/fetch column.
+// Seed the workspace with just the route's content window — utility/decor
+// content now lives in the dashboard pull, not in seeded windows.
 const buildSeed = (entryAppId: string): WorkspaceSeed => ({
   workspace: 1,
-  instances: [
-    { id: entryAppId, appId: entryAppId },
-    { id: "clock", appId: "clock" },
-    { id: "fetch", appId: "fetch" },
-  ],
-  layout: {
-    direction: "row",
-    first: entryAppId,
-    second: { direction: "column", first: "clock", second: "fetch" },
-  },
+  instances: [{ id: entryAppId, appId: entryAppId }],
+  layout: entryAppId,
 });
 
 /**
@@ -52,7 +44,7 @@ const buildSeed = (entryAppId: string): WorkspaceSeed => ({
  *  3. Desktop (lg+), hydrated: WM mounts and takes over.
  *
  * The WM (WorkspaceProvider + Mosaic + react-dnd) never mounts below lg —
- * react-dnd's HTML5 backend is desktop-only, and the TopBar only appears at lg.
+ * react-dnd's HTML5 backend is desktop-only; the shell (rail + pulls) is lg-only.
  */
 export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
   const pathname = usePathname();
