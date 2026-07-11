@@ -50,7 +50,7 @@ export const KeymapPanel: FC<Props> = ({ keymap, open, onClose }) => {
   const [error, setError] = useState<string | null>(null);
   const boxRef = useRef<HTMLDivElement>(null);
 
-  // Outside-click closes (same idiom as ThemePanel), but not mid-capture.
+  // Outside-click closes the panel, but not mid-capture.
   useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent) => {

@@ -42,7 +42,7 @@ const matches = (e: KeyboardEvent, b: Binding): boolean => {
 /**
  * Leader-key state machine. Idle → press the leader to arm (tmux-style) → the
  * next key runs the matching `leader: true` action. Custom `leader: false`
- * binds fire directly from Idle. Returns `armed` for the top-bar indicator and a
+ * binds fire directly from Idle. Returns `armed` for the rail's leader indicator and a
  * `leaderHeld` ref the desktop reads at mousedown to gate leader+drag gestures.
  * Honors the INPUT/TEXTAREA guard so typing never triggers actions.
  */

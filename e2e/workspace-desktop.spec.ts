@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-// All workspace tests run at a full-desktop viewport so Tailwind's lg+ top-bar
-// and md+ WM container are both active.
+// All workspace tests run at a full-desktop viewport so Tailwind's lg+ shell
+// (rail + pulls) and md+ WM container are both active.
 test.use({ viewport: { width: 1440, height: 900 }, isMobile: false, hasTouch: false });
 
 const SLUG = "on-small-models-and-small-teams";

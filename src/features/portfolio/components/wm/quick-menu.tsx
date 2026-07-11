@@ -25,7 +25,7 @@ export const QuickMenu: FC<Props> = ({ open, onClose, onOpenKeymap }) => {
   return (
     <section
       aria-label="quick menu"
-      className="absolute right-0 top-1/2 z-40 flex w-[52px] -translate-y-1/2 flex-col items-center gap-1.5 rounded-l-2xl border border-r-0 border-fg-4/60 bg-bg-1 py-3 shadow-[-18px_48px_-20px_rgba(0,0,0,0.75)]"
+      className="absolute right-0 top-1/2 z-40 flex w-[52px] -translate-y-1/2 flex-col items-center gap-1.5 rounded-l-2xl border border-r-0 border-fg-4/60 bg-bg-1 py-3 shadow-[-18px_0_48px_-20px_rgba(0,0,0,0.75)]"
     >
       <button
         type="button"
