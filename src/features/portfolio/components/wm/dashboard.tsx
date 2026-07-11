@@ -64,26 +64,26 @@ export const Dashboard: FC<Props> = ({ open, onClose }) => {
 
       {tab === "dashboard" ? (
         <div className="grid grid-cols-[1.2fr_1fr] gap-2.5 p-3">
-          <div className="rounded-xl border border-fg-4/60 bg-bg-2/60 px-4 py-3">
+          <div className="min-w-0 rounded-xl border border-fg-4/60 bg-bg-2/60 px-4 py-3">
             <div className="mb-2 text-[10px] tracking-[0.05em] text-amber">
               {user.handle}@fjell
             </div>
             <dl className="text-[11.5px] leading-[1.7]">
               <div className="flex gap-3">
                 <dt className="w-14 flex-none text-fg-3">name</dt>
-                <dd className="text-fg-1">{user.name}</dd>
+                <dd className="min-w-0 break-words text-fg-1">{user.name}</dd>
               </div>
               <div className="flex gap-3">
                 <dt className="w-14 flex-none text-fg-3">role</dt>
-                <dd className="text-fg-1">{user.role}</dd>
+                <dd className="min-w-0 break-words text-fg-1">{user.role}</dd>
               </div>
               <div className="flex gap-3">
                 <dt className="w-14 flex-none text-fg-3">based</dt>
-                <dd className="text-fg-1">{user.based}</dd>
+                <dd className="min-w-0 break-words text-fg-1">{user.based}</dd>
               </div>
             </dl>
           </div>
-          <div className="rounded-xl border border-fg-4/60 bg-bg-2/60 px-4 py-3">
+          <div className="min-w-0 rounded-xl border border-fg-4/60 bg-bg-2/60 px-4 py-3">
             <div className="mb-2 text-[10px] tracking-[0.05em] text-amber">
               ~/now
             </div>
