@@ -18,6 +18,12 @@ interface Props {
    * glyphs in pseudo-randomly. Skipped under prefers-reduced-motion.
    */
   reveal?: RevealMode;
+  /**
+   * Ambient life after the reveal: "flicker" blinks a few percent of glyphs
+   * out/dim each tick so the art never sits fully still. Skipped under
+   * prefers-reduced-motion.
+   */
+  ambient?: "flicker" | "none";
   label?: string;
   className?: string;
 }
@@ -36,6 +42,12 @@ const hash01 = (r: number, c: number): number => {
   h = Math.imul(h ^ (h >>> 13), 1274126177);
   return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
 };
+
+// Ambient flicker: stepped, low-fps ticks read a time-seeded hash per cell —
+// each tick a different few percent of glyphs blink out or dim, then return.
+const AMBIENT_TICK_MS = 120;
+const AMBIENT_OUT = 0.04; // fraction fully blinked out per tick
+const AMBIENT_DIM = 0.1; // additional fraction drawn at half strength
 
 // Parse once per src for the whole session, however many placements exist.
 const artCache = new Map<string, Promise<Art>>();
@@ -71,6 +83,7 @@ export const AsciiArt: FC<Props> = ({
   src,
   mode = "original",
   reveal = "scanline",
+  ambient = "none",
   label = "ascii art",
   className,
 }) => {
@@ -142,6 +155,11 @@ export const AsciiArt: FC<Props> = ({
     const canvas = canvasRef.current;
     if (!wrap || !canvas || !art || art.rows === 0) return;
 
+    const reduced =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ambientActive = ambient === "flicker" && !reduced && progress >= 1;
+
     const draw = () => {
       const ctx = canvas.getContext("2d");
       if (!ctx) return; // jsdom
@@ -171,6 +189,10 @@ export const AsciiArt: FC<Props> = ({
       ctx.font = `${cellH}px ${style.fontFamily}`;
       ctx.textBaseline = "top";
 
+      const bucket = ambientActive
+        ? Math.floor(performance.now() / AMBIENT_TICK_MS)
+        : -1;
+
       for (let r = 0; r < art.rows; r++) {
         // Scanline: rows paint top→bottom with progress.
         if (reveal === "scanline" && r >= progress * art.rows) break;
@@ -180,6 +202,11 @@ export const AsciiArt: FC<Props> = ({
           if (cell.ch === " ") continue;
           // Dither: each glyph pops in once progress crosses its threshold.
           if (reveal === "dither" && hash01(r, c) > progress) continue;
+          if (bucket >= 0) {
+            const flick = hash01(r * 31 + bucket, c * 17 - bucket);
+            if (flick < AMBIENT_OUT) continue; // blinked out this tick
+            ctx.globalAlpha = flick < AMBIENT_OUT + AMBIENT_DIM ? 0.45 : 1;
+          }
           if (cell.rgb === null) {
             ctx.fillStyle = fallback || "#888";
           } else if (mode === "tint") {
@@ -191,14 +218,38 @@ export const AsciiArt: FC<Props> = ({
           ctx.fillText(cell.ch, x0 + c * cellW, y0 + r * cellH);
         }
       }
+      ctx.globalAlpha = 1;
     };
 
     draw();
-    if (typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(draw);
-    ro.observe(wrap);
-    return () => ro.disconnect();
-  }, [art, mode, reveal, progress, schemeTick]);
+
+    const ro =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(draw) : null;
+    ro?.observe(wrap);
+
+    // Ambient loop: stepped redraws, gated to the canvas being in view so an
+    // off-screen art doesn't burn frames.
+    let interval: number | undefined;
+    let io: IntersectionObserver | undefined;
+    if (ambientActive) {
+      const inView = { current: true };
+      if (typeof IntersectionObserver !== "undefined") {
+        io = new IntersectionObserver(([entry]) => {
+          inView.current = entry.isIntersecting;
+        });
+        io.observe(canvas);
+      }
+      interval = window.setInterval(() => {
+        if (inView.current) draw();
+      }, AMBIENT_TICK_MS);
+    }
+
+    return () => {
+      ro?.disconnect();
+      io?.disconnect();
+      if (interval !== undefined) window.clearInterval(interval);
+    };
+  }, [art, mode, reveal, ambient, progress, schemeTick]);
 
   return (
     <div ref={wrapRef} className={cn("overflow-hidden", className)}>

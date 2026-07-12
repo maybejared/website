@@ -84,6 +84,7 @@ export const AboutSection: FC = () => {
           src="/ascii/rose.ans"
           mode="tint"
           reveal="dither"
+          ambient="flicker"
           label="ascii rose"
           className="absolute inset-0"
         />

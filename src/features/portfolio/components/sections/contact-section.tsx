@@ -105,6 +105,7 @@ export const ContactSection: FC = () => {
           src="/ascii/rose.ans"
           mode="original"
           reveal="dither"
+          ambient="flicker"
           label="ascii rose"
           className="h-[320px] w-full max-md:absolute max-md:inset-0 max-md:h-auto"
         />
