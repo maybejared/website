@@ -64,8 +64,7 @@ export const Dashboard: FC<Props> = ({ onClose }) => {
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -24, opacity: 0 }}
       transition={transition}
-      style={{ x: "-50%" }}
-      className="absolute left-1/2 top-0 z-40 w-[620px] max-w-[88%]"
+      className="absolute inset-x-0 top-0 z-40 mx-auto w-[620px] max-w-[88%]"
       onMouseEnter={cancelLeave}
       onMouseLeave={scheduleLeave}
     >
