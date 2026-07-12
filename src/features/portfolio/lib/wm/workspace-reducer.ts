@@ -20,7 +20,8 @@ export type WorkspaceAction =
   | { type: "open"; appId: string; multiInstance?: boolean; aspect?: number }
   | { type: "close"; instanceId: string }
   | { type: "focus"; instanceId: string }
-  | { type: "setLayout"; node: MosaicNode<string> | null };
+  | { type: "setLayout"; node: MosaicNode<string> | null }
+  | { type: "move"; instanceId: string; workspace: WorkspaceId };
 
 const emptyLayouts = (): Record<WorkspaceId, MosaicNode<string> | null> => ({
   1: null,
@@ -164,6 +165,28 @@ export function workspaceReducer(
         ...state,
         layouts: { ...state.layouts, [state.active]: action.node },
       };
+
+    case "move": {
+      const from = findInstanceWorkspace(state, action.instanceId);
+      if (!from || from === action.workspace) return state;
+      const focused =
+        state.focused === action.instanceId
+          ? focusAfterClose(state.layouts[from], action.instanceId)
+          : state.focused;
+      return {
+        ...state,
+        layouts: {
+          ...state.layouts,
+          [from]: removeLeaf(state.layouts[from], action.instanceId),
+          [action.workspace]: addLeaf(
+            state.layouts[action.workspace],
+            action.instanceId,
+            null,
+          ),
+        },
+        focused,
+      };
+    }
 
     default:
       return state;

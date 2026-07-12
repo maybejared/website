@@ -11,6 +11,7 @@ import {
   resizeNearestSplit,
   zoneForPoint,
 } from "@/src/features/portfolio/lib/wm/mosaic-geometry";
+import type { WorkspaceId } from "@/src/features/portfolio/lib/wm/workspace-reducer";
 import { useWorkspace } from "@/src/features/portfolio/providers/workspace-provider";
 import { cn } from "@/src/shared/lib/utils";
 
@@ -30,7 +31,7 @@ interface Props {
  * No react-dnd, so no React 19 ref warning.
  */
 export const Desktop: FC<Props> = ({ leaderHeld }) => {
-  const { state, setLayout, closeApp, focusApp } = useWorkspace();
+  const { state, setLayout, closeApp, focusApp, moveApp } = useWorkspace();
   const tree = state.layouts[state.active];
   const fieldRef = useRef<HTMLDivElement>(null);
   // Active gesture lives in a ref so pointer math never triggers re-renders.
@@ -76,16 +77,15 @@ export const Desktop: FC<Props> = ({ leaderHeld }) => {
     if (state.focused !== id) focusApp(id);
   };
 
-  const handleLeafMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const id = e.currentTarget.dataset.leaf;
-    if (!id) return;
-    focusApp(id);
-    if (!leaderHeld.current || !tree || !fieldRef.current) return;
-    if (e.button !== 0 && e.button !== 2) return;
+  const beginGesture = (
+    id: string,
+    e: React.MouseEvent,
+    kind: "move" | "resize",
+  ) => {
+    if (!tree || !fieldRef.current) return;
     e.preventDefault();
 
     const rect = fieldRef.current.getBoundingClientRect();
-    const kind = e.button === 2 ? "resize" : "move";
     const snapshot = tree;
     gesture.current = { kind, id, startX: e.clientX, startY: e.clientY, snapshot, rect };
 
@@ -94,6 +94,7 @@ export const Desktop: FC<Props> = ({ leaderHeld }) => {
       setDraggingId(id);
       setPreview(snapshot);
       setGhost({ x: e.clientX, y: e.clientY, title });
+      document.body.setAttribute("data-wm-drag", "");
     } else {
       setResizing(true);
     }
@@ -129,7 +130,15 @@ export const Desktop: FC<Props> = ({ leaderHeld }) => {
       setDraggingId(null);
       setGhost(null);
       setResizing(false);
+      document.body.removeAttribute("data-wm-drag");
       if (!g || !g.snapshot || g.kind !== "move") return;
+      const drop = (
+        document.elementFromPoint(ev.clientX, ev.clientY) as HTMLElement | null
+      )?.closest<HTMLElement>("[data-workspace-drop]");
+      if (drop) {
+        moveApp(g.id, Number(drop.dataset.workspaceDrop) as WorkspaceId);
+        return;
+      }
       const { x, y } = pointFraction(ev, g.rect);
       const next = dropPreview(g.snapshot, g.id, x, y);
       if (next !== g.snapshot) setLayout(next);
@@ -137,6 +146,27 @@ export const Desktop: FC<Props> = ({ leaderHeld }) => {
 
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
+  };
+
+  const handleLeafMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const id = e.currentTarget.dataset.leaf;
+    if (!id) return;
+    focusApp(id);
+    if (!leaderHeld.current) return;
+    if (e.button !== 0 && e.button !== 2) return;
+    beginGesture(id, e, e.button === 2 ? "resize" : "move");
+  };
+
+  // Plain left-drag on the title bar moves the window, no leader key needed —
+  // the window body still requires leader+drag so app content stays clickable.
+  const handleTitleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
+    const id = e.currentTarget.closest<HTMLElement>("[data-leaf]")?.dataset
+      .leaf;
+    if (!id) return;
+    e.stopPropagation();
+    focusApp(id);
+    beginGesture(id, e, "move");
   };
 
   const renderTree = preview ?? tree;
@@ -184,6 +214,7 @@ export const Desktop: FC<Props> = ({ leaderHeld }) => {
                 )}
               >
                 <div
+                  onMouseDown={handleTitleMouseDown}
                   className={cn(
                     "wm-glass flex h-7 flex-none items-center gap-2 border-b border-fg-4/50 px-2.5 text-[11px]",
                     focused ? "bg-bg-2/75 text-fg-1" : "bg-bg-0/60 text-fg-2",

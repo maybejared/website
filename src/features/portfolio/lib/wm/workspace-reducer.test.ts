@@ -125,4 +125,62 @@ describe("workspaceReducer", () => {
     s = workspaceReducer(s, { type: "setLayout", node: tree });
     expect(s.layouts[1]).toEqual(tree);
   });
+
+  it("move relocates a leaf: source collapses, target gains it via dwindle", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about" }); // posts | about, focused: about
+    s = workspaceReducer(s, { type: "move", instanceId: "about", workspace: 2 });
+    expect(s.layouts[1]).toBe("posts");
+    expect(s.layouts[2]).toBe("about");
+    expect(s.instances).toEqual({ posts: "posts", about: "about" });
+  });
+
+  it("move relocating a leaf into an occupied workspace dwindle-tiles it", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "switch", workspace: 2 });
+    s = workspaceReducer(s, { type: "open", appId: "about" });
+    s = workspaceReducer(s, { type: "move", instanceId: "about", workspace: 1 });
+    expect(s.layouts[1]).toEqual({
+      direction: "row",
+      first: "posts",
+      second: "about",
+      splitPercentage: 50,
+    });
+    expect(s.layouts[2]).toBeNull();
+  });
+
+  it("move to the workspace the instance is already on returns state unchanged", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    const before = s;
+    s = workspaceReducer(s, { type: "move", instanceId: "posts", workspace: 1 });
+    expect(s).toBe(before);
+  });
+
+  it("move of an unknown instanceId returns state unchanged", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    const before = s;
+    s = workspaceReducer(s, { type: "move", instanceId: "ghost", workspace: 2 });
+    expect(s).toBe(before);
+  });
+
+  it("moving the focused instance reassigns focus to the nearest surviving window", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about" }); // focused: about
+    s = workspaceReducer(s, { type: "move", instanceId: "about", workspace: 2 });
+    expect(s.focused).toBe("posts");
+  });
+
+  it("moving a non-focused instance leaves focus alone", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about" }); // focused: about
+    s = workspaceReducer(s, { type: "move", instanceId: "posts", workspace: 2 });
+    expect(s.focused).toBe("about");
+  });
+
+  it("move does not change the active workspace (silent move)", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about" });
+    s = workspaceReducer(s, { type: "move", instanceId: "about", workspace: 2 });
+    expect(s.active).toBe(1);
+  });
 });

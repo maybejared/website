@@ -20,6 +20,7 @@ interface WorkspaceApi {
   closeApp: (instanceId: string) => void;
   focusApp: (instanceId: string) => void;
   setLayout: (node: WorkspaceState["layouts"][WorkspaceId]) => void;
+  moveApp: (instanceId: string, workspace: WorkspaceId) => void;
 }
 
 const Ctx = createContext<WorkspaceApi | undefined>(undefined);
@@ -56,6 +57,8 @@ export const WorkspaceProvider: FC<Props> = ({ children, seed }) => {
       closeApp: (instanceId) => dispatch({ type: "close", instanceId }),
       focusApp: (instanceId) => dispatch({ type: "focus", instanceId }),
       setLayout: (node) => dispatch({ type: "setLayout", node }),
+      moveApp: (instanceId, workspace) =>
+        dispatch({ type: "move", instanceId, workspace }),
     }),
     [state, router],
   );

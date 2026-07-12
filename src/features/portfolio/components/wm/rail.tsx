@@ -53,6 +53,7 @@ export const Rail: FC<Props> = ({ armed, onOpenPalette }) => {
             key={id}
             type="button"
             aria-label={`workspace ${id}`}
+            data-workspace-drop={id}
             onClick={() => switchWorkspace(id)}
             className={cn(
               "grid h-[26px] w-[26px] place-items-center rounded-full text-[11px] transition-colors",

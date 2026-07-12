@@ -298,6 +298,16 @@
   transition: none;
 }
 
+/* Rail workspace buttons advertise themselves as drop targets while a
+   window move-drag is in flight (desktop.tsx sets data-wm-drag on body). */
+body[data-wm-drag] [data-workspace-drop] {
+  outline: 1px dashed var(--amber);
+  outline-offset: 2px;
+}
+body[data-wm-drag] [data-workspace-drop]:hover {
+  background-color: color-mix(in srgb, var(--amber) 25%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wm-window {
     transition: none;
