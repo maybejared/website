@@ -250,9 +250,10 @@
     );
   }
 
-  /* The beige scheme sits its dark-teal panels on a periwinkle desktop. */
+  /* Beige keeps the standard paper radial: the shell covers the body on
+     desktop, and the mobile stacked view needs an opaque paper page (the old
+     periwinkle backdrop washed the whole mobile viewport blue). */
   body.scheme-beige {
-    background: radial-gradient(ellipse at center, #9bb0db 0%, #92a7d4 80%);
     font-feature-settings:
       "liga" 0,
       "calt" 0;
