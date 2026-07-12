@@ -69,6 +69,11 @@ describe("buildPaletteItems", () => {
     expect(items.every((i) => i.kind === "scheme")).toBe(true);
   });
 
+  it("'>theme moo' matches across the label and keyword tokens", () => {
+    const items = buildPaletteItems(">theme moo", deps());
+    expect(items.map((i) => i.label)).toEqual(["moonlit"]);
+  });
+
   it("scheme items carry swatches", () => {
     const items = buildPaletteItems(">theme", deps());
     for (const i of items) {

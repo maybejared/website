@@ -8,6 +8,9 @@ export const shellSpring: Transition = {
   mass: 0.9,
 };
 
+/** Delay before a mouse-leave closes a hover-dismissable panel. */
+export const HOVER_CLOSE_DELAY_MS = 300;
+
 /** Cross-fade + slight vertical shift for swapped tab/panel content. */
 export const fadeShift = {
   initial: { opacity: 0, y: 6 },

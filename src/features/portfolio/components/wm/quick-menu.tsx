@@ -32,7 +32,7 @@ export const QuickMenu: FC<Props> = ({ onClose, onOpenKeymap }) => {
       const t = e.target as Node | null;
       if (!t) return;
       if (panelRef.current?.contains(t)) return;
-      if ((t as HTMLElement).closest?.('[aria-label="toggle quick menu"]')) return;
+      if ((t as HTMLElement).closest?.("[data-overlay-toggle]")) return;
       onClose();
     };
     document.addEventListener("pointerdown", onPointerDown);
@@ -47,6 +47,9 @@ export const QuickMenu: FC<Props> = ({ onClose, onOpenKeymap }) => {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 24, opacity: 0 }}
       transition={transition}
+      // Percentage motion transforms on an ancestor corrupt layoutId projection
+      // of descendants (see the dashboard tab-pill bug). If a layoutId child is
+      // ever added here, switch to CSS centering instead.
       style={{ y: "-50%" }}
       className="absolute right-0 top-1/2 z-40 w-[52px]"
     >

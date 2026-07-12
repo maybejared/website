@@ -31,6 +31,7 @@ export const EdgeHandle: FC<Props> = ({ side, label, active, onClick }) => (
     type="button"
     aria-label={label}
     aria-expanded={active}
+    data-overlay-toggle
     onClick={onClick}
     className={cn(
       "group absolute z-[45] grid place-items-center bg-bg-1",

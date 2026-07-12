@@ -2,16 +2,9 @@
 
 import type { FC } from "react";
 
+import { TINT_TILE } from "@/src/features/portfolio/lib/wm/player-tints";
 import { usePlayer } from "@/src/features/portfolio/providers/player-context";
 import { cn } from "@/src/shared/lib/utils";
-import type { PlayerTrack } from "@/src/shared/types/portfolio";
-
-const TINT_TILE: Record<PlayerTrack["tint"], string> = {
-  amber: "bg-amber/20 text-amber",
-  cyan: "bg-cyan/20 text-cyan",
-  magenta: "bg-magenta/20 text-magenta",
-  yellow: "bg-yellow/20 text-yellow",
-};
 
 /**
  * Hover popup for the rail's now-playing status: album tile, track meta and

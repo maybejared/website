@@ -10,7 +10,11 @@ import { ShellCorner } from "@/src/features/portfolio/components/wm/shell-corner
 import { APP_BY_ID } from "@/src/features/portfolio/lib/config/apps.config";
 import { workspaceAppIds } from "@/src/features/portfolio/lib/wm/workspace-apps";
 import { WORKSPACE_IDS } from "@/src/features/portfolio/lib/wm/workspace-reducer";
-import { fadeShift, shellSpring } from "@/src/features/portfolio/lib/wm/transitions";
+import {
+  fadeShift,
+  HOVER_CLOSE_DELAY_MS,
+  shellSpring,
+} from "@/src/features/portfolio/lib/wm/transitions";
 import { useMeasuredHeight } from "@/src/features/portfolio/hooks/use-measured-height";
 import { useWorkspace } from "@/src/features/portfolio/providers/workspace-provider";
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
@@ -38,7 +42,7 @@ export const Dashboard: FC<Props> = ({ onClose }) => {
       const t = e.target as Node | null;
       if (!t) return;
       if (panelRef.current?.contains(t)) return;
-      if ((t as HTMLElement).closest?.('[aria-label="toggle dashboard"]')) return;
+      if ((t as HTMLElement).closest?.("[data-overlay-toggle]")) return;
       onClose();
     };
     document.addEventListener("pointerdown", onPointerDown);
@@ -52,7 +56,8 @@ export const Dashboard: FC<Props> = ({ onClose }) => {
   };
   const scheduleLeave = () => {
     cancelLeave();
-    leaveTimer.current = window.setTimeout(onClose, 300);
+    if (panelRef.current?.contains(document.activeElement)) return;
+    leaveTimer.current = window.setTimeout(onClose, HOVER_CLOSE_DELAY_MS);
   };
   useEffect(() => cancelLeave, []);
 

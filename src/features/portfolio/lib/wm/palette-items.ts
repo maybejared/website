@@ -25,8 +25,13 @@ export interface PaletteItem {
   run: () => void;
 }
 
-const matches = (needle: string, ...hay: string[]): boolean =>
-  hay.join(" ").toLowerCase().includes(needle);
+const matches = (needle: string, ...hay: string[]): boolean => {
+  const joined = hay.join(" ").toLowerCase();
+  return needle
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((token) => joined.includes(token));
+};
 
 /**
  * Rofi-style item model. Plain queries search apps and posts (empty query =
