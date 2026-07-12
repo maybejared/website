@@ -98,12 +98,14 @@ export const ContactSection: FC = () => {
       </Panel>
       <Panel label="~/ascii.txt" className="max-md:aspect-square">
         {/* Colour ASCII export rendered live on canvas — swap the .ans file
-            under public/ascii/ to change the art. */}
+            under public/ascii/ to change the art. In-flow with a bounded
+            height: an absolute child gives the Panel no intrinsic height and
+            it collapses to a strip. */}
         <AsciiArt
           src="/ascii/rose.ans"
           mode="original"
           label="ascii rose"
-          className="absolute inset-0"
+          className="h-[320px] w-full max-md:absolute max-md:inset-0 max-md:h-auto"
         />
       </Panel>
     </>

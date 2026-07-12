@@ -78,6 +78,8 @@ export const AboutSection: FC = () => {
         {whoamiNow}
       </Panel>
       <Panel label="~/ascii.txt" className="max-md:aspect-square md:hidden">
+        {/* Mobile-only panel: the aspect-square Panel bounds it, so the
+            absolute fill has real height here. */}
         <AsciiArt
           src="/ascii/rose.ans"
           mode="tint"
