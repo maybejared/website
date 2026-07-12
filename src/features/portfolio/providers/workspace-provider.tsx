@@ -43,7 +43,14 @@ export const WorkspaceProvider: FC<Props> = ({ children, seed }) => {
       switchWorkspace: (workspace) => dispatch({ type: "switch", workspace }),
       openApp: (appId) => {
         const meta = APP_BY_ID[appId as keyof typeof APP_BY_ID];
-        dispatch({ type: "open", appId, multiInstance: meta?.multiInstance });
+        // Live viewport aspect steers dwindle: tall/narrow fields stack new
+        // windows vertically instead of splitting side-by-side.
+        dispatch({
+          type: "open",
+          appId,
+          multiInstance: meta?.multiInstance,
+          aspect: window.innerWidth / window.innerHeight,
+        });
         if (meta?.href) router.push(meta.href);
       },
       closeApp: (instanceId) => dispatch({ type: "close", instanceId }),

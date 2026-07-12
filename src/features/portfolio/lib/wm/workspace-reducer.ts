@@ -17,7 +17,7 @@ export interface WorkspaceState {
 
 export type WorkspaceAction =
   | { type: "switch"; workspace: WorkspaceId }
-  | { type: "open"; appId: string; multiInstance?: boolean }
+  | { type: "open"; appId: string; multiInstance?: boolean; aspect?: number }
   | { type: "close"; instanceId: string }
   | { type: "focus"; instanceId: string }
   | { type: "setLayout"; node: MosaicNode<string> | null };
@@ -68,12 +68,13 @@ function addLeaf(
   tree: MosaicNode<string> | null,
   leaf: string,
   focused: string | null,
+  aspect?: number,
 ): MosaicNode<string> {
   if (tree === null) return leaf;
   const leaves = getLeaves(tree);
   const target =
     focused && leaves.includes(focused) ? focused : leaves[leaves.length - 1];
-  return insertDwindle(tree, target, leaf);
+  return insertDwindle(tree, target, leaf, aspect);
 }
 
 /** Remove a leaf, collapsing its parent. Returns the remaining tree or null. */
@@ -115,6 +116,7 @@ export function workspaceReducer(
           state.layouts[state.active],
           action.appId,
           state.focused,
+          action.aspect,
         );
         return {
           ...state,
@@ -124,7 +126,12 @@ export function workspaceReducer(
         };
       }
       const id = nextInstanceId(state, action.appId);
-      const tree = addLeaf(state.layouts[state.active], id, state.focused);
+      const tree = addLeaf(
+        state.layouts[state.active],
+        id,
+        state.focused,
+        action.aspect,
+      );
       return {
         ...state,
         instances: { ...state.instances, [id]: action.appId },

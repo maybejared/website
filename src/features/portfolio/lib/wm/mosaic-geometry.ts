@@ -225,10 +225,9 @@ export const zoneForPoint = (rect: Rect, x: number, y: number): Zone => {
   return (x - rect.x) / rect.w < 0.5 ? "left" : "right";
 };
 
-// Typical desktop viewport aspect (width / height). The WM is lg+ only, so a
-// fixed ratio is close enough to drive dwindle's split-direction choice without
-// threading live pixel dimensions through the reducer.
-// ponytail: fixed 16:9, pass the real field aspect in if it ever feels off.
+// Fallback field aspect (width / height) when the caller can't supply one —
+// the open action threads the live viewport aspect through, so narrow/tall
+// fields stack new windows vertically instead of splitting side-by-side.
 const DESKTOP_ASPECT = 16 / 9;
 
 /**

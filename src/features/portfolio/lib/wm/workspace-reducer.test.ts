@@ -25,6 +25,28 @@ describe("workspaceReducer", () => {
     expect(s.focused).toBe("btop");
   });
 
+  it("open splits vertically when the field is taller than wide", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about", aspect: 0.75 });
+    expect(s.layouts[1]).toEqual({
+      direction: "column",
+      first: "posts",
+      second: "about",
+      splitPercentage: 50,
+    });
+  });
+
+  it("open splits horizontally when the field is wider than tall", () => {
+    let s = workspaceReducer(base(), { type: "open", appId: "posts" });
+    s = workspaceReducer(s, { type: "open", appId: "about", aspect: 16 / 9 });
+    expect(s.layouts[1]).toEqual({
+      direction: "row",
+      first: "posts",
+      second: "about",
+      splitPercentage: 50,
+    });
+  });
+
   it("mints a new id per multiInstance open and tiles both", () => {
     let s = workspaceReducer(base(), { type: "open", appId: "terminal", multiInstance: true });
     s = workspaceReducer(s, { type: "open", appId: "terminal", multiInstance: true });
