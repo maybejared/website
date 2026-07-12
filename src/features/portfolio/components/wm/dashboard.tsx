@@ -81,7 +81,11 @@ export const Dashboard: FC<Props> = ({ open = true, onClose }) => {
         >
           <div ref={bodyRef}>
             <AnimatePresence mode="popLayout" initial={false}>
-              <motion.div key={tab} {...fadeShift}>
+              <motion.div
+                key={tab}
+                {...fadeShift}
+                transition={reduced ? { duration: 0 } : fadeShift.transition}
+              >
                 {tab === "dashboard" && (
                   <div className="grid grid-cols-[1.2fr_1fr] gap-2.5 p-3">
                     <div className="min-w-0 rounded-xl bg-bg-2 px-4 py-3">
