@@ -3,6 +3,7 @@
 import type { ComponentType, ReactNode } from "react";
 
 import { Panel } from "@/src/shared/ui/panel";
+import { cn } from "@/src/shared/lib/utils";
 
 export interface RowProps<T> {
   item: T;
@@ -51,11 +52,18 @@ export const MasterDetail = <T,>({
   );
 
   return (
-    <>
+    // Desktop (md+): fixed proportional split so the pane heights never track
+    // the selected entry's content — 2/5 detail while browsing, 3/5 once a
+    // detail/reader is opened. Each pane scrolls internally. Mobile keeps the
+    // one-pane-at-a-time flow with natural heights.
+    <div className="flex h-full flex-col max-md:block">
       <Panel
         label={detailLabel}
         accent={<span>&nbsp;{count}</span>}
-        className={opened ? undefined : "max-md:hidden"}
+        className={cn(
+          opened ? "md:flex-[3]" : "max-md:hidden md:flex-[2]",
+          "md:min-h-0",
+        )}
       >
         {/* Back control — mobile only; desktop always shows both panes. */}
         <button
@@ -81,7 +89,10 @@ export const MasterDetail = <T,>({
       <Panel
         label={listLabel}
         meta={<span>{items.length} entries</span>}
-        className={opened ? "max-md:hidden" : undefined}
+        className={cn(
+          opened ? "max-md:hidden md:flex-[2]" : "md:flex-[3]",
+          "md:min-h-0",
+        )}
       >
         <div className="mb-2 flex items-center gap-2.5 overflow-hidden whitespace-nowrap border-b border-fg-4 pb-2.5 text-[12px] text-fg-2">
           <span className="text-amber">&gt;</span>
@@ -98,6 +109,6 @@ export const MasterDetail = <T,>({
           ))}
         </div>
       </Panel>
-    </>
+    </div>
   );
 };

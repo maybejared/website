@@ -70,10 +70,14 @@ describe('MasterDetail', () => {
         renderDetail={(item) => <div>detail-{item.slug}</div>}
       />,
     );
-    // First flex child is the detail pane, second is the list pane.
-    const [detailPane, listPane] = Array.from(container.querySelectorAll(':scope > div'));
+    // Panes sit inside the split wrapper: first is detail, second is list.
+    const [detailPane, listPane] = Array.from(
+      container.querySelectorAll(':scope > div > div'),
+    );
     expect(detailPane.className).toContain('max-md:hidden');
+    expect(detailPane.className).toContain('md:flex-[2]');
     expect(listPane.className).not.toContain('max-md:hidden');
+    expect(listPane.className).toContain('md:flex-[3]');
 
     rerender(
       <MasterDetail<Item>
@@ -89,8 +93,12 @@ describe('MasterDetail', () => {
         renderDetail={(item) => <div>detail-{item.slug}</div>}
       />,
     );
-    const [detailPane2, listPane2] = Array.from(container.querySelectorAll(':scope > div'));
+    const [detailPane2, listPane2] = Array.from(
+      container.querySelectorAll(':scope > div > div'),
+    );
     expect(detailPane2.className).not.toContain('max-md:hidden');
+    expect(detailPane2.className).toContain('md:flex-[3]');
     expect(listPane2.className).toContain('max-md:hidden');
+    expect(listPane2.className).toContain('md:flex-[2]');
   });
 });
