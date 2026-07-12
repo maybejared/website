@@ -16,44 +16,40 @@
    Runtime-swappable palettes. The active scheme is set via a `.scheme-*`
    class on <body>; every color utility below resolves through these vars. */
 
-/* "beige" scheme: dark-teal panels/chrome (#102227) floating on a periwinkle
-   (#92a7d4) desktop. The beige tones now live only on the background-terminals
-   layer (see `.scheme-beige .background-terminals` override below), so the faux
-   rice windows stay light while the portfolio shell reads dark. */
+/* "beige" scheme, reworked as rosewater: warm rosy-cream surface tiers with a
+   terracotta accent, layered like a warm Hyprland rice. Depth comes from the
+   bg ladder (shell/panels = bg-1, cards = bg-2, insets = bg-3), not from a
+   contrast chrome color. */
 .scheme-beige {
-  --bg-0: #ddd6c7;
-  --bg-1: #ece7dc;
-  --bg-2: #e3ddd0;
-  --bg-3: #d6cebd;
-  --bg-glow: #f3efe7;
+  --bg-0: #e2cbc3;
+  --bg-1: #f1ded7;
+  --bg-2: #f7eae4;
+  --bg-3: #fcf3ee;
+  --bg-glow: #fff8f4;
 
-  --fg-0: #1b1813;
-  --fg-1: #3b362e;
-  --fg-2: #6d6557;
-  --fg-3: #978d7d;
-  --fg-4: #cabfac;
+  --fg-0: #2d1b16;
+  --fg-1: #4a332c;
+  --fg-2: #7d6055;
+  --fg-3: #a8887c;
+  --fg-4: #d9bfb6;
 
-  --amber: #bf5a2e;
-  --amber-dim: #8a4423;
-  --cyan: #3f6f7a;
-  --cyan-dim: #7c9aa1;
-  --magenta: #a23e76;
+  --amber: #a04b3a;
+  --amber-dim: #7c3a2d;
+  --cyan: #5c7a72;
+  --cyan-dim: #8fa8a0;
+  --magenta: #9c5573;
   --red: #b3402f;
   --red-dim: #c79388;
-  --yellow: #9a7b2e;
+  --yellow: #a5793a;
 
-  --glow-fg-rgb: 120, 110, 95;
-  --glow-amber-rgb: 191, 90, 46;
-  --glow-cyan-rgb: 63, 111, 122;
-  --glow-border-rgb: 22, 33, 62;
+  --glow-fg-rgb: 125, 96, 85;
+  --glow-amber-rgb: 160, 75, 58;
+  --glow-cyan-rgb: 92, 122, 114;
+  --glow-border-rgb: 74, 51, 44;
 
-  /* Crest tint: a high-contrast inverse of the body so the ascii portrait
-     stands proud of the background. On the warm paper scheme that means a
-     deep blue; on the dark/blue schemes it lifts toward white. */
-  --crest: #0c1733;
+  --crest: #5a2c22;
 
-  /* Monochrome focus ring: deep navy against the warm paper body. */
-  --active-border: #16213e;
+  --active-border: #a04b3a;
 }
 
 /* Keep the decorative rice terminals beige even though the shell is now dark:
@@ -82,30 +78,6 @@
   --yellow: #9a7b2e;
 
   --glow-fg-rgb: 120, 110, 95;
-}
-
-/* Navy chrome for the beige scheme. The window bars (main title / tabs / status
-   and every background-terminal header) carry `panel-chrome`; in beige they
-   paint navy with light foreground tokens for contrast, leaving the paper body
-   below them untouched. `background-color` is set directly so it lands on bars
-   with or without a `bg-bg-*` utility, while `--bg-1` is left beige so the
-   active tab (which paints `bg-bg-1`) still reads as paper punching through the
-   navy bar. Scoped to beige only; the dark schemes keep their near-black bars. */
-.scheme-beige .panel-chrome {
-  background-color: #16213e;
-  --bg-2: #25345a;
-  --bg-3: #2f4068;
-
-  --fg-0: #f1f4fb;
-  --fg-1: #d6dff2;
-  --fg-2: #9aabd2;
-  --fg-3: #6c7ea8;
-  --fg-4: #34456e;
-
-  --amber: #e08a4f;
-  --amber-dim: #c06a30;
-  --red: #e07a5a;
-  --red-dim: #9a4d38;
 }
 
 :root,
