@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { Dashboard } from "@/src/features/portfolio/components/wm/dashboard";
@@ -48,5 +48,27 @@ describe("Dashboard", () => {
     await userEvent.click(screen.getByRole("tab", { name: "workspaces" }));
     await userEvent.click(screen.getByRole("button", { name: "workspace 2" }));
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it("closes on pointerdown outside the panel", () => {
+    const onClose = vi.fn();
+    render(
+      <WorkspaceProvider seed={seed}>
+        <Dashboard onClose={onClose} />
+      </WorkspaceProvider>,
+    );
+    fireEvent.pointerDown(document.body);
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it("does not close on pointerdown inside the panel", () => {
+    const onClose = vi.fn();
+    render(
+      <WorkspaceProvider seed={seed}>
+        <Dashboard onClose={onClose} />
+      </WorkspaceProvider>,
+    );
+    fireEvent.pointerDown(screen.getByRole("tablist"));
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

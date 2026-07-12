@@ -1,7 +1,7 @@
 "use client";
 
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { DashMedia } from "@/src/features/portfolio/components/wm/dash-media";
@@ -29,11 +29,36 @@ export const Dashboard: FC<Props> = ({ onClose }) => {
   const { user, now } = portfolioContent;
   const reduced = useReducedMotion();
   const { ref: bodyRef, height } = useMeasuredHeight<HTMLDivElement>();
+  const panelRef = useRef<HTMLElement>(null);
 
   const transition = reduced ? { duration: 0 } : shellSpring;
 
+  useEffect(() => {
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target as Node | null;
+      if (!t) return;
+      if (panelRef.current?.contains(t)) return;
+      if ((t as HTMLElement).closest?.('[aria-label="toggle dashboard"]')) return;
+      onClose();
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [onClose]);
+
+  const leaveTimer = useRef<number | null>(null);
+  const cancelLeave = () => {
+    if (leaveTimer.current !== null) window.clearTimeout(leaveTimer.current);
+    leaveTimer.current = null;
+  };
+  const scheduleLeave = () => {
+    cancelLeave();
+    leaveTimer.current = window.setTimeout(onClose, 300);
+  };
+  useEffect(() => cancelLeave, []);
+
   return (
     <motion.section
+      ref={panelRef}
       aria-label="dashboard"
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -41,6 +66,8 @@ export const Dashboard: FC<Props> = ({ onClose }) => {
       transition={transition}
       style={{ x: "-50%" }}
       className="absolute left-1/2 top-0 z-40 w-[620px] max-w-[88%]"
+      onMouseEnter={cancelLeave}
+      onMouseLeave={scheduleLeave}
     >
       <ShellCorner notch="bl" className="absolute right-full top-0" />
       <ShellCorner notch="br" className="absolute left-full top-0" />

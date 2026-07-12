@@ -26,7 +26,7 @@ const NOTCH_AT: Record<Notch, string> = {
  * shell skin (the eww/quickshell bar trick). Paints `bg-1` — place it flush
  * against a `bg-bg-1` panel edge and the shell gutter.
  */
-export const ShellCorner: FC<Props> = ({ notch, size = 16, className }) => {
+export const ShellCorner: FC<Props> = ({ notch, size = 24, className }) => {
   const mask = `radial-gradient(${size}px at ${NOTCH_AT[notch]}, transparent ${
     size - 0.5
   }px, #000 ${size}px)`;
