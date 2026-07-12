@@ -1,6 +1,7 @@
 "use client";
 
 import type { FC, ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { ShellCorner } from "@/src/features/portfolio/components/wm/shell-corner";
@@ -24,9 +25,23 @@ const Tip: FC<{ children: ReactNode }> = ({ children }) => (
 export const QuickMenu: FC<Props> = ({ onClose, onOpenKeymap }) => {
   const reduced = useReducedMotion();
   const transition = reduced ? { duration: 0 } : shellSpring;
+  const panelRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target as Node | null;
+      if (!t) return;
+      if (panelRef.current?.contains(t)) return;
+      if ((t as HTMLElement).closest?.('[aria-label="toggle quick menu"]')) return;
+      onClose();
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [onClose]);
 
   return (
     <motion.section
+      ref={panelRef}
       aria-label="quick menu"
       initial={{ x: 24, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}

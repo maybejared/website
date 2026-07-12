@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { QuickMenu } from "@/src/features/portfolio/components/wm/quick-menu";
@@ -28,5 +28,19 @@ describe("QuickMenu", () => {
       "href",
       "mailto:jared@rmr.studio",
     );
+  });
+
+  it("closes on pointerdown outside the panel", () => {
+    const onClose = vi.fn();
+    render(<QuickMenu onClose={onClose} onOpenKeymap={vi.fn()} />);
+    fireEvent.pointerDown(document.body);
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it("does not close on pointerdown inside the panel", () => {
+    const onClose = vi.fn();
+    render(<QuickMenu onClose={onClose} onOpenKeymap={vi.fn()} />);
+    fireEvent.pointerDown(screen.getByRole("region", { name: "quick menu" }));
+    expect(onClose).not.toHaveBeenCalled();
   });
 });
