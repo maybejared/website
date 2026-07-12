@@ -55,7 +55,10 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
   const seed = useMemo(() => buildSeed(entryAppId), [entryAppId]);
 
   return (
-    <>
+    // The provider mounts unconditionally so workspace state (open windows,
+    // layouts, focus) survives crossing the lg breakpoint — only the chrome
+    // unmounts below lg. The mobile view never reads the context.
+    <WorkspaceProvider seed={seed}>
       {/* Stacked page: always present for SSR/SEO. Hidden after desktop hydrates.
           Sections call useSearchParams for deep-linking, so one Suspense boundary
           covers every route. MobileNav only renders below lg (after hydration). */}
@@ -64,12 +67,8 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
         <Suspense fallback={null}>{children}</Suspense>
       </div>
 
-      {/* WM mounts only at lg+ — never on mobile/tablet. */}
-      {isDesktop && (
-        <WorkspaceProvider seed={seed}>
-          <DesktopChrome appearance={appearance} />
-        </WorkspaceProvider>
-      )}
-    </>
+      {/* WM chrome mounts only at lg+ — never on mobile/tablet. */}
+      {isDesktop && <DesktopChrome appearance={appearance} />}
+    </WorkspaceProvider>
   );
 };

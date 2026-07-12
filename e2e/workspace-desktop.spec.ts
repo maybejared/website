@@ -131,6 +131,24 @@ test.describe("workspace desktop", () => {
     await expect(terminalTitles).toHaveCount(1);
   });
 
+  test("workspace state survives crossing the lg breakpoint", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(windowTitle(page, "~/about")).toBeVisible({ timeout: 10_000 });
+
+    // Open a second window, then shrink below lg — the WM unmounts.
+    await page.getByRole("button", { name: "posts" }).click();
+    await expect(windowTitle(page, "~/posts")).toBeVisible();
+    await page.setViewportSize({ width: 800, height: 900 });
+    await expect(windowTitle(page, "~/posts")).not.toBeVisible();
+
+    // Back to desktop: both windows are restored, not reseeded from the route.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await expect(windowTitle(page, "~/posts")).toBeVisible();
+    await expect(windowTitle(page, "~/about")).toBeVisible();
+  });
+
   // Open a second window so the field has two side-by-side leaves to gesture on.
   const twoWindows = async (page: import("@playwright/test").Page) => {
     await page.goto("/");
