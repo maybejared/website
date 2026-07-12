@@ -1,4 +1,4 @@
-import { APPS } from "@/src/features/portfolio/lib/config/apps.config";
+import { APPS, type AppMeta } from "@/src/features/portfolio/lib/config/apps.config";
 import { SCHEMES } from "@/src/features/portfolio/lib/config/schemes";
 import { WALLPAPERS } from "@/src/features/portfolio/lib/config/wallpapers";
 import { POSTS } from "@/src/content/portfolio/posts-client";
@@ -33,6 +33,8 @@ const matches = (needle: string, ...hay: string[]): boolean =>
 export const buildPaletteItems = (
   query: string,
   deps: PaletteDeps,
+  // The mobile sheet passes CONTENT_APPS — decor windows mean nothing there.
+  appList: AppMeta[] = APPS,
 ): PaletteItem[] => {
   const q = query.trim().toLowerCase();
 
@@ -58,7 +60,7 @@ export const buildPaletteItems = (
     );
   }
 
-  const apps: PaletteItem[] = APPS.map((a) => ({
+  const apps: PaletteItem[] = appList.map((a) => ({
     key: `app-${a.id}`,
     kind: "app",
     label: a.label,

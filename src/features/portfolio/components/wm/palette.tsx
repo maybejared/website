@@ -10,6 +10,7 @@ import {
   type PaletteItem,
 } from "@/src/features/portfolio/lib/wm/palette-items";
 import type { AppearanceState } from "@/src/features/portfolio/hooks/use-appearance";
+import type { AppMeta } from "@/src/features/portfolio/lib/config/apps.config";
 import { useWorkspace } from "@/src/features/portfolio/providers/workspace-provider";
 import { cdnImageLoader } from "@/src/shared/lib/cdn-image-loader";
 import { cn } from "@/src/shared/lib/utils";
@@ -18,9 +19,11 @@ interface Props {
   open: boolean;
   onClose: () => void;
   appearance: AppearanceState;
+  /** Restrict the app rows (mobile passes CONTENT_APPS); defaults to all apps. */
+  apps?: AppMeta[];
 }
 
-export const Palette: FC<Props> = ({ open, onClose, appearance }) => {
+export const Palette: FC<Props> = ({ open, onClose, appearance, apps }) => {
   const { openApp } = useWorkspace();
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -29,16 +32,20 @@ export const Palette: FC<Props> = ({ open, onClose, appearance }) => {
 
   const items = useMemo(
     () =>
-      buildPaletteItems(query, {
-        openApp,
-        openPost: (slug) => {
-          openApp("posts");
-          router.push(`/posts/${slug}`);
+      buildPaletteItems(
+        query,
+        {
+          openApp,
+          openPost: (slug) => {
+            openApp("posts");
+            router.push(`/posts/${slug}`);
+          },
+          setScheme: appearance.setScheme,
+          setWallpaperId: appearance.setWallpaperId,
         },
-        setScheme: appearance.setScheme,
-        setWallpaperId: appearance.setWallpaperId,
-      }),
-    [query, openApp, router, appearance.setScheme, appearance.setWallpaperId],
+        apps,
+      ),
+    [query, openApp, router, appearance.setScheme, appearance.setWallpaperId, apps],
   );
 
   // Wallpaper actions render as a thumbnail strip instead of rows.
@@ -81,7 +88,7 @@ export const Palette: FC<Props> = ({ open, onClose, appearance }) => {
       onMouseDown={onClose}
     >
       <div
-        className="w-[560px] max-w-[88%] overflow-hidden rounded-t-xl border border-b-0 border-fg-4 bg-bg-1 shadow-[0_-18px_48px_-20px_rgba(0,0,0,0.75)]"
+        className="w-[560px] max-w-[88%] overflow-hidden rounded-t-xl border border-b-0 border-fg-4 bg-bg-1 shadow-[0_-18px_48px_-20px_rgba(0,0,0,0.75)] max-md:w-full max-md:max-w-full"
         onMouseDown={(e) => e.stopPropagation()}
       >
         {stripMode ? (

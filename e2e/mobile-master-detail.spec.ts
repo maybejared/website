@@ -35,6 +35,24 @@ test.describe("mobile master/detail", () => {
     await expect(page).toHaveURL(/\/posts$/);
   });
 
+  test("bottom tab bar navigates sections and search opens posts", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    // Tab bar: tap experience → routed, tab active.
+    const nav = page.getByRole("navigation", { name: "site navigation" });
+    await nav.getByRole("link", { name: "experience" }).click();
+    await expect(page).toHaveURL(/\/experience$/);
+
+    // Search sheet: find a post by title and open it.
+    await nav.getByRole("button", { name: "search" }).click();
+    const input = page.getByRole("textbox", { name: "search" });
+    await input.fill("keyboards");
+    await page.getByRole("button", { name: /designing for keyboards/i }).click();
+    await expect(page).toHaveURL(/\/posts\/designing-for-keyboards-first$/);
+  });
+
   test("deep link opens the detail directly on reload", async ({ page }) => {
     // Deep-link is now a path route, not a query param.
     await page.goto(`/posts/${FIRST_POST_SLUG}`);

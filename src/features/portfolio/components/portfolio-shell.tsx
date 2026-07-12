@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { DesktopChrome } from "@/src/features/portfolio/components/wm/desktop-chrome";
 import { MobileNav } from "@/src/features/portfolio/components/wm/mobile-nav";
+import { MobileTabBar } from "@/src/features/portfolio/components/wm/mobile-tab-bar";
 import { useAppearance } from "@/src/features/portfolio/hooks/use-appearance";
 import { useIsDesktop } from "@/src/features/portfolio/hooks/use-is-desktop";
 import type { WorkspaceSeed } from "@/src/features/portfolio/lib/wm/workspace-reducer";
@@ -61,10 +62,12 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
     <WorkspaceProvider seed={seed}>
       {/* Stacked page: always present for SSR/SEO. Hidden after desktop hydrates.
           Sections call useSearchParams for deep-linking, so one Suspense boundary
-          covers every route. MobileNav only renders below lg (after hydration). */}
-      <div className={isDesktop ? "hidden" : undefined}>
+          covers every route. The mobile chrome (header + bottom tab bar) only
+          renders below lg (after hydration); pb clears the fixed tab bar. */}
+      <div className={isDesktop ? "hidden" : "pb-16"}>
         {!isDesktop && <MobileNav appearance={appearance} />}
         <Suspense fallback={null}>{children}</Suspense>
+        {!isDesktop && <MobileTabBar appearance={appearance} />}
       </div>
 
       {/* WM chrome mounts only at lg+ — never on mobile/tablet. */}
