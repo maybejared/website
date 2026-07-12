@@ -26,5 +26,6 @@ describe("playerReducer", () => {
   it("next/prev keep playing state", () => {
     const playing = { trackIndex: 0, playing: true };
     expect(playerReducer(playing, { type: "next" }, 5).playing).toBe(true);
+    expect(playerReducer(playing, { type: "prev" }, 5).playing).toBe(true);
   });
 });

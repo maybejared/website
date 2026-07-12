@@ -3,13 +3,9 @@
 import type { FC } from "react";
 import { useState } from "react";
 
-import { APP_BY_ID, type AppId } from "@/src/features/portfolio/lib/config/apps.config";
-import { leafRects } from "@/src/features/portfolio/lib/wm/mosaic-geometry";
-import {
-  WORKSPACE_IDS,
-  type WorkspaceId,
-  type WorkspaceState,
-} from "@/src/features/portfolio/lib/wm/workspace-reducer";
+import { APP_BY_ID } from "@/src/features/portfolio/lib/config/apps.config";
+import { WORKSPACE_IDS } from "@/src/features/portfolio/lib/wm/workspace-reducer";
+import { workspaceAppIds } from "@/src/features/portfolio/lib/wm/workspace-apps";
 import { useWorkspace } from "@/src/features/portfolio/providers/workspace-provider";
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
 import { cn } from "@/src/shared/lib/utils";
@@ -20,15 +16,6 @@ interface Props {
 }
 
 type Tab = "dashboard" | "workspaces";
-
-/** App labels for every window on a workspace, in tree order. */
-const workspaceApps = (state: WorkspaceState, id: WorkspaceId): string[] => {
-  const tree = state.layouts[id];
-  if (!tree) return [];
-  return [...leafRects(tree).keys()].map(
-    (leaf) => APP_BY_ID[state.instances[leaf] as AppId]?.label ?? leaf,
-  );
-};
 
 export const Dashboard: FC<Props> = ({ open, onClose }) => {
   const { state, switchWorkspace } = useWorkspace();
@@ -99,7 +86,9 @@ export const Dashboard: FC<Props> = ({ open, onClose }) => {
       ) : (
         <div className="grid grid-cols-4 gap-2.5 p-3">
           {WORKSPACE_IDS.map((id) => {
-            const apps = workspaceApps(state, id);
+            const apps = workspaceAppIds(state, id).map(
+              (appId) => APP_BY_ID[appId]?.label ?? appId,
+            );
             const current = state.active === id;
             return (
               <button
