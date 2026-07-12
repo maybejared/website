@@ -57,4 +57,23 @@ describe("buildPaletteItems", () => {
     items[0].run();
     expect(d.setScheme).toHaveBeenCalledWith("mono");
   });
+
+  it("'>theme' returns only scheme items", () => {
+    const items = buildPaletteItems(">theme", deps());
+    expect(items.length).toBeGreaterThan(0);
+    expect(items.every((i) => i.kind === "scheme")).toBe(true);
+  });
+
+  it("'>scheme' still returns scheme items", () => {
+    const items = buildPaletteItems(">scheme", deps());
+    expect(items.every((i) => i.kind === "scheme")).toBe(true);
+  });
+
+  it("scheme items carry swatches", () => {
+    const items = buildPaletteItems(">theme", deps());
+    for (const i of items) {
+      expect(i.swatch?.surfaces).toHaveLength(3);
+      expect(i.swatch?.accent).toMatch(/^#/);
+    }
+  });
 });

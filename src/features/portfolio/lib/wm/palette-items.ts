@@ -1,5 +1,5 @@
 import { APPS, type AppMeta } from "@/src/features/portfolio/lib/config/apps.config";
-import { SCHEMES } from "@/src/features/portfolio/lib/config/schemes";
+import { SCHEMES, SCHEME_PREVIEWS } from "@/src/features/portfolio/lib/config/schemes";
 import { WALLPAPERS } from "@/src/features/portfolio/lib/config/wallpapers";
 import { POSTS } from "@/src/content/portfolio/posts-client";
 import type { SchemeName } from "@/src/shared/types/portfolio";
@@ -16,8 +16,12 @@ export interface PaletteItem {
   kind: "app" | "post" | "scheme" | "wallpaper";
   label: string;
   hint: string;
+  /** Extra match-only terms (never displayed). */
+  keywords?: string;
   /** CDN-relative preview path for wallpaper items (null → flat swatch). */
   thumbSrc?: string | null;
+  /** Mini palette preview for scheme items. */
+  swatch?: { surfaces: [string, string, string]; accent: string };
   run: () => void;
 }
 
@@ -45,6 +49,8 @@ export const buildPaletteItems = (
       kind: "scheme",
       label: s,
       hint: "scheme",
+      keywords: "theme colors",
+      swatch: SCHEME_PREVIEWS[s],
       run: () => deps.setScheme(s),
     }));
     const walls: PaletteItem[] = WALLPAPERS.map((w) => ({
@@ -56,7 +62,7 @@ export const buildPaletteItems = (
       run: () => deps.setWallpaperId(w.id),
     }));
     return [...schemes, ...walls].filter((i) =>
-      matches(cmd, i.hint, i.label),
+      matches(cmd, i.hint, i.label, i.keywords ?? ""),
     );
   }
 
