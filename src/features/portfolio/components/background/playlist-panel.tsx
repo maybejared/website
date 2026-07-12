@@ -1,6 +1,9 @@
+"use client";
+
 import type { FC } from "react";
 
 import { cn } from "@/src/shared/lib/utils";
+import { usePlayer } from "@/src/features/portfolio/providers/player-context";
 
 const TRACKS: [n: string, title: string, year: string, dur: string][] = [
   ["1.", "H.", "1996", "06:07"],
@@ -31,6 +34,8 @@ const TRACKS: [n: string, title: string, year: string, dur: string][] = [
 
 /** Faux spotify play-queue with a now-playing footer. */
 export const PlaylistPanel: FC = () => {
+  const player = usePlayer();
+
   return (
     <div className="flex h-full flex-col font-mono text-[9px] leading-[1.5]">
       <div className="mb-1 border-b border-fg-4 pb-1 text-fg-2">
@@ -55,11 +60,17 @@ export const PlaylistPanel: FC = () => {
       </div>
       <div className="mt-1.5 border-t border-fg-4 pt-1 text-fg-3">
         <div className="flex justify-between text-fg-1">
-          <span>TOOL — Ænima — 1. Eulogy</span>
+          <span>
+            {player
+              ? `${player.track.artist} — ${player.track.album} — ${player.trackIndex + 1}. ${player.track.title}`
+              : "TOOL — Ænima — 1. Eulogy"}
+          </span>
           <span className="text-fg-3">1996</span>
         </div>
         <div className="flex justify-between text-amber-dim">
-          <span>▶ 04:21 / 08:27 — 00:00</span>
+          <span>
+            {player?.playing ? "▶" : "⏸"} 00:00 / {player?.track.length ?? "08:27"} — 00:00
+          </span>
           <span>all from library | C</span>
         </div>
       </div>
