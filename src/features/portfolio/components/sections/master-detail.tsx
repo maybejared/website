@@ -64,7 +64,9 @@ export const MasterDetail = <T,>({
           className="mb-4 hidden w-full select-none items-center gap-2 border-b border-dashed border-fg-4 pb-3 text-left text-[11px] uppercase tracking-[0.12em] text-fg-2 hover:text-amber max-md:flex"
         >
           <span className="text-amber">←</span>
-          <span>cd ..</span>
+          <span>back</span>
+          <span className="text-fg-4">·</span>
+          <span className="text-fg-3">cd ..</span>
           <span className="text-fg-4">/</span>
           <span className="text-fg-3">{listLabel}</span>
         </button>
