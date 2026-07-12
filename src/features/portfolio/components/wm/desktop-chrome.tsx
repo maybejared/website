@@ -16,6 +16,7 @@ import { useWallpaperEnabled } from "@/src/features/portfolio/hooks/use-wallpape
 import { useWmKeys } from "@/src/features/portfolio/hooks/use-wm-keys";
 import type { AppearanceState } from "@/src/features/portfolio/hooks/use-appearance";
 import { AppearanceProvider } from "@/src/features/portfolio/providers/appearance-context";
+import { PlayerProvider } from "@/src/features/portfolio/providers/player-context";
 
 interface Props {
   appearance: AppearanceState;
@@ -65,61 +66,63 @@ export const DesktopChrome: FC<Props> = ({ appearance }) => {
     <AppearanceProvider
       value={{ scheme: appearance.scheme, wallpaperId: appearance.wallpaperId }}
     >
-      <div className="fixed inset-0 flex overflow-hidden bg-bg-1">
-        <Rail armed={armed} onOpenPalette={() => setOverlay("palette")} />
+      <PlayerProvider>
+        <div className="fixed inset-0 flex overflow-hidden bg-bg-1">
+          <Rail armed={armed} onOpenPalette={() => setOverlay("palette")} />
 
-        <div className="relative min-w-0 flex-1 py-2.5 pr-2.5">
-          <div className="wm-wall relative h-full w-full overflow-hidden rounded-2xl border border-fg-4/50">
-            <WallpaperLayer
-              wallpaperId={appearance.wallpaperId}
-              enabled={wallpaperEnabled}
-            />
-            <div className="absolute inset-0">
-              <Desktop leaderHeld={leaderHeld} />
+          <div className="relative min-w-0 flex-1 py-2.5 pr-2.5">
+            <div className="wm-wall relative h-full w-full overflow-hidden rounded-2xl border border-fg-4/50">
+              <WallpaperLayer
+                wallpaperId={appearance.wallpaperId}
+                enabled={wallpaperEnabled}
+              />
+              <div className="absolute inset-0">
+                <Desktop leaderHeld={leaderHeld} />
+              </div>
+              <div aria-hidden className="wm-grain pointer-events-none absolute inset-0" />
             </div>
-            <div aria-hidden className="wm-grain pointer-events-none absolute inset-0" />
+
+            <EdgeHandle
+              side="top"
+              label="toggle dashboard"
+              active={overlay === "dash"}
+              onClick={() => toggle("dash")}
+            />
+            <EdgeHandle
+              side="right"
+              label="toggle quick menu"
+              active={overlay === "quick"}
+              onClick={() => toggle("quick")}
+            />
+            <EdgeHandle
+              side="bottom"
+              label="toggle search"
+              active={overlay === "palette"}
+              onClick={() => toggle("palette")}
+            />
+
+            <Dashboard open={overlay === "dash"} onClose={() => setOverlay(null)} />
+            <QuickMenu
+              open={overlay === "quick"}
+              onClose={() => setOverlay(null)}
+              onOpenKeymap={() => setKeymapOpen(true)}
+            />
           </div>
 
-          <EdgeHandle
-            side="top"
-            label="toggle dashboard"
-            active={overlay === "dash"}
-            onClick={() => toggle("dash")}
-          />
-          <EdgeHandle
-            side="right"
-            label="toggle quick menu"
-            active={overlay === "quick"}
-            onClick={() => toggle("quick")}
-          />
-          <EdgeHandle
-            side="bottom"
-            label="toggle search"
-            active={overlay === "palette"}
-            onClick={() => toggle("palette")}
-          />
-
-          <Dashboard open={overlay === "dash"} onClose={() => setOverlay(null)} />
-          <QuickMenu
-            open={overlay === "quick"}
+          <Palette
+            key={`palette-${overlay === "palette" ? 1 : 0}`}
+            open={overlay === "palette"}
             onClose={() => setOverlay(null)}
-            onOpenKeymap={() => setKeymapOpen(true)}
+            appearance={appearance}
+          />
+          <KeymapPanel
+            key={`keymap-${keymapOpen ? 1 : 0}`}
+            keymap={keymap}
+            open={keymapOpen}
+            onClose={() => setKeymapOpen(false)}
           />
         </div>
-
-        <Palette
-          key={`palette-${overlay === "palette" ? 1 : 0}`}
-          open={overlay === "palette"}
-          onClose={() => setOverlay(null)}
-          appearance={appearance}
-        />
-        <KeymapPanel
-          key={`keymap-${keymapOpen ? 1 : 0}`}
-          keymap={keymap}
-          open={keymapOpen}
-          onClose={() => setKeymapOpen(false)}
-        />
-      </div>
+      </PlayerProvider>
     </AppearanceProvider>
   );
 };

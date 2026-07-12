@@ -49,6 +49,20 @@ export interface Contact {
   note: string;
 }
 
+export interface PlayerTrack {
+  title: string;
+  artist: string;
+  album: string;
+  /** mm:ss display string. */
+  length: string;
+  /** Accent token used to tint the placeholder album tile. */
+  tint: "amber" | "cyan" | "magenta" | "yellow";
+}
+
+export interface PlayerContent {
+  tracks: PlayerTrack[];
+}
+
 export interface ExperienceEntry extends Identifiable {
   date: string;
   org: string;
@@ -83,4 +97,5 @@ export interface PortfolioContent {
   now: NowContent;
   contact: Contact;
   experience: ExperienceEntry[];
+  player: PlayerContent;
 }

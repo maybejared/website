@@ -39,6 +39,16 @@ export const portfolioContent: PortfolioContent = {
     note: "I read every email. Replies in 1–3 days.",
   },
 
+  player: {
+    tracks: [
+      { title: "Eulogy", artist: "TOOL", album: "Ænima", length: "08:27", tint: "amber" },
+      { title: "Forty Six & 2", artist: "TOOL", album: "Ænima", length: "06:04", tint: "cyan" },
+      { title: "Schism", artist: "TOOL", album: "Lateralus", length: "06:47", tint: "magenta" },
+      { title: "Parabola", artist: "TOOL", album: "Lateralus", length: "06:03", tint: "yellow" },
+      { title: "Lateralus", artist: "TOOL", album: "Lateralus", length: "09:24", tint: "amber" },
+    ],
+  },
+
   experience: [
     {
       slug: "CTGT (YC F24)",
