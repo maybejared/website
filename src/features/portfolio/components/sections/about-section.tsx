@@ -82,9 +82,8 @@ export const AboutSection: FC = () => {
             absolute fill has real height here. */}
         <AsciiArt
           src="/ascii/rose.ans"
-          mode="tint"
+          mode="scheme"
           reveal="dither"
-          ambient="flicker"
           label="ascii rose"
           className="absolute inset-0"
         />

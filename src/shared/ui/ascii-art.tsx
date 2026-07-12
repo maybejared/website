@@ -4,29 +4,38 @@ import type { FC } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import { parseAnsi, type AsciiArt as Art } from "@/src/shared/lib/ascii/ansi";
+import { remap, type Rgb } from "@/src/shared/lib/ascii/remap";
 import { cn } from "@/src/shared/lib/utils";
+import type { SchemeName } from "@/src/shared/types/portfolio";
 
 type RevealMode = "scanline" | "dither" | "none";
 
 interface Props {
   /** Path to a truecolour .ans export under public/, e.g. "/ascii/rose.ans". */
   src: string;
-  /** "original" renders exported colours; "tint" maps luminance onto the scheme. */
-  mode?: "original" | "tint";
+  /**
+   * "original" renders exported colours; "tint" collapses to a monochrome
+   * scheme ramp; "scheme" re-expresses the art in the active scheme's accent
+   * palette (nearest hue, luminance preserved).
+   */
+  mode?: "original" | "tint" | "scheme";
+  /**
+   * Per-scheme override of the accent pool `mode="scheme"` draws from, as
+   * CSS custom-property names — for themes where the default pool clashes,
+   * e.g. `{ beige: ["--amber", "--red"] }`.
+   */
+  schemePalette?: Partial<Record<SchemeName, string[]>>;
   /**
    * Entrance on first view — "scanline" paints top→bottom, "dither" pops
    * glyphs in pseudo-randomly. Skipped under prefers-reduced-motion.
    */
   reveal?: RevealMode;
-  /**
-   * Ambient life after the reveal: "flicker" blinks a few percent of glyphs
-   * out/dim each tick so the art never sits fully still. Skipped under
-   * prefers-reduced-motion.
-   */
-  ambient?: "flicker" | "none";
   label?: string;
   className?: string;
 }
+
+/** Default accent pool for mode="scheme". */
+const SCHEME_POOL = ["--amber", "--cyan", "--magenta", "--red", "--yellow"];
 
 // Mono glyph advance/line-height ratio — drives the cell box the glyphs sit in.
 const CELL_ASPECT = 0.6;
@@ -42,12 +51,6 @@ const hash01 = (r: number, c: number): number => {
   h = Math.imul(h ^ (h >>> 13), 1274126177);
   return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
 };
-
-// Ambient flicker: stepped, low-fps ticks read a time-seeded hash per cell —
-// each tick a different few percent of glyphs blink out or dim, then return.
-const AMBIENT_TICK_MS = 120;
-const AMBIENT_OUT = 0.04; // fraction fully blinked out per tick
-const AMBIENT_DIM = 0.1; // additional fraction drawn at half strength
 
 // Parse once per src for the whole session, however many placements exist.
 const artCache = new Map<string, Promise<Art>>();
@@ -82,8 +85,8 @@ const lerp = (a: number, b: number, t: number): number =>
 export const AsciiArt: FC<Props> = ({
   src,
   mode = "original",
+  schemePalette,
   reveal = "scanline",
-  ambient = "none",
   label = "ascii art",
   className,
 }) => {
@@ -141,9 +144,9 @@ export const AsciiArt: FC<Props> = ({
     return () => io.disconnect();
   }, [reveal, art, progress]);
 
-  // Tint mode tracks scheme swaps (a .scheme-* class toggled on <body>).
+  // Scheme-aware modes track scheme swaps (a .scheme-* class on <body>).
   useEffect(() => {
-    if (mode !== "tint" || typeof MutationObserver === "undefined") return;
+    if (mode === "original" || typeof MutationObserver === "undefined") return;
     const mo = new MutationObserver(() => setSchemeTick((t) => t + 1));
     mo.observe(document.body, { attributes: true, attributeFilter: ["class"] });
     return () => mo.disconnect();
@@ -154,11 +157,6 @@ export const AsciiArt: FC<Props> = ({
     const wrap = wrapRef.current;
     const canvas = canvasRef.current;
     if (!wrap || !canvas || !art || art.rows === 0) return;
-
-    const reduced =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const ambientActive = ambient === "flicker" && !reduced && progress >= 1;
 
     const draw = () => {
       const ctx = canvas.getContext("2d");
@@ -186,12 +184,20 @@ export const AsciiArt: FC<Props> = ({
         255, 255, 255,
       ];
 
+      // Accent pool for mode="scheme": per-scheme override, else the default
+      // accent set, resolved from the live CSS vars.
+      let pool: Rgb[] = [];
+      if (mode === "scheme") {
+        const scheme = (document.body.className.match(/scheme-([\w-]+)/)?.[1] ??
+          "") as SchemeName;
+        const varNames = schemePalette?.[scheme] ?? SCHEME_POOL;
+        pool = varNames
+          .map((name) => hexToRgb(style.getPropertyValue(name)))
+          .filter((c): c is Rgb => c !== null);
+      }
+
       ctx.font = `${cellH}px ${style.fontFamily}`;
       ctx.textBaseline = "top";
-
-      const bucket = ambientActive
-        ? Math.floor(performance.now() / AMBIENT_TICK_MS)
-        : -1;
 
       for (let r = 0; r < art.rows; r++) {
         // Scanline: rows paint top→bottom with progress.
@@ -202,54 +208,28 @@ export const AsciiArt: FC<Props> = ({
           if (cell.ch === " ") continue;
           // Dither: each glyph pops in once progress crosses its threshold.
           if (reveal === "dither" && hash01(r, c) > progress) continue;
-          if (bucket >= 0) {
-            const flick = hash01(r * 31 + bucket, c * 17 - bucket);
-            if (flick < AMBIENT_OUT) continue; // blinked out this tick
-            ctx.globalAlpha = flick < AMBIENT_OUT + AMBIENT_DIM ? 0.45 : 1;
-          }
           if (cell.rgb === null) {
             ctx.fillStyle = fallback || "#888";
           } else if (mode === "tint") {
             const t = luminance(cell.rgb);
             ctx.fillStyle = `rgb(${lerp(dark[0], light[0], t)},${lerp(dark[1], light[1], t)},${lerp(dark[2], light[2], t)})`;
+          } else if (mode === "scheme") {
+            const [r2, g2, b2] = remap(cell.rgb, pool, dark, light);
+            ctx.fillStyle = `rgb(${r2},${g2},${b2})`;
           } else {
             ctx.fillStyle = `rgb(${cell.rgb[0]},${cell.rgb[1]},${cell.rgb[2]})`;
           }
           ctx.fillText(cell.ch, x0 + c * cellW, y0 + r * cellH);
         }
       }
-      ctx.globalAlpha = 1;
     };
 
     draw();
-
-    const ro =
-      typeof ResizeObserver !== "undefined" ? new ResizeObserver(draw) : null;
-    ro?.observe(wrap);
-
-    // Ambient loop: stepped redraws, gated to the canvas being in view so an
-    // off-screen art doesn't burn frames.
-    let interval: number | undefined;
-    let io: IntersectionObserver | undefined;
-    if (ambientActive) {
-      const inView = { current: true };
-      if (typeof IntersectionObserver !== "undefined") {
-        io = new IntersectionObserver(([entry]) => {
-          inView.current = entry.isIntersecting;
-        });
-        io.observe(canvas);
-      }
-      interval = window.setInterval(() => {
-        if (inView.current) draw();
-      }, AMBIENT_TICK_MS);
-    }
-
-    return () => {
-      ro?.disconnect();
-      io?.disconnect();
-      if (interval !== undefined) window.clearInterval(interval);
-    };
-  }, [art, mode, reveal, ambient, progress, schemeTick]);
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(draw);
+    ro.observe(wrap);
+    return () => ro.disconnect();
+  }, [art, mode, schemePalette, reveal, progress, schemeTick]);
 
   return (
     <div ref={wrapRef} className={cn("overflow-hidden", className)}>
