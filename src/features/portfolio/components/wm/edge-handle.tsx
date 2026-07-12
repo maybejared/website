@@ -33,7 +33,7 @@ export const EdgeHandle: FC<Props> = ({ side, label, active, onClick }) => (
     aria-expanded={active}
     onClick={onClick}
     className={cn(
-      "group absolute z-30 grid place-items-center border border-fg-4/60 bg-bg-1",
+      "group absolute z-30 grid place-items-center bg-bg-1",
       SIDE_CLASS[side],
     )}
   >

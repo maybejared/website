@@ -20,14 +20,14 @@ import { cdnImageLoader } from "@/src/shared/lib/cdn-image-loader";
 import { cn } from "@/src/shared/lib/utils";
 
 interface Props {
-  open: boolean;
+  open?: boolean;
   onClose: () => void;
   appearance: AppearanceState;
   /** Restrict the app rows (mobile passes CONTENT_APPS); defaults to all apps. */
   apps?: AppMeta[];
 }
 
-export const Palette: FC<Props> = ({ open, onClose, appearance, apps }) => {
+export const Palette: FC<Props> = ({ open = true, onClose, appearance, apps }) => {
   const { openApp } = useWorkspace();
   const router = useRouter();
   const [query, setQuery] = useState("");

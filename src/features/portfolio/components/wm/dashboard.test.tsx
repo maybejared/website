@@ -19,7 +19,7 @@ const seed: WorkspaceSeed = {
 const renderDash = () =>
   render(
     <WorkspaceProvider seed={seed}>
-      <Dashboard open onClose={vi.fn()} />
+      <Dashboard onClose={vi.fn()} />
     </WorkspaceProvider>,
   );
 
@@ -42,7 +42,7 @@ describe("Dashboard", () => {
     const onClose = vi.fn();
     render(
       <WorkspaceProvider seed={seed}>
-        <Dashboard open onClose={onClose} />
+        <Dashboard onClose={onClose} />
       </WorkspaceProvider>,
     );
     await userEvent.click(screen.getByRole("tab", { name: "workspaces" }));

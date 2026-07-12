@@ -2,6 +2,7 @@
 
 import type { FC } from "react";
 import { useEffect, useState } from "react";
+import { AnimatePresence } from "motion/react";
 
 import { WallpaperLayer } from "@/src/features/portfolio/components/background/wallpaper-layer";
 import { Dashboard } from "@/src/features/portfolio/components/wm/dashboard";
@@ -101,20 +102,29 @@ export const DesktopChrome: FC<Props> = ({ appearance }) => {
               onClick={() => toggle("palette")}
             />
 
-            <Dashboard open={overlay === "dash"} onClose={() => setOverlay(null)} />
-            <QuickMenu
-              open={overlay === "quick"}
-              onClose={() => setOverlay(null)}
-              onOpenKeymap={() => setKeymapOpen(true)}
-            />
+            <AnimatePresence>
+              {overlay === "dash" && (
+                <Dashboard key="dash" onClose={() => setOverlay(null)} />
+              )}
+              {overlay === "quick" && (
+                <QuickMenu
+                  key="quick"
+                  onClose={() => setOverlay(null)}
+                  onOpenKeymap={() => setKeymapOpen(true)}
+                />
+              )}
+            </AnimatePresence>
           </div>
 
-          <Palette
-            key={`palette-${overlay === "palette" ? 1 : 0}`}
-            open={overlay === "palette"}
-            onClose={() => setOverlay(null)}
-            appearance={appearance}
-          />
+          <AnimatePresence>
+            {overlay === "palette" && (
+              <Palette
+                key="palette"
+                onClose={() => setOverlay(null)}
+                appearance={appearance}
+              />
+            )}
+          </AnimatePresence>
           <KeymapPanel
             key={`keymap-${keymapOpen ? 1 : 0}`}
             keymap={keymap}

@@ -17,22 +17,18 @@ import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
 import { cn } from "@/src/shared/lib/utils";
 
 interface Props {
-  /** Legacy gate — the desktop chrome now mounts via AnimatePresence. */
-  open?: boolean;
   onClose: () => void;
 }
 
 type Tab = "dashboard" | "media" | "performance" | "workspaces";
 const TABS: Tab[] = ["dashboard", "media", "performance", "workspaces"];
 
-export const Dashboard: FC<Props> = ({ open = true, onClose }) => {
+export const Dashboard: FC<Props> = ({ onClose }) => {
   const { state, switchWorkspace } = useWorkspace();
   const [tab, setTab] = useState<Tab>("dashboard");
   const { user, now } = portfolioContent;
   const reduced = useReducedMotion();
   const { ref: bodyRef, height } = useMeasuredHeight<HTMLDivElement>();
-
-  if (!open) return null;
 
   const transition = reduced ? { duration: 0 } : shellSpring;
 
