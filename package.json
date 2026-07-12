@@ -52,5 +52,11 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.7"
+  },
+  "overrides": {
+    "react-mosaic-component": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
   }
 }
