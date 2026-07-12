@@ -6,20 +6,36 @@ import { useEffect, useRef, useState } from "react";
 import { parseAnsi, type AsciiArt as Art } from "@/src/shared/lib/ascii/ansi";
 import { cn } from "@/src/shared/lib/utils";
 
+type RevealMode = "scanline" | "dither" | "none";
+
 interface Props {
   /** Path to a truecolour .ans export under public/, e.g. "/ascii/rose.ans". */
   src: string;
   /** "original" renders exported colours; "tint" maps luminance onto the scheme. */
   mode?: "original" | "tint";
-  /** Scanline entrance on first view; skipped under prefers-reduced-motion. */
-  reveal?: boolean;
+  /**
+   * Entrance on first view — "scanline" paints top→bottom, "dither" pops
+   * glyphs in pseudo-randomly. Skipped under prefers-reduced-motion.
+   */
+  reveal?: RevealMode;
   label?: string;
   className?: string;
 }
 
 // Mono glyph advance/line-height ratio — drives the cell box the glyphs sit in.
 const CELL_ASPECT = 0.6;
-const REVEAL_MS = 600;
+const REVEAL_MS: Record<Exclude<RevealMode, "none">, number> = {
+  scanline: 600,
+  dither: 900,
+};
+
+// Deterministic per-cell threshold in [0,1) — stable across frames, so during
+// a dither reveal cells accumulate instead of flickering.
+const hash01 = (r: number, c: number): number => {
+  let h = (r * 73856093) ^ (c * 19349663);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+};
 
 // Parse once per src for the whole session, however many placements exist.
 const artCache = new Map<string, Promise<Art>>();
@@ -54,7 +70,7 @@ const lerp = (a: number, b: number, t: number): number =>
 export const AsciiArt: FC<Props> = ({
   src,
   mode = "original",
-  reveal = true,
+  reveal = "scanline",
   label = "ascii art",
   className,
 }) => {
@@ -63,15 +79,15 @@ export const AsciiArt: FC<Props> = ({
   const [art, setArt] = useState<Art | null>(null);
   // Bumped whenever the scheme class changes so tint mode re-reads the vars.
   const [schemeTick, setSchemeTick] = useState(0);
-  // Rows currently painted; Infinity once fully revealed.
-  const [visibleRows, setVisibleRows] = useState<number>(() => {
-    if (!reveal) return Infinity;
-    if (typeof IntersectionObserver === "undefined") return Infinity;
+  // Reveal progress 0..1; 1 once fully painted.
+  const [progress, setProgress] = useState<number>(() => {
+    if (reveal === "none") return 1;
+    if (typeof IntersectionObserver === "undefined") return 1;
     if (
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-      return Infinity;
+      return 1;
     }
     return 0;
   });
@@ -90,26 +106,27 @@ export const AsciiArt: FC<Props> = ({
     };
   }, [src]);
 
-  // Reveal: start the scanline the first time the canvas is in view.
+  // Reveal: start the entrance the first time the canvas is in view.
   useEffect(() => {
-    if (!reveal || !art || visibleRows > 0) return;
+    if (reveal === "none" || !art || progress > 0) return;
     const el = canvasRef.current;
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") return;
+    const duration = REVEAL_MS[reveal];
     const io = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
       io.disconnect();
       const start = performance.now();
       const tick = (now: number) => {
-        const t = Math.min(1, (now - start) / REVEAL_MS);
-        setVisibleRows(t >= 1 ? Infinity : Math.ceil(t * art.rows));
+        const t = Math.min(1, (now - start) / duration);
+        setProgress(t);
         if (t < 1) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
     });
     io.observe(el);
     return () => io.disconnect();
-  }, [reveal, art, visibleRows]);
+  }, [reveal, art, progress]);
 
   // Tint mode tracks scheme swaps (a .scheme-* class toggled on <body>).
   useEffect(() => {
@@ -154,12 +171,15 @@ export const AsciiArt: FC<Props> = ({
       ctx.font = `${cellH}px ${style.fontFamily}`;
       ctx.textBaseline = "top";
 
-      const rows = Math.min(art.rows, visibleRows);
-      for (let r = 0; r < rows; r++) {
+      for (let r = 0; r < art.rows; r++) {
+        // Scanline: rows paint top→bottom with progress.
+        if (reveal === "scanline" && r >= progress * art.rows) break;
         const row = art.cells[r];
         for (let c = 0; c < row.length; c++) {
           const cell = row[c];
           if (cell.ch === " ") continue;
+          // Dither: each glyph pops in once progress crosses its threshold.
+          if (reveal === "dither" && hash01(r, c) > progress) continue;
           if (cell.rgb === null) {
             ctx.fillStyle = fallback || "#888";
           } else if (mode === "tint") {
@@ -178,7 +198,7 @@ export const AsciiArt: FC<Props> = ({
     const ro = new ResizeObserver(draw);
     ro.observe(wrap);
     return () => ro.disconnect();
-  }, [art, mode, visibleRows, schemeTick]);
+  }, [art, mode, reveal, progress, schemeTick]);
 
   return (
     <div ref={wrapRef} className={cn("overflow-hidden", className)}>

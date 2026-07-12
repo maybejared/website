@@ -83,6 +83,7 @@ export const AboutSection: FC = () => {
         <AsciiArt
           src="/ascii/rose.ans"
           mode="tint"
+          reveal="dither"
           label="ascii rose"
           className="absolute inset-0"
         />
