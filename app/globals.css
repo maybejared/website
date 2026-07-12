@@ -108,37 +108,6 @@
   --red-dim: #9a4d38;
 }
 
-/* In beige the ascii.txt panel reads poorly: its dark-brown `fg-1` glyphs on
-   warm paper are low-contrast. Render that one panel as a blueprint inset —
-   re-declare the blueprint palette scoped to it so the header tokens and the
-   `bg-fg-1` ascii mask resolve to light-blue, and paint the panel navy. The
-   rest of the beige shell (paper body + navy chrome) is untouched. */
-.scheme-beige .ascii-panel {
-  /* blueprint palette, scoped to this panel */
-  --bg-0: #0a1838;
-  --bg-1: #14245a;
-  --bg-2: #1e2f70;
-  --bg-3: #2a3d85;
-  --bg-glow: #1a2a60;
-
-  --fg-0: #ffffff;
-  --fg-1: #dbe6ff;
-  --fg-2: #8aa3d8;
-  --fg-3: #5b76b0;
-  --fg-4: #34487a;
-
-  --amber: #ffc14a;
-  --amber-dim: #a37224;
-  --cyan: #88e3ff;
-  --cyan-dim: #4a8aa8;
-  --magenta: #ff9bd6;
-  --red: #ff8585;
-  --red-dim: #a04848;
-  --yellow: #ffd770;
-
-  background-color: var(--bg-1);
-}
-
 :root,
 .scheme-mono {
   --bg-0: #07070a;

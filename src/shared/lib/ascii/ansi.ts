@@ -10,7 +10,7 @@ export interface AsciiArt {
   cells: AsciiCell[][];
 }
 
-const ESC = "";
+const ESC = "\u001b";
 
 const rowEmpty = (row: AsciiCell[]): boolean =>
   row.every((c) => c.ch === " ");

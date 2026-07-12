@@ -131,6 +131,13 @@ test.describe("workspace desktop", () => {
     await expect(terminalTitles).toHaveCount(1);
   });
 
+  test("the contact window renders the ascii art canvas", async ({ page }) => {
+    await page.goto("/contact");
+    const win = page.locator('[data-leaf="contact"]');
+    await win.waitFor({ timeout: 10_000 });
+    await expect(win.getByRole("img", { name: "ascii rose" })).toBeVisible();
+  });
+
   test("clicking a post row opens the reader inside the window", async ({
     page,
   }) => {

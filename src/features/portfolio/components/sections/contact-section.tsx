@@ -4,6 +4,7 @@ import type { FC } from "react";
 
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
 import { Panel } from "@/src/shared/ui/panel";
+import { AsciiArt } from "@/src/shared/ui/ascii-art";
 
 const H2 =
   "mb-4 font-mono text-[13px] font-medium uppercase tracking-[0.14em] text-amber before:content-['>_']";
@@ -95,33 +96,14 @@ export const ContactSection: FC = () => {
           </div>
         </div>
       </Panel>
-      <Panel label="~/ascii.txt" className="ascii-panel max-md:aspect-square">
-        {/* Single-colour ASCII SVG rendered as a currentColor-driven mask so it
-            inherits each theme's foreground instead of its baked-in grey, and
-            `absolute inset-0` bleeds it past the Panel padding to fill the
-            whole section. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-fg-1"
-          style={{
-            // Two mask layers, intersected: the glyph shape AND a radial
-            // opacity ramp that fades the art out toward all four corners so it
-            // dissolves softly into the panel.
-            WebkitMaskImage:
-              "url(/ascii/contact.webp), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
-            maskImage:
-              "url(/ascii/contact.webp), radial-gradient(ellipse 78% 78% at center, #000 55%, transparent 100%)",
-            WebkitMaskRepeat: "no-repeat, no-repeat",
-            maskRepeat: "no-repeat, no-repeat",
-            WebkitMaskPosition: "center, center",
-            maskPosition: "center, center",
-            WebkitMaskSize: "cover, 100% 100%",
-            maskSize: "cover, 100% 100%",
-            WebkitMaskComposite: "source-in",
-            maskComposite: "intersect",
-            transform: "translateZ(0)",
-            contain: "paint",
-          }}
+      <Panel label="~/ascii.txt" className="max-md:aspect-square">
+        {/* Colour ASCII export rendered live on canvas — swap the .ans file
+            under public/ascii/ to change the art. */}
+        <AsciiArt
+          src="/ascii/rose.ans"
+          mode="original"
+          label="ascii rose"
+          className="absolute inset-0"
         />
       </Panel>
     </>
