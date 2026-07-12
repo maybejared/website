@@ -4,7 +4,7 @@ import { createElement as h } from "react";
 import { AboutSection } from "@/src/features/portfolio/components/sections/about-section";
 import { ContactSection } from "@/src/features/portfolio/components/sections/contact-section";
 import { ExperienceSection } from "@/src/features/portfolio/components/sections/experience-section";
-import { PostsSection } from "@/src/features/portfolio/components/sections/posts-section";
+import { PostsWindow } from "@/src/features/portfolio/components/apps/posts-window";
 import { BtopPanel } from "@/src/features/portfolio/components/background/btop-panel";
 import { FetchPanel } from "@/src/features/portfolio/components/background/fetch-panel";
 import { PlaylistPanel } from "@/src/features/portfolio/components/background/playlist-panel";
@@ -13,7 +13,6 @@ import { VimPanel } from "@/src/features/portfolio/components/background/vim-pan
 import { ClockApp } from "@/src/features/portfolio/components/apps/clock-app";
 import { ImvApp } from "@/src/features/portfolio/components/apps/imv-app";
 import { TerminalApp } from "@/src/features/portfolio/components/apps/terminal/terminal-app";
-import { POSTS } from "@/src/content/portfolio/posts-client";
 
 export type AppId =
   | "about"
@@ -65,7 +64,7 @@ export const APPS: AppMeta[] = [
     tint: "#ff79c6",
     kind: "content",
     href: "/posts",
-    render: () => h(PostsSection, { posts: POSTS }),
+    render: () => h(PostsWindow, null),
   },
   {
     id: "experience",

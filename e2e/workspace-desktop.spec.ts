@@ -131,6 +131,21 @@ test.describe("workspace desktop", () => {
     await expect(terminalTitles).toHaveCount(1);
   });
 
+  test("clicking a post row opens the reader inside the window", async ({
+    page,
+  }) => {
+    await page.goto("/posts");
+    const win = page.locator('[data-leaf="posts"]');
+    await win.waitFor({ timeout: 10_000 });
+
+    // Click a list row (not the preview pane) → route changes and the window
+    // swaps its detail pane to the server-rendered reader.
+    await win.getByText("designing for keyboards first").first().click();
+    await expect(page).toHaveURL(/\/posts\/designing-for-keyboards-first$/);
+    await expect(win.getByText("post.reader")).toBeVisible();
+    await expect(win.getByText(/min read/).first()).toBeVisible();
+  });
+
   test("workspace state survives crossing the lg breakpoint", async ({
     page,
   }) => {

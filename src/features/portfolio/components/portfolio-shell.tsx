@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { DesktopChrome } from "@/src/features/portfolio/components/wm/desktop-chrome";
 import { MobileNav } from "@/src/features/portfolio/components/wm/mobile-nav";
 import { MobileTabBar } from "@/src/features/portfolio/components/wm/mobile-tab-bar";
+import { RouteContentProvider } from "@/src/features/portfolio/providers/route-content-context";
 import { useAppearance } from "@/src/features/portfolio/hooks/use-appearance";
 import { useIsDesktop } from "@/src/features/portfolio/hooks/use-is-desktop";
 import type { WorkspaceSeed } from "@/src/features/portfolio/lib/wm/workspace-reducer";
@@ -60,18 +61,23 @@ export const PortfolioShell: FC<PortfolioShellProps> = ({ children }) => {
     // layouts, focus) survives crossing the lg breakpoint — only the chrome
     // unmounts below lg. The mobile view never reads the context.
     <WorkspaceProvider seed={seed}>
-      {/* Stacked page: always present for SSR/SEO. Hidden after desktop hydrates.
-          Sections call useSearchParams for deep-linking, so one Suspense boundary
-          covers every route. The mobile chrome (header + bottom tab bar) only
-          renders below lg (after hydration); pb clears the fixed tab bar. */}
-      <div className={isDesktop ? "hidden" : "pb-16"}>
-        {!isDesktop && <MobileNav appearance={appearance} />}
-        <Suspense fallback={null}>{children}</Suspense>
-        {!isDesktop && <MobileTabBar appearance={appearance} />}
-      </div>
+      {/* The live route content is shared via context so a WM window can
+          render the real page for its route (the posts reader is
+          server-rendered and reaches the desktop only through this seam). */}
+      <RouteContentProvider value={children}>
+        {/* Stacked page: renders children for SSR/SEO and mobile. On the
+            hydrated desktop the route content renders inside the matching WM
+            window instead, so the hidden copy is dropped entirely. Sections
+            call useSearchParams, hence the Suspense boundary. */}
+        <div className={isDesktop ? "hidden" : "pb-16"}>
+          {!isDesktop && <MobileNav appearance={appearance} />}
+          <Suspense fallback={null}>{isDesktop ? null : children}</Suspense>
+          {!isDesktop && <MobileTabBar appearance={appearance} />}
+        </div>
 
-      {/* WM chrome mounts only at lg+ — never on mobile/tablet. */}
-      {isDesktop && <DesktopChrome appearance={appearance} />}
+        {/* WM chrome mounts only at lg+ — never on mobile/tablet. */}
+        {isDesktop && <DesktopChrome appearance={appearance} />}
+      </RouteContentProvider>
     </WorkspaceProvider>
   );
 };
