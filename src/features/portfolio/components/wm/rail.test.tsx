@@ -45,12 +45,12 @@ describe("Rail", () => {
 
   it("shows the leader chip only when armed", () => {
     const { rerender } = renderRail();
-    expect(screen.queryByText("leader")).not.toBeInTheDocument();
+    expect(screen.queryByText("ldr")).not.toBeInTheDocument();
     rerender(
       <WorkspaceProvider seed={seed}>
         <Rail armed onOpenPalette={vi.fn()} />
       </WorkspaceProvider>,
     );
-    expect(screen.getByText("leader")).toBeInTheDocument();
+    expect(screen.getByText("ldr")).toBeInTheDocument();
   });
 });
