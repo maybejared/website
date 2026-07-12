@@ -41,10 +41,19 @@ export const portfolioContent: PortfolioContent = {
 
   experience: [
     {
+      slug: "CTGT (YC F24)",
+      date: "2026 — now",
+      org: "ctgt",
+      role: "software engineer & architect",
+      tag: "[engineering]",
+      detail:
+        "CTGT (YC F24) - Building deterministic AI governance for highly regulated industries",
+    },
+    {
       slug: "lyra",
       date: "2026 — now",
       org: "lyra",
-      role: "forward deployed engineer",
+      role: "forward deployed engineer & engineering manager",
       tag: "[engineering]",
       detail:
         "Shipping exceptional products for Silicon Valley startups. Currently building in a YC backed startup building the deterministic layer for frontier intelligence",
@@ -77,5 +86,4 @@ export const portfolioContent: PortfolioContent = {
         "Bachelor of Computer Science. This is where I learned to code, and where I fell in love with systems design and architecture.",
     },
   ],
-
 };
