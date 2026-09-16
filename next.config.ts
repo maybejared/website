@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.0.114"],
+  images: {
+    loader: "custom",
+    loaderFile: "./src/shared/lib/image-loader.ts",
+  },
   async redirects() {
     return [
       { source: "/experience", destination: "/#experience", permanent: true },
