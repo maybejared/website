@@ -1,414 +1,47 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=VT323&display=swap");
 @import "tailwindcss";
 
-/* Symbols-only Nerd Font: carries the icon glyph codepoints and nothing else,
-   so it sits first in the mono stack and only resolves those characters — all
-   latin text falls through to JetBrains Mono. */
-@font-face {
-  font-family: "Symbols Nerd Font Mono";
-  src: url("/fonts/SymbolsNerdFontMono-Regular.ttf") format("truetype");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
+/* Sidebar and nav chrome: one step deeper than the sheet with a faint dot grid. */
+.site-chrome {
+  background-color: #f1f0eb;
+  background-image: radial-gradient(
+    rgba(20, 20, 18, 0.1) 0.6px,
+    transparent 0.7px
+  );
+  background-size: 12px 12px;
 }
 
-/* ============ COLOR SCHEMES ============
-   Runtime-swappable palettes. The active scheme is set via a `.scheme-*`
-   class on <body>; every color utility below resolves through these vars. */
-
-/* "beige" scheme: dark-teal panels/chrome (#102227) floating on a periwinkle
-   (#92a7d4) desktop. The beige tones now live only on the background-terminals
-   layer (see `.scheme-beige .background-terminals` override below), so the faux
-   rice windows stay light while the portfolio shell reads dark. */
-.scheme-beige {
-  --bg-0: #ddd6c7;
-  --bg-1: #ece7dc;
-  --bg-2: #e3ddd0;
-  --bg-3: #d6cebd;
-  --bg-glow: #f3efe7;
-
-  --fg-0: #1b1813;
-  --fg-1: #3b362e;
-  --fg-2: #6d6557;
-  --fg-3: #978d7d;
-  --fg-4: #cabfac;
-
-  --amber: #bf5a2e;
-  --amber-dim: #8a4423;
-  --cyan: #3f6f7a;
-  --cyan-dim: #7c9aa1;
-  --magenta: #a23e76;
-  --red: #b3402f;
-  --red-dim: #c79388;
-  --yellow: #9a7b2e;
-
-  --glow-fg-rgb: 120, 110, 95;
-  --glow-amber-rgb: 191, 90, 46;
-  --glow-cyan-rgb: 63, 111, 122;
-
-  /* Crest tint: a high-contrast inverse of the body so the ascii portrait
-     stands proud of the background. On the warm paper scheme that means a
-     deep blue; on the dark/blue schemes it lifts toward white. */
-  --crest: #0c1733;
-
-  --active-border: linear-gradient(120deg, var(--cyan), var(--amber));
-}
-
-/* Keep the decorative rice terminals beige even though the shell is now dark:
-   re-declare the original beige palette scoped to the background layer only, so
-   every `bg-*`/`fg-*` utility inside it resolves to the warm tones. */
-.scheme-beige .background-terminals {
-  --bg-0: #ddd6c7;
-  --bg-1: #ece7dc;
-  --bg-2: #e3ddd0;
-  --bg-3: #d6cebd;
-  --bg-glow: #f3efe7;
-
-  --fg-0: #1b1813;
-  --fg-1: #3b362e;
-  --fg-2: #6d6557;
-  --fg-3: #978d7d;
-  --fg-4: #cabfac;
-
-  --amber: #bf5a2e;
-  --amber-dim: #8a4423;
-  --cyan: #3f6f7a;
-  --cyan-dim: #7c9aa1;
-  --magenta: #a23e76;
-  --red: #b3402f;
-  --red-dim: #c79388;
-  --yellow: #9a7b2e;
-
-  --glow-fg-rgb: 120, 110, 95;
-}
-
-/* Navy chrome for the beige scheme. The window bars (main title / tabs / status
-   and every background-terminal header) carry `panel-chrome`; in beige they
-   paint navy with light foreground tokens for contrast, leaving the paper body
-   below them untouched. `background-color` is set directly so it lands on bars
-   with or without a `bg-bg-*` utility, while `--bg-1` is left beige so the
-   active tab (which paints `bg-bg-1`) still reads as paper punching through the
-   navy bar. Scoped to beige only; the dark schemes keep their near-black bars. */
-.scheme-beige .panel-chrome {
-  background-color: #16213e;
-  --bg-2: #25345a;
-  --bg-3: #2f4068;
-
-  --fg-0: #f1f4fb;
-  --fg-1: #d6dff2;
-  --fg-2: #9aabd2;
-  --fg-3: #6c7ea8;
-  --fg-4: #34456e;
-
-  --amber: #e08a4f;
-  --amber-dim: #c06a30;
-  --red: #e07a5a;
-  --red-dim: #9a4d38;
-}
-
-/* In beige the ascii.txt panel reads poorly: its dark-brown `fg-1` glyphs on
-   warm paper are low-contrast. Render that one panel as a blueprint inset —
-   re-declare the blueprint palette scoped to it so the header tokens and the
-   `bg-fg-1` ascii mask resolve to light-blue, and paint the panel navy. The
-   rest of the beige shell (paper body + navy chrome) is untouched. */
-.scheme-beige .ascii-panel {
-  /* blueprint palette, scoped to this panel */
-  --bg-0: #0a1838;
-  --bg-1: #14245a;
-  --bg-2: #1e2f70;
-  --bg-3: #2a3d85;
-  --bg-glow: #1a2a60;
-
-  --fg-0: #ffffff;
-  --fg-1: #dbe6ff;
-  --fg-2: #8aa3d8;
-  --fg-3: #5b76b0;
-  --fg-4: #34487a;
-
-  --amber: #ffc14a;
-  --amber-dim: #a37224;
-  --cyan: #88e3ff;
-  --cyan-dim: #4a8aa8;
-  --magenta: #ff9bd6;
-  --red: #ff8585;
-  --red-dim: #a04848;
-  --yellow: #ffd770;
-
-  background-color: var(--bg-1);
-}
-
-.scheme-phosphor {
-  --bg-0: #07090a;
-  --bg-1: #0d1210;
-  --bg-2: #131a17;
-  --bg-3: #1a2421;
-  --bg-glow: #0a1f15;
-
-  --fg-0: #c8f7d4;
-  --fg-1: #7ee787;
-  --fg-2: #4a9d5c;
-  --fg-3: #2f6b3d;
-  --fg-4: #1d4528;
-
-  --amber: #ff9b50;
-  --amber-dim: #b46a32;
-  --cyan: #67e8f9;
-  --cyan-dim: #3b8a98;
-  --magenta: #f471b5;
-  --red: #ff5c5c;
-  --red-dim: #8a3434;
-  --yellow: #f0c674;
-
-  --glow-fg-rgb: 126, 231, 135;
-  --glow-amber-rgb: 255, 155, 80;
-  --glow-cyan-rgb: 103, 232, 249;
-
-  --crest: #b6f5c4;
-
-  --active-border: linear-gradient(120deg, var(--fg-1), var(--cyan));
-}
-
-.scheme-amber {
-  --bg-0: #0a0805;
-  --bg-1: #14100a;
-  --bg-2: #1c1610;
-  --bg-3: #261e14;
-  --bg-glow: #1f1408;
-
-  --fg-0: #ffe9b8;
-  --fg-1: #ffb454;
-  --fg-2: #b07a2d;
-  --fg-3: #6b4818;
-  --fg-4: #3a2710;
-
-  --amber: #ff5c5c;
-  --amber-dim: #8a3434;
-  --cyan: #88ccff;
-  --cyan-dim: #4a6e9a;
-  --magenta: #f471b5;
-  --red: #ff5c5c;
-  --red-dim: #8a3434;
-  --yellow: #ffe9b8;
-
-  --glow-fg-rgb: 255, 180, 84;
-  --glow-amber-rgb: 255, 92, 92;
-  --glow-cyan-rgb: 136, 204, 255;
-
-  --crest: #ffd9a8;
-
-  --active-border: linear-gradient(120deg, var(--fg-1), var(--amber));
-}
-
-.scheme-blueprint {
-  --bg-0: #0a1838;
-  --bg-1: #14245a;
-  --bg-2: #1e2f70;
-  --bg-3: #2a3d85;
-  --bg-glow: #1a2a60;
-
-  --fg-0: #ffffff;
-  --fg-1: #dbe6ff;
-  --fg-2: #8aa3d8;
-  --fg-3: #5b76b0;
-  --fg-4: #34487a;
-
-  --amber: #ffc14a;
-  --amber-dim: #a37224;
-  --cyan: #88e3ff;
-  --cyan-dim: #4a8aa8;
-  --magenta: #ff9bd6;
-  --red: #ff8585;
-  --red-dim: #a04848;
-  --yellow: #ffd770;
-
-  --glow-fg-rgb: 219, 230, 255;
-  --glow-amber-rgb: 255, 193, 74;
-  --glow-cyan-rgb: 136, 227, 255;
-
-  --crest: #ffffff;
-
-  --active-border: linear-gradient(120deg, var(--cyan), var(--fg-1));
-}
-
-:root,
-.scheme-mono {
-  --bg-0: #07070a;
-  --bg-1: #101013;
-  --bg-2: #181820;
-  --bg-3: #22222c;
-  --bg-glow: #1a1a22;
-
-  --fg-0: #ffffff;
-  --fg-1: #d4d4dc;
-  --fg-2: #8a8a92;
-  --fg-3: #5a5a62;
-  --fg-4: #2e2e36;
-
-  --amber: #ff9b50;
-  --amber-dim: #8a542a;
-  --cyan: #a8c8ff;
-  --cyan-dim: #5570a8;
-  --magenta: #f471b5;
-  --red: #ff7070;
-  --red-dim: #8a3434;
-  --yellow: #f0c674;
-
-  --glow-fg-rgb: 212, 212, 220;
-  --glow-amber-rgb: 255, 155, 80;
-  --glow-cyan-rgb: 168, 200, 255;
-
-  --crest: #dfe8ff;
-
-  --active-border: linear-gradient(120deg, var(--cyan), var(--magenta));
-}
-
-/* "moonlit" scheme: a deep indigo night sky. Near-black navy panels lit by
-   silvery-blue moonlight foreground, with a cool cyan glow and a soft lavender
-   accent — like a terminal open on a desk by a moonlit window. */
-.scheme-moonlit {
-  --bg-0: #060810;
-  --bg-1: #0c1020;
-  --bg-2: #141a2e;
-  --bg-3: #1e263e;
-  --bg-glow: #0f1530;
-
-  --fg-0: #eef2ff;
-  --fg-1: #c4d0f0;
-  --fg-2: #8b9ac4;
-  --fg-3: #5a6890;
-  --fg-4: #2e3858;
-
-  --amber: #f0b878;
-  --amber-dim: #9c7642;
-  --cyan: #8fd4e8;
-  --cyan-dim: #4a8298;
-  --magenta: #c79bdf;
-  --red: #ff8a8a;
-  --red-dim: #8a4a4a;
-  --yellow: #e8d18a;
-
-  --glow-fg-rgb: 196, 208, 240;
-  --glow-amber-rgb: 240, 184, 120;
-  --glow-cyan-rgb: 143, 212, 232;
-
-  --crest: #bcd0ff;
-
-  --active-border: linear-gradient(120deg, var(--cyan), var(--magenta));
-}
-
-/* Register palette + fonts as Tailwind theme tokens. `inline` keeps the
-   var() reference in generated utilities so scheme overrides apply at runtime. */
-@theme inline {
-  --breakpoint-3xl: 90rem;
-
-  --color-bg-0: var(--bg-0);
-  --color-bg-1: var(--bg-1);
-  --color-bg-2: var(--bg-2);
-  --color-bg-3: var(--bg-3);
-  --color-bg-glow: var(--bg-glow);
-
-  --color-fg-0: var(--fg-0);
-  --color-fg-1: var(--fg-1);
-  --color-fg-2: var(--fg-2);
-  --color-fg-3: var(--fg-3);
-  --color-fg-4: var(--fg-4);
-
-  --color-amber: var(--amber);
-  --color-amber-dim: var(--amber-dim);
-  --color-cyan: var(--cyan);
-  --color-cyan-dim: var(--cyan-dim);
-  --color-magenta: var(--magenta);
-  --color-red: var(--red);
-  --color-red-dim: var(--red-dim);
-  --color-yellow: var(--yellow);
-
-  --font-mono:
-    "Symbols Nerd Font Mono", var(--font-jetbrains-mono), "IBM Plex Mono",
-    ui-monospace, Menlo, Consolas, monospace;
-}
-
-@layer base {
-  body {
-    background: radial-gradient(
-      ellipse at center,
-      var(--bg-1) 0%,
-      var(--bg-0) 80%
-    );
-  }
-
-  /* The beige scheme sits its dark-teal panels on a periwinkle desktop. */
-  body.scheme-beige {
-    background: radial-gradient(ellipse at center, #9bb0db 0%, #92a7d4 80%);
-    font-feature-settings:
-      "liga" 0,
-      "calt" 0;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-
-  /* Suppress the platform scrollbar where a custom terminal bar takes over.
-     iOS keeps its transient overlay (uncontrollable via CSS) but it is faint
-     and only flashes during active scroll, so the custom bar still reads. */
-  .term-no-native-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .term-no-native-scrollbar::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-}
-
-/* ============ GLASS TERMINALS ============
-   On the wallpaper schemes (every scheme but flat, paper-bodied beige), the
-   terminal surfaces turn translucent with a backdrop blur so the photo
-   wallpaper reads faintly through them, like a real compositor. The focused
-   portfolio shell stays more opaque than the decorative background windows.
-   Desktop only: the wallpaper is `max-md:hidden`, and on mobile there is
-   nothing behind the shell to blur. Left unlayered so it overrides the Tailwind
-   `bg-bg-*` utilities on these surfaces while beige keeps its flat panels. */
+/* Desktop: the nav pins below the 24px body padding and paints a canvas strip above itself. */
 @media (min-width: 768px) {
-  :is(.scheme-phosphor, .scheme-amber, .scheme-blueprint, .scheme-mono, .scheme-moonlit) .terminal-shell {
-    background-color: color-mix(in srgb, var(--bg-1) 88%, transparent);
-    backdrop-filter: blur(16px);
+  .site-nav {
+    top: 24px;
   }
-
-  :is(.scheme-phosphor, .scheme-amber, .scheme-blueprint, .scheme-mono, .scheme-moonlit) .terminal-glass {
-    background-color: color-mix(in srgb, var(--bg-2) 82%, transparent);
-    backdrop-filter: blur(16px);
-  }
-
-  /* ============ HYPRLAND ACTIVE BORDER ============
-     The focused window wears a Hyprland-style gradient border: a 2px ring whose
-     two-stop gradient is composed from the active scheme's accent tokens
-     (`--active-border`), so it recolors with every theme. A soft outer glow in
-     the scheme's cyan tints the wallpaper behind, mimicking a compositor's drop
-     shadow on the focused client. Desktop only — on mobile the shell is
-     full-bleed and borderless. The thin static border is dropped so the gradient
-     reads as the sole edge. */
-  .terminal-shell {
-    border-color: transparent;
-    box-shadow:
-      0 10px 34px rgba(0, 0, 0, 0.45),
-      0 0 20px rgba(var(--glow-cyan-rgb), 0.32);
-  }
-
-  .terminal-shell::after {
+  .site-nav::before {
     content: "";
     position: absolute;
-    /* Extend over the 1px (now-transparent) border so the gradient sits flush
-       with the window edge rather than 1px inside it. */
-    inset: -1px;
-    z-index: 40;
-    border-radius: inherit;
-    padding: 2px;
-    background: var(--active-border);
-    /* Punch out the interior so only the padding band (the ring) paints. */
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+    top: -25px;
+    right: -1px;
+    left: -1px;
+    height: 25px;
+    background: var(--jt-canvas);
+    border-bottom: 1px solid var(--jt-border);
+  }
+}
+
+/* Anchored sections land below the sticky nav. */
+.jt-band[id] {
+  scroll-margin-top: var(--jt-bar-h);
+}
+
+/* Below 1280px the tagline goes so the bar stays one line; phones also wrap the items. */
+@media (max-width: 1279px) {
+  .jt-nav__brand .jt-label:not(.jt-label--ink) {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .jt-nav__items {
+    flex-wrap: wrap;
+    white-space: normal;
+    gap: 12px 16px;
   }
 }

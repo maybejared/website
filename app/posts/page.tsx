@@ -1,7 +1,7 @@
-import { PostsSection } from "@/src/features/portfolio";
+import { PostList } from "@/src/features/site";
 import { getAllPosts } from "@/src/shared/lib/posts/posts";
 
 export default async function PostsPage() {
   const posts = await getAllPosts();
-  return <PostsSection posts={posts} />;
+  return <PostList posts={posts} />;
 }

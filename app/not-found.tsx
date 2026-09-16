@@ -1,5 +1,5 @@
-import { NotFoundSection } from "@/src/features/portfolio";
+import { NotFoundBand } from "@/src/features/site";
 
 export default function NotFound() {
-  return <NotFoundSection />;
+  return <NotFoundBand />;
 }
