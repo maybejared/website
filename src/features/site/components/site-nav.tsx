@@ -8,14 +8,18 @@ import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
 
 const items = [
   { index: "01", label: "Home", href: "/" },
-  { index: "02", label: "Work", href: "/#work" },
+  { index: "02", label: "Work", href: "/projects" },
   { index: "03", label: "Writing", href: "/posts" },
   { index: "04", label: "About", href: "/#about" },
 ];
 
 export const SiteNav: FC = () => {
   const pathname = usePathname();
-  const active = pathname.startsWith("/posts") ? "/posts" : "/";
+  const active = pathname.startsWith("/posts")
+    ? "/posts"
+    : pathname.startsWith("/projects")
+      ? "/projects"
+      : "/";
   const { user, landing, contact } = portfolioContent;
 
   return (
@@ -27,7 +31,7 @@ export const SiteNav: FC = () => {
       className="site-nav site-chrome sticky top-0 z-20"
       style={{
         height: "auto",
-        minHeight: "var(--jt-bar-h)",
+        minHeight: "var(--bar-h)",
         padding: "10px 20px",
         gap: 24,
         flexWrap: "wrap",

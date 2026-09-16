@@ -43,10 +43,18 @@ export interface ExperienceEntry extends Identifiable {
 }
 
 export interface Project extends Identifiable {
+  /** ISO `YYYY-MM-DD`; the year shows on cards. */
   date: string;
-  name: string;
+  title: string;
   tag: string;
-  detail: string;
+  status: string;
+  description: string;
+  repo?: string;
+}
+
+export interface ProjectDoc extends Project {
+  content: string;
+  headings: Heading[];
 }
 
 export interface Post extends Identifiable {
@@ -95,5 +103,4 @@ export interface PortfolioContent {
   now: NowContent;
   contact: Contact;
   experience: ExperienceEntry[];
-  projects: Project[];
 }

@@ -1,22 +1,20 @@
 import type { PortfolioContent } from "@/src/shared/types/portfolio";
 
-// Static content source for the portfolio. Edit me — this is the single source
-// of truth for everything rendered in the terminal.
 export const portfolioContent: PortfolioContent = {
   user: {
     handle: "dawad",
     name: "jared tucker",
-    role: "forward deployed engineer & systems architect",
+    role: "Software Engineering",
     based: "melbourne, au — utc+10",
   },
 
   landing: {
     kicker: "Ideas for a brighter tomorrow",
     tagline: "Software × Engineering × Systems",
-    roles: "Forward Deployed Engineer / Systems Architect",
+    roles: "Forward Deployed Engineer / Systems Architect / Engineering Lead",
     statement:
-      "I design and build thoughtful products, tools, and systems at the intersection of technology, creativity, and a more human future.",
-    quote: "A more open,\nbeautiful internet.",
+      "Software Engineer, Bodybuilder, Hiker, Boulderer, Cycler, Marathon Runner & Technical Lead designing, building & shipping beautiful, well-engineered products & systems",
+    quote: "Give to the world,\n and the world will one day give back.",
     coordinates: "37.8136° S\n144.9631° E",
     github: "https://github.com/Dawaad",
     approach: [
@@ -44,37 +42,46 @@ export const portfolioContent: PortfolioContent = {
     bullets: [
       [
         "focus",
-        "systems design & architecture · ai augmented pattern recognition · videography",
+        "systems design & architecture · agentic knowledege tinkering · cinematic videography · embedded & hardware engineering",
       ],
-      ["status", "start-up founder · forward deployed engineer"],
+      ["currently", "Engineering Lead @ CTGT (YC F24)"],
+
+      ["status", "forward deployed engineer · engineering lead"],
     ],
   },
 
   now: {
-    updated: "29.05.2026",
+    updated: "16.09.2026",
     items: [
-      "engineer currently at a YC backed startup building AI governance and alignment infrastructure",
-      "researching and developing a programmable extension of the LLM wiki for 10k+ documents.",
+      "Engineering lead currently at a YC backed startup leading a team & building AI runtime governance & policy ingestion",
       "learning videography, content creation and blog writing.",
       "building a home server/nas for large scale media storage/editing & local model hosting.",
-      "trying to build more TUIs.",
+      "touching more grass",
     ],
   },
 
   contact: {
-    email: "jared@rmr.studio",
+    email: "me@jtucker.io",
     note: "I read every email. Replies in 1–3 days.",
   },
 
   experience: [
     {
-      slug: "lyra",
+      slug: "CTGT (YC F24)",
       date: "2026 — now",
-      org: "lyra",
-      role: "forward deployed engineer",
+      org: "CTGT",
+      role: "Engineering Lead",
       tag: "[engineering]",
       detail:
-        "Shipping exceptional products for Silicon Valley startups. Currently building in a YC backed startup building the deterministic layer for frontier intelligence",
+        "YC backed startup building the deterministic layer for frontier intelligence & AI Governance. Leading a team, with end-to-end ownership of architecture, technical design, implementation infrastructure, and delivery across the company’s core platform and application",
+    },
+    {
+      slug: "Lyra",
+      date: "2026 — now",
+      org: "lyra",
+      role: "Forward Deployed Engineer",
+      tag: "[engineering]",
+      detail: "Shipping exceptional products for Silicon Valley startups",
     },
     {
       slug: "cranium",
@@ -105,51 +112,4 @@ export const portfolioContent: PortfolioContent = {
     },
   ],
 
-  projects: [
-    {
-      slug: "signal-cli",
-      date: "2026",
-      name: "signal/cli",
-      tag: "[tool]",
-      detail:
-        "A terminal client for our team's IDE backend. Written in Rust + Tauri.",
-    },
-    {
-      slug: "runlines",
-      date: "2026",
-      name: "runlines",
-      tag: "[oss]",
-      detail: "A tiny todo-list that lives in your editor's status bar.",
-    },
-    {
-      slug: "slowpost",
-      date: "2025",
-      name: "slowpost",
-      tag: "[product]",
-      detail:
-        "A blogging tool that intentionally limits you to one post a week.",
-    },
-    {
-      slug: "ks-icons",
-      date: "2025",
-      name: "ks-icons",
-      tag: "[oss]",
-      detail: "A 240-glyph monoline icon set for terminal apps. Free.",
-    },
-    {
-      slug: "vector-insights",
-      date: "2024",
-      name: "vector/insights",
-      tag: "[work]",
-      detail:
-        "A keyboard-first data exploration product. Shipped to ~3k seats.",
-    },
-    {
-      slug: "plate",
-      date: "2023",
-      name: "plate",
-      tag: "[wip]",
-      detail: "Drum-machine sampler experiment. Still going.",
-    },
-  ],
 };

@@ -10,4 +10,6 @@ export { ExperienceSection } from "@/src/features/site/components/sections/exper
 export { CtaSection } from "@/src/features/site/components/sections/cta-section";
 export { PostList } from "@/src/features/site/components/post-list";
 export { PostArticle } from "@/src/features/site/components/post-article";
+export { ProjectList } from "@/src/features/site/components/project-list";
+export { ProjectArticle } from "@/src/features/site/components/project-article";
 export { NotFoundBand } from "@/src/features/site/components/not-found-band";
