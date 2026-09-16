@@ -1,351 +1,1654 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
-  <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-body { margin: 0; background: #f4f3ef; color: #141412; font-family: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace; font-size: 12px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
-a { color: #1d3bff; text-decoration: none; } a:hover { color: #0f22b8; }
-.display { font-family: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.03em; }
-.lbl { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #6f6e69; }
-.lbl-ink { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #141412; }
-.sq { width: 8px; height: 8px; background: #1d3bff; flex: none; }
-.c { position: absolute; border-color: #141412; border-style: solid; width: 24px; height: 24px; }
-.c-tl { top: 0; left: 0; border-width: 1px 0 0 1px; }
-.c-tr { top: 0; right: 0; border-width: 1px 1px 0 0; }
-.c-bl { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
-.c-br { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
-.c-tall { width: 20px; height: 64px; }
-.graph { background-image: radial-gradient(#c9c7bf 0.7px, transparent 0.8px); background-size: 12px 12px; }
-.rule-v { width: 1px; background: #d9d7d0; align-self: stretch; }
-.rule-h { height: 1px; background: #d9d7d0; }
-.vert { writing-mode: vertical-rl; transform: rotate(180deg); }
-.btn { display: inline-flex; align-items: center; gap: 10px; height: 32px; padding: 0 12px; border: 1px solid #141412; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #141412; background: transparent; }
-.btn-fill { background: #141412; color: #f4f3ef; }
-.btn-blue { border-color: #1d3bff; color: #1d3bff; }
-.key { font-size: 9px; padding: 1px 4px; border: 1px solid currentColor; opacity: 0.7; }
-  </style>
-</helmet>
-<div style="width: 1440px; min-height: 2080px; background: #f4f3ef; padding: 24px; box-sizing: border-box;">
-<div style="border: 1px solid #b9b7ae; background: #f8f7f4; display: flex; flex-direction: column;">
+    <head>
+        <meta charset="utf-8" />
+        <script src="./support.js"></script>
+    </head>
+    <body>
+        <x-dc>
+            <helmet>
+                <style>
+                    @import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+                    body {
+                        margin: 0;
+                        background: #f4f3ef;
+                        color: #141412;
+                        font-family:
+                            "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas,
+                            monospace;
+                        font-size: 12px;
+                        line-height: 1.55;
+                        -webkit-font-smoothing: antialiased;
+                    }
+                    a {
+                        color: #1d3bff;
+                        text-decoration: none;
+                    }
+                    a:hover {
+                        color: #0f22b8;
+                    }
+                    .display {
+                        font-family:
+                            "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+                        letter-spacing: -0.03em;
+                    }
+                    .lbl {
+                        font-size: 10px;
+                        letter-spacing: 0.14em;
+                        text-transform: uppercase;
+                        color: #6f6e69;
+                    }
+                    .lbl-ink {
+                        font-size: 10px;
+                        letter-spacing: 0.14em;
+                        text-transform: uppercase;
+                        color: #141412;
+                    }
+                    .sq {
+                        width: 8px;
+                        height: 8px;
+                        background: #1d3bff;
+                        flex: none;
+                    }
+                    .c {
+                        position: absolute;
+                        border-color: #141412;
+                        border-style: solid;
+                        width: 24px;
+                        height: 24px;
+                    }
+                    .c-tl {
+                        top: 0;
+                        left: 0;
+                        border-width: 1px 0 0 1px;
+                    }
+                    .c-tr {
+                        top: 0;
+                        right: 0;
+                        border-width: 1px 1px 0 0;
+                    }
+                    .c-bl {
+                        bottom: 0;
+                        left: 0;
+                        border-width: 0 0 1px 1px;
+                    }
+                    .c-br {
+                        bottom: 0;
+                        right: 0;
+                        border-width: 0 1px 1px 0;
+                    }
+                    .c-tall {
+                        width: 20px;
+                        height: 64px;
+                    }
+                    .graph {
+                        background-image: radial-gradient(
+                            #c9c7bf 0.7px,
+                            transparent 0.8px
+                        );
+                        background-size: 12px 12px;
+                    }
+                    .rule-v {
+                        width: 1px;
+                        background: #d9d7d0;
+                        align-self: stretch;
+                    }
+                    .rule-h {
+                        height: 1px;
+                        background: #d9d7d0;
+                    }
+                    .vert {
+                        writing-mode: vertical-rl;
+                        transform: rotate(180deg);
+                    }
+                    .btn {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 10px;
+                        height: 32px;
+                        padding: 0 12px;
+                        border: 1px solid #141412;
+                        font-size: 11px;
+                        letter-spacing: 0.08em;
+                        text-transform: uppercase;
+                        color: #141412;
+                        background: transparent;
+                    }
+                    .btn-fill {
+                        background: #141412;
+                        color: #f4f3ef;
+                    }
+                    .btn-blue {
+                        border-color: #1d3bff;
+                        color: #1d3bff;
+                    }
+                    .key {
+                        font-size: 9px;
+                        padding: 1px 4px;
+                        border: 1px solid currentColor;
+                        opacity: 0.7;
+                    }
+                </style>
+            </helmet>
+            <div
+                style="
+                    width: 1440px;
+                    min-height: 2080px;
+                    background: #f4f3ef;
+                    padding: 24px;
+                    box-sizing: border-box;
+                "
+            >
+                <div
+                    style="
+                        border: 1px solid #b9b7ae;
+                        background: #f8f7f4;
+                        display: flex;
+                        flex-direction: column;
+                    "
+                >
+                    <!-- NAV -->
+                    <div
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            height: 44px;
+                            padding: 0 20px;
+                            border-bottom: 1px solid #b9b7ae;
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                gap: 16px;
+                            "
+                        >
+                            <div
+                                class="sq"
+                                style="background: {{accent}};"
+                            ></div>
+                            <span class="lbl-ink" style="font-weight: 600"
+                                >JT</span
+                            >
+                            <span class="lbl"
+                                >JARED TUCKER &nbsp;//&nbsp; SYSTEMS × CODE ×
+                                FIELD</span
+                            >
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                gap: 28px;
+                            "
+                        >
+                            <span class="lbl-ink"
+                                ><span style="color: {{accent}};">[01]</span>
+                                HOME</span
+                            >
+                            <span class="lbl"
+                                ><span style="color: {{accent}};">[02]</span>
+                                WORK</span
+                            >
+                            <span class="lbl"
+                                ><span style="color: {{accent}};">[03]</span>
+                                WRITING</span
+                            >
+                            <span class="lbl"
+                                ><span style="color: {{accent}};">[04]</span>
+                                ABOUT</span
+                            >
+                            <div class="rule-v" style="height: 16px"></div>
+                            <span class="lbl-ink" style="color: {{accent}};"
+                                >[●] LET'S TALK ↗</span
+                            >
+                        </div>
+                    </div>
 
-  <!-- NAV -->
-  <div style="display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 20px; border-bottom: 1px solid #b9b7ae;">
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <div class="sq" style="background: {{accent}};"></div>
-      <span class="lbl-ink" style="font-weight: 600;">JT</span>
-      <span class="lbl">JARED TUCKER &nbsp;//&nbsp; SYSTEMS × CODE × FIELD</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 28px;">
-      <span class="lbl-ink"><span style="color: {{accent}};">[01]</span> HOME</span>
-      <span class="lbl"><span style="color: {{accent}};">[02]</span> WORK</span>
-      <span class="lbl"><span style="color: {{accent}};">[03]</span> WRITING</span>
-      <span class="lbl"><span style="color: {{accent}};">[04]</span> ABOUT</span>
-      <div class="rule-v" style="height: 16px;"></div>
-      <span class="lbl-ink" style="color: {{accent}};">[●] LET'S TALK ↗</span>
-    </div>
-  </div>
+                    <!-- HERO ROW -->
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: repeat(12, minmax(0, 1fr));
+                            border-bottom: 1px solid #b9b7ae;
+                        "
+                    >
+                        <div
+                            style="
+                                grid-column: span 6;
+                                padding: 32px 28px 28px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 22px;
+                                border-right: 1px solid #d9d7d0;
+                            "
+                        >
+                            <div
+                                class="lbl"
+                                style="
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 2px;
+                                "
+                            >
+                                <span>IDEAS FOR A BRIGHTER TOMORROW</span>
+                                <span>/ /</span>
+                            </div>
+                            <h1
+                                class="display"
+                                style="
+                                    margin: 0;
+                                    font-size: 116px;
+                                    line-height: 0.92;
+                                    font-weight: 800;
+                                    color: #141412;
+                                "
+                            >
+                                Jared Tucker
+                            </h1>
+                            <div class="lbl-ink" style="letter-spacing: 0.2em">
+                                FORWARD DEPLOYED ENGINEER &nbsp;/&nbsp; SYSTEMS
+                                ARCHITECT
+                            </div>
+                            <div
+                                style="color: {{accent}}; font-size: 11px; letter-spacing: 0.1em;"
+                            >
+                                / / / / / / / / / / / / / /
+                            </div>
+                            <p
+                                style="
+                                    margin: 0;
+                                    max-width: 480px;
+                                    font-size: 13px;
+                                    line-height: 1.7;
+                                    color: #3d3d3a;
+                                "
+                            >
+                                I architect, design and build systems for
+                                startups and for my own life. Currently shipping
+                                AI governance and alignment infrastructure at a
+                                YC-backed startup, and building Cranium, an open
+                                source hive mind for engineering teams.
+                            </p>
+                        </div>
 
-  <!-- HERO ROW -->
-  <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #b9b7ae;">
-    <div style="grid-column: span 6; padding: 32px 28px 28px; display: flex; flex-direction: column; gap: 22px; border-right: 1px solid #d9d7d0;">
-      <div class="lbl" style="display: flex; flex-direction: column; gap: 2px;">
-        <span>IDEAS FOR A BRIGHTER TOMORROW</span>
-        <span>/ /</span>
-      </div>
-      <h1 class="display" style="margin: 0; font-size: 116px; line-height: 0.92; font-weight: 800; color: #141412;">Jared Tucker</h1>
-      <div class="lbl-ink" style="letter-spacing: 0.2em;">FORWARD DEPLOYED ENGINEER &nbsp;/&nbsp; SYSTEMS ARCHITECT</div>
-      <div style="color: {{accent}}; font-size: 11px; letter-spacing: 0.1em;">/ / / / / / / / / / / / / /</div>
-      <p style="margin: 0; max-width: 480px; font-size: 13px; line-height: 1.7; color: #3d3d3a;">I architect, design and build systems for startups and for my own life. Currently shipping AI governance and alignment infrastructure at a YC-backed startup, and building Cranium, an open source hive mind for engineering teams.</p>
-    </div>
+                        <div
+                            style="
+                                grid-column: span 3;
+                                padding: 20px;
+                                border-right: 1px solid #d9d7d0;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 14px;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                "
+                            >
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 10px;
+                                    "
+                                >
+                                    <div
+                                        class="sq"
+                                        style="background: {{accent}};"
+                                    ></div>
+                                    <span class="lbl-ink">BASECAMP</span>
+                                </div>
+                                <span class="lbl" style="color: {{accent}};"
+                                    >01</span
+                                >
+                            </div>
+                            <div
+                                style="
+                                    display: grid;
+                                    grid-template-columns: 92px 1fr;
+                                    row-gap: 10px;
+                                    column-gap: 8px;
+                                    font-size: 11px;
+                                "
+                            >
+                                <span class="lbl">LOCATION:</span
+                                ><span>Melbourne, AU · UTC+10</span>
+                                <span class="lbl">FOCUS:</span
+                                ><span style="white-space: pre-line"
+                                    >Systems Architecture AI Augmented
+                                    Engineering Videography</span
+                                >
+                                <span class="lbl">STATUS:</span
+                                ><span
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 8px;
+                                    "
+                                    ><span
+                                        style="
+                                            width: 8px;
+                                            height: 8px;
+                                            border-radius: 50%;
+                                            background: #2f9e44;
+                                            display: inline-block;
+                                        "
+                                    ></span
+                                    >Building at Lyra + Cranium</span
+                                >
+                                <span class="lbl">CONTACT:</span
+                                ><span style="font-weight: 600"
+                                    >jared@rmr.studio</span
+                                >
+                                <span class="lbl">STACK:</span
+                                ><span style="white-space: pre-line"
+                                    >Distributed Systems Rust · TypeScript ·
+                                    Next.js Data Pipelines · TUIs</span
+                                >
+                            </div>
+                            <div class="rule-h" style="margin-top: auto"></div>
+                            <div class="lbl" style="display: flex; gap: 14px">
+                                <span>BUILD</span><span>/</span
+                                ><span>EXPLORE</span><span>/</span
+                                ><span>ITERATE</span><span>/</span
+                                ><span>REPEAT</span>
+                            </div>
+                        </div>
 
-    <div style="grid-column: span 3; padding: 20px; border-right: 1px solid #d9d7d0; display: flex; flex-direction: column; gap: 14px;">
-      <div style="display: flex; align-items: center; justify-content: space-between;">
-        <div style="display: flex; align-items: center; gap: 10px;"><div class="sq" style="background: {{accent}};"></div><span class="lbl-ink">BASECAMP</span></div>
-        <span class="lbl" style="color: {{accent}};">01</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 92px 1fr; row-gap: 10px; column-gap: 8px; font-size: 11px;">
-        <span class="lbl">LOCATION:</span><span>Melbourne, AU · UTC+10</span>
-        <span class="lbl">FOCUS:</span><span style="white-space: pre-line;">Systems Architecture
-AI Augmented Engineering
-Videography</span>
-        <span class="lbl">STATUS:</span><span style="display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2f9e44; display: inline-block;"></span>Building at Lyra + Cranium</span>
-        <span class="lbl">CONTACT:</span><span style="font-weight: 600;">jared@rmr.studio</span>
-        <span class="lbl">STACK:</span><span style="white-space: pre-line;">Distributed Systems
-Rust · TypeScript · Next.js
-Data Pipelines · TUIs</span>
-      </div>
-      <div class="rule-h" style="margin-top: auto;"></div>
-      <div class="lbl" style="display: flex; gap: 14px;"><span>BUILD</span><span>/</span><span>EXPLORE</span><span>/</span><span>ITERATE</span><span>/</span><span>REPEAT</span></div>
-    </div>
+                        <div
+                            style="
+                                grid-column: span 3;
+                                padding: 20px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 18px;
+                            "
+                        >
+                            <div
+                                style="
+                                    position: relative;
+                                    height: 200px;
+                                    padding: 8px;
+                                "
+                            >
+                                <div class="c c-tl c-tall"></div>
+                                <div class="c c-tr c-tall"></div>
+                                <div class="c c-bl c-tall"></div>
+                                <div class="c c-br c-tall"></div>
+                                <div style="height: 100%; overflow: hidden">
+                                    <svg
+                                        viewBox="0 0 200 200"
+                                        width="100%"
+                                        height="100%"
+                                        preserveAspectRatio="xMidYMid slice"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        style="display: block"
+                                    >
+                                        <defs>
+                                            <pattern
+                                                id="f1"
+                                                width="5"
+                                                height="5"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="2.5"
+                                                    cy="2.5"
+                                                    r="0.7"
+                                                    fill="#8e8d86"
+                                                />
+                                            </pattern>
+                                            <pattern
+                                                id="f2"
+                                                width="4"
+                                                height="4"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="2"
+                                                    cy="2"
+                                                    r="1.2"
+                                                    fill="#3d3d3a"
+                                                />
+                                            </pattern>
+                                            <pattern
+                                                id="f3"
+                                                width="3"
+                                                height="3"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="1.5"
+                                                    cy="1.5"
+                                                    r="1.15"
+                                                    fill="#141412"
+                                                />
+                                            </pattern>
+                                        </defs>
+                                        <rect
+                                            width="200"
+                                            height="200"
+                                            fill="#f4f3ef"
+                                        />
+                                        <rect
+                                            width="200"
+                                            height="200"
+                                            fill="url(#f1)"
+                                        />
+                                        <polygon
+                                            points="0,120 40,70 80,110 120,60 160,100 200,80 200,200 0,200"
+                                            fill="url(#f2)"
+                                        />
+                                        <g fill="url(#f3)">
+                                            <polygon
+                                                points="10,200 25,90 40,200"
+                                            />
+                                            <polygon
+                                                points="50,200 68,110 86,200"
+                                            />
+                                            <polygon
+                                                points="95,200 112,75 129,200"
+                                            />
+                                            <polygon
+                                                points="140,200 156,105 172,200"
+                                            />
+                                            <polygon
+                                                points="170,200 186,120 200,200"
+                                            />
+                                        </g>
+                                        <rect
+                                            x="0"
+                                            y="150"
+                                            width="200"
+                                            height="50"
+                                            fill="url(#f3)"
+                                            opacity="0.6"
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div
+                                style="
+                                    font-size: 11px;
+                                    line-height: 1.6;
+                                    color: #141412;
+                                    white-space: pre-line;
+                                "
+                            >
+                                "GIVE TO THE WORLD, AND THE WORLD WILL ONE DAY
+                                GIVE BACK."
+                            </div>
+                            <div class="rule-h" style="width: 40px"></div>
+                            <div
+                                class="lbl"
+                                style="margin-top: auto; text-align: right"
+                            >
+                                JT.2026
+                            </div>
+                        </div>
+                    </div>
 
-    <div style="grid-column: span 3; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
-      <div style="position: relative; height: 200px; padding: 8px;"><div class="c c-tl c-tall"></div><div class="c c-tr c-tall"></div><div class="c c-bl c-tall"></div><div class="c c-br c-tall"></div><div style="height: 100%; overflow: hidden;">
-<svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="display:block">
-  <defs>
-    <pattern id="f1" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="0.7" fill="#8e8d86"/></pattern>
-    <pattern id="f2" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#3d3d3a"/></pattern>
-    <pattern id="f3" width="3" height="3" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.15" fill="#141412"/></pattern>
-  </defs>
-  <rect width="200" height="200" fill="#f4f3ef"/>
-  <rect width="200" height="200" fill="url(#f1)"/>
-  <polygon points="0,120 40,70 80,110 120,60 160,100 200,80 200,200 0,200" fill="url(#f2)"/>
-  <g fill="url(#f3)">
-    <polygon points="10,200 25,90 40,200"/><polygon points="50,200 68,110 86,200"/><polygon points="95,200 112,75 129,200"/>
-    <polygon points="140,200 156,105 172,200"/><polygon points="170,200 186,120 200,200"/>
-  </g>
-  <rect x="0" y="150" width="200" height="50" fill="url(#f3)" opacity="0.6"/>
-</svg>
-      </div></div>
-      <div style="font-size: 11px; line-height: 1.6; color: #141412; white-space: pre-line;">"A MORE OPEN,
-BEAUTIFUL INTERNET."</div>
-      <div class="rule-h" style="width: 40px;"></div>
-      <div class="lbl" style="margin-top: auto; text-align: right;">JT.2026</div>
-    </div>
-  </div>
+                    <!-- LANDSCAPE BAND -->
+                    <div
+                        class="graph"
+                        style="
+                            position: relative;
+                            padding: 20px 20px 24px;
+                            border-bottom: 1px solid #b9b7ae;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 14px;
+                        "
+                    >
+                        <div
+                            style="
+                                position: absolute;
+                                inset: 12px;
+                                pointer-events: none;
+                            "
+                        >
+                            <div class="c c-tl"></div>
+                            <div class="c c-tr"></div>
+                            <div class="c c-bl"></div>
+                            <div class="c c-br"></div>
+                        </div>
+                        <div class="lbl">
+                            // ENVIRONMENTS INSPIRE BETTER SYSTEMS
+                        </div>
+                        <div
+                            style="
+                                display: grid;
+                                grid-template-columns: 90px 1fr 120px;
+                                gap: 20px;
+                                align-items: stretch;
+                            "
+                        >
+                            <div
+                                class="lbl"
+                                style="
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: space-between;
+                                    padding: 8px 0;
+                                "
+                            >
+                                <span style="white-space: pre-line"
+                                    >37.8136° S 144.9631° E</span
+                                >
+                                <span style="white-space: pre-line"
+                                    >NATURE TECHNOLOGY PEOPLE A BRIGHTER
+                                    TOMORROW</span
+                                >
+                            </div>
+                            <div
+                                style="
+                                    position: relative;
+                                    height: 300px;
+                                    overflow: hidden;
+                                    background: #f4f3ef;
+                                "
+                            >
+                                <svg
+                                    viewBox="0 0 1200 300"
+                                    width="100%"
+                                    height="100%"
+                                    preserveAspectRatio="xMidYMid slice"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: block"
+                                >
+                                    <defs>
+                                        <pattern
+                                            id="d1"
+                                            width="6"
+                                            height="6"
+                                            patternUnits="userSpaceOnUse"
+                                        >
+                                            <circle
+                                                cx="3"
+                                                cy="3"
+                                                r="0.6"
+                                                fill="#8e8d86"
+                                            />
+                                        </pattern>
+                                        <pattern
+                                            id="d2"
+                                            width="5"
+                                            height="5"
+                                            patternUnits="userSpaceOnUse"
+                                        >
+                                            <circle
+                                                cx="2.5"
+                                                cy="2.5"
+                                                r="1.1"
+                                                fill="#4a4a46"
+                                            />
+                                        </pattern>
+                                        <pattern
+                                            id="d3"
+                                            width="4"
+                                            height="4"
+                                            patternUnits="userSpaceOnUse"
+                                        >
+                                            <circle
+                                                cx="2"
+                                                cy="2"
+                                                r="1.35"
+                                                fill="#1c1c1a"
+                                            />
+                                        </pattern>
+                                        <pattern
+                                            id="d4"
+                                            width="4"
+                                            height="4"
+                                            patternUnits="userSpaceOnUse"
+                                        >
+                                            <circle
+                                                cx="2"
+                                                cy="2"
+                                                r="1.7"
+                                                fill="#141412"
+                                            />
+                                        </pattern>
+                                        <pattern
+                                            id="w1"
+                                            width="8"
+                                            height="3"
+                                            patternUnits="userSpaceOnUse"
+                                        >
+                                            <rect
+                                                width="5"
+                                                height="0.8"
+                                                y="1"
+                                                fill="#6f6e69"
+                                            />
+                                        </pattern>
+                                    </defs>
+                                    <rect
+                                        width="1200"
+                                        height="300"
+                                        fill="#f4f3ef"
+                                    />
+                                    <rect
+                                        width="1200"
+                                        height="300"
+                                        fill="url(#d1)"
+                                        opacity="0.5"
+                                    />
+                                    <ellipse
+                                        cx="260"
+                                        cy="70"
+                                        rx="120"
+                                        ry="28"
+                                        fill="#f4f3ef"
+                                    />
+                                    <ellipse
+                                        cx="820"
+                                        cy="50"
+                                        rx="160"
+                                        ry="30"
+                                        fill="#f4f3ef"
+                                    />
+                                    <polygon
+                                        points="0,220 120,150 210,180 330,90 420,130 520,60 610,110 700,80 790,140 880,100 980,150 1100,110 1200,170 1200,300 0,300"
+                                        fill="url(#d2)"
+                                    />
+                                    <polygon
+                                        points="330,90 400,140 520,60 560,90 610,110 520,75 470,120"
+                                        fill="#f4f3ef"
+                                        opacity="0.9"
+                                    />
+                                    <polygon
+                                        points="700,80 760,120 790,140 880,100 840,105 780,120"
+                                        fill="#f4f3ef"
+                                        opacity="0.7"
+                                    />
+                                    <polygon
+                                        points="0,260 90,215 180,235 260,200 340,225 430,190 520,220 600,195 690,225 780,200 870,230 960,205 1050,235 1140,210 1200,230 1200,300 0,300"
+                                        fill="url(#d3)"
+                                    />
+                                    <g fill="url(#d4)">
+                                        <polygon
+                                            points="40,300 62,205 84,300"
+                                        />
+                                        <polygon
+                                            points="90,300 108,222 126,300"
+                                        />
+                                        <polygon
+                                            points="140,300 166,190 192,300"
+                                        />
+                                        <polygon
+                                            points="200,300 220,228 240,300"
+                                        />
+                                        <polygon
+                                            points="960,300 985,198 1010,300"
+                                        />
+                                        <polygon
+                                            points="1030,300 1050,225 1070,300"
+                                        />
+                                        <polygon
+                                            points="1090,300 1120,195 1150,300"
+                                        />
+                                        <polygon
+                                            points="1160,300 1178,232 1196,300"
+                                        />
+                                    </g>
+                                    <rect
+                                        x="300"
+                                        y="262"
+                                        width="640"
+                                        height="38"
+                                        fill="url(#w1)"
+                                        opacity="0.8"
+                                    />
+                                </svg>
+                                <div
+                                    style="
+                                        position: absolute;
+                                        left: 50%;
+                                        top: 50%;
+                                        width: 80px;
+                                        height: 80px;
+                                        margin: -40px 0 0 -40px;
+                                    "
+                                >
+                                    <div
+                                        style="position: absolute; left: 50%; top: 0; width: 1px; height: 100%; background: {{accent}};"
+                                    ></div>
+                                    <div
+                                        style="position: absolute; top: 50%; left: 0; height: 1px; width: 100%; background: {{accent}};"
+                                    ></div>
+                                    <div
+                                        style="position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; background: {{accent}};"
+                                    ></div>
+                                </div>
+                                <div
+                                    class="lbl"
+                                    style="
+                                        position: absolute;
+                                        left: 12px;
+                                        bottom: 10px;
+                                        color: #141412;
+                                        background: #f4f3ef;
+                                        padding: 2px 6px;
+                                    "
+                                >
+                                    IMG_0412 · [PHOTO PLACEHOLDER · SYSTEM
+                                    RENDER]
+                                </div>
+                            </div>
+                            <div
+                                style="
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: space-between;
+                                    padding: 6px 0;
+                                "
+                            >
+                                <div
+                                    class="sq"
+                                    style="background: {{accent}};"
+                                ></div>
+                                <div class="lbl" style="white-space: pre-line">
+                                    SYSTEMS FOR A BRIGHTER TOMORROW
+                                </div>
+                                <div
+                                    class="rule-v"
+                                    style="height: 40px; background: #141412"
+                                ></div>
+                                <div class="lbl" style="white-space: pre-line">
+                                    // JT.2026 V01
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-  <!-- LANDSCAPE BAND -->
-  <div class="graph" style="position: relative; padding: 20px 20px 24px; border-bottom: 1px solid #b9b7ae; display: flex; flex-direction: column; gap: 14px;"><div style="position: absolute; inset: 12px; pointer-events: none;"><div class="c c-tl"></div><div class="c c-tr"></div><div class="c c-bl"></div><div class="c c-br"></div></div>
-    <div class="lbl">// ENVIRONMENTS INSPIRE BETTER SYSTEMS</div>
-    <div style="display: grid; grid-template-columns: 90px 1fr 120px; gap: 20px; align-items: stretch;">
-      <div class="lbl" style="display: flex; flex-direction: column; justify-content: space-between; padding: 8px 0;">
-        <span style="white-space: pre-line;">37.8136° S
-144.9631° E</span>
-        <span style="white-space: pre-line;">NATURE
-TECHNOLOGY
-PEOPLE
-A BRIGHTER
-TOMORROW</span>
-      </div>
-      <div style="position: relative; height: 300px; overflow: hidden; background: #f4f3ef;">
-<svg viewBox="0 0 1200 300" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="display:block">
-  <defs>
-    <pattern id="d1" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="0.6" fill="#8e8d86"/></pattern>
-    <pattern id="d2" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.1" fill="#4a4a46"/></pattern>
-    <pattern id="d3" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.35" fill="#1c1c1a"/></pattern>
-    <pattern id="d4" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.7" fill="#141412"/></pattern>
-    <pattern id="w1" width="8" height="3" patternUnits="userSpaceOnUse"><rect width="5" height="0.8" y="1" fill="#6f6e69"/></pattern>
-  </defs>
-  <rect width="1200" height="300" fill="#f4f3ef"/>
-  <rect width="1200" height="300" fill="url(#d1)" opacity="0.5"/>
-  <ellipse cx="260" cy="70" rx="120" ry="28" fill="#f4f3ef"/>
-  <ellipse cx="820" cy="50" rx="160" ry="30" fill="#f4f3ef"/>
-  <polygon points="0,220 120,150 210,180 330,90 420,130 520,60 610,110 700,80 790,140 880,100 980,150 1100,110 1200,170 1200,300 0,300" fill="url(#d2)"/>
-  <polygon points="330,90 400,140 520,60 560,90 610,110 520,75 470,120" fill="#f4f3ef" opacity="0.9"/>
-  <polygon points="700,80 760,120 790,140 880,100 840,105 780,120" fill="#f4f3ef" opacity="0.7"/>
-  <polygon points="0,260 90,215 180,235 260,200 340,225 430,190 520,220 600,195 690,225 780,200 870,230 960,205 1050,235 1140,210 1200,230 1200,300 0,300" fill="url(#d3)"/>
-  <g fill="url(#d4)">
-    <polygon points="40,300 62,205 84,300"/><polygon points="90,300 108,222 126,300"/><polygon points="140,300 166,190 192,300"/>
-    <polygon points="200,300 220,228 240,300"/><polygon points="960,300 985,198 1010,300"/><polygon points="1030,300 1050,225 1070,300"/>
-    <polygon points="1090,300 1120,195 1150,300"/><polygon points="1160,300 1178,232 1196,300"/>
-  </g>
-  <rect x="300" y="262" width="640" height="38" fill="url(#w1)" opacity="0.8"/>
-</svg>
-        <div style="position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; margin: -40px 0 0 -40px;">
-          <div style="position: absolute; left: 50%; top: 0; width: 1px; height: 100%; background: {{accent}};"></div>
-          <div style="position: absolute; top: 50%; left: 0; height: 1px; width: 100%; background: {{accent}};"></div>
-          <div style="position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; background: {{accent}};"></div>
-        </div>
-        <div class="lbl" style="position: absolute; left: 12px; bottom: 10px; color: #141412; background: #f4f3ef; padding: 2px 6px;">IMG_0412 · [PHOTO PLACEHOLDER · SYSTEM RENDER]</div>
-      </div>
-      <div style="display: flex; flex-direction: column; justify-content: space-between; padding: 6px 0;">
-        <div class="sq" style="background: {{accent}};"></div>
-        <div class="lbl" style="white-space: pre-line;">SYSTEMS
-FOR A
-BRIGHTER
-TOMORROW</div>
-        <div class="rule-v" style="height: 40px; background: #141412;"></div>
-        <div class="lbl" style="white-space: pre-line;">//
-JT.2026
-V01</div>
-      </div>
-    </div>
-  </div>
+                    <!-- FEATURED PROJECTS -->
+                    <div
+                        style="
+                            padding: 20px;
+                            border-bottom: 1px solid #b9b7ae;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 16px;
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                gap: 16px;
+                            "
+                        >
+                            <div
+                                class="sq"
+                                style="background: {{accent}};"
+                            ></div>
+                            <span class="lbl-ink">FEATURED PROJECTS</span>
+                            <div class="rule-h" style="flex: 1"></div>
+                            <span class="lbl-ink" style="color: {{accent}};"
+                                >VIEW ALL PROJECTS ↗</span
+                            >
+                        </div>
+                        <div
+                            style="
+                                display: grid;
+                                grid-template-columns: repeat(
+                                    4,
+                                    minmax(0, 1fr)
+                                );
+                                gap: 16px;
+                            "
+                        >
+                            <div
+                                style="
+                                    border: 1px solid #b9b7ae;
+                                    display: flex;
+                                    flex-direction: column;
+                                "
+                            >
+                                <div
+                                    style="
+                                        position: relative;
+                                        height: 150px;
+                                        border-bottom: 1px solid #b9b7ae;
+                                        background: #141412;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        overflow: hidden;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            font-family:
+                                                &quot;IBM Plex Mono&quot;,
+                                                monospace;
+                                            font-size: 10px;
+                                            color: #f4f3ef;
+                                            opacity: 0.8;
+                                            white-space: pre;
+                                            line-height: 1.2;
+                                        "
+                                    >
+                                        $ signal open ws://lyra ▸ 12 sessions ·
+                                        3 active ▸ tail --follow trace.log ▸ █
+                                    </div>
+                                    <span
+                                        class="lbl"
+                                        style="position: absolute; top: 8px; right: 8px; color: {{accent}};"
+                                        >01</span
+                                    >
+                                    <span
+                                        class="lbl vert"
+                                        style="
+                                            position: absolute;
+                                            top: 8px;
+                                            left: 6px;
+                                            color: #f4f3ef;
+                                            opacity: 0.6;
+                                        "
+                                        >2026</span
+                                    >
+                                    <span
+                                        style="position: absolute; bottom: 8px; left: 8px; color: {{accent}}; font-size: 12px;"
+                                        >+</span
+                                    >
+                                </div>
+                                <div
+                                    style="
+                                        padding: 14px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 8px;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: space-between;
+                                            font-size: 13px;
+                                            font-weight: 600;
+                                        "
+                                    >
+                                        <span>signal/cli</span><span>↗</span>
+                                    </div>
+                                    <div class="lbl">
+                                        TOOL &nbsp;/&nbsp; RUST + TAURI
+                                    </div>
+                                    <p
+                                        style="
+                                            margin: 0;
+                                            font-size: 11px;
+                                            line-height: 1.6;
+                                            color: #3d3d3a;
+                                        "
+                                    >
+                                        A terminal client for our team's IDE
+                                        backend. Written in Rust + Tauri.
+                                    </p>
+                                </div>
+                            </div>
 
-  <!-- FEATURED PROJECTS -->
-  <div style="padding: 20px; border-bottom: 1px solid #b9b7ae; display: flex; flex-direction: column; gap: 16px;">
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <div class="sq" style="background: {{accent}};"></div>
-      <span class="lbl-ink">FEATURED PROJECTS</span>
-      <div class="rule-h" style="flex: 1;"></div>
-      <span class="lbl-ink" style="color: {{accent}};">VIEW ALL PROJECTS ↗</span>
-    </div>
-    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+                            <div
+                                style="
+                                    border: 1px solid #b9b7ae;
+                                    display: flex;
+                                    flex-direction: column;
+                                "
+                            >
+                                <div
+                                    class="graph"
+                                    style="
+                                        position: relative;
+                                        height: 150px;
+                                        border-bottom: 1px solid #b9b7ae;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        overflow: hidden;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            border: 1px solid #141412;
+                                            background: #f8f7f4;
+                                            padding: 8px 12px;
+                                            font-size: 11px;
+                                            transform: rotate(-4deg);
+                                        "
+                                    >
+                                        cranium · hive mind
+                                    </div>
+                                    <span
+                                        class="lbl"
+                                        style="position: absolute; top: 8px; right: 8px; color: {{accent}};"
+                                        >02</span
+                                    >
+                                    <span
+                                        class="lbl vert"
+                                        style="
+                                            position: absolute;
+                                            top: 8px;
+                                            left: 6px;
+                                        "
+                                        >2026</span
+                                    >
+                                    <span
+                                        style="position: absolute; bottom: 8px; left: 8px; color: {{accent}}; font-size: 12px;"
+                                        >+</span
+                                    >
+                                </div>
+                                <div
+                                    style="
+                                        padding: 14px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 8px;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: space-between;
+                                            font-size: 13px;
+                                            font-weight: 600;
+                                        "
+                                    >
+                                        <span>Cranium</span><span>↗</span>
+                                    </div>
+                                    <div class="lbl">
+                                        ARCHITECTURE &nbsp;/&nbsp; OPEN SOURCE
+                                    </div>
+                                    <p
+                                        style="
+                                            margin: 0;
+                                            font-size: 11px;
+                                            line-height: 1.6;
+                                            color: #3d3d3a;
+                                        "
+                                    >
+                                        The alignment substrate for AI-augmented
+                                        engineering teams. System design and
+                                        standards as context for agents.
+                                    </p>
+                                </div>
+                            </div>
 
-      <div style="border: 1px solid #b9b7ae; display: flex; flex-direction: column;">
-        <div style="position: relative; height: 150px; border-bottom: 1px solid #b9b7ae; background: #141412; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #f4f3ef; opacity: 0.8; white-space: pre; line-height: 1.2;">$ signal open ws://lyra
-▸ 12 sessions · 3 active
-▸ tail --follow trace.log
-▸ █</div>
-          <span class="lbl" style="position: absolute; top: 8px; right: 8px; color: {{accent}};">01</span>
-          <span class="lbl vert" style="position: absolute; top: 8px; left: 6px; color: #f4f3ef; opacity: 0.6;">2026</span>
-          <span style="position: absolute; bottom: 8px; left: 8px; color: {{accent}}; font-size: 12px;">+</span>
-        </div>
-        <div style="padding: 14px; display: flex; flex-direction: column; gap: 8px;">
-          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;"><span>signal/cli</span><span>↗</span></div>
-          <div class="lbl">TOOL &nbsp;/&nbsp; RUST + TAURI</div>
-          <p style="margin: 0; font-size: 11px; line-height: 1.6; color: #3d3d3a;">A terminal client for our team's IDE backend. Written in Rust + Tauri.</p>
-        </div>
-      </div>
+                            <div
+                                style="
+                                    border: 1px solid #b9b7ae;
+                                    display: flex;
+                                    flex-direction: column;
+                                "
+                            >
+                                <div
+                                    style="
+                                        position: relative;
+                                        height: 150px;
+                                        border-bottom: 1px solid #b9b7ae;
+                                        overflow: hidden;
+                                    "
+                                >
+                                    <svg
+                                        viewBox="0 0 200 200"
+                                        width="100%"
+                                        height="100%"
+                                        preserveAspectRatio="xMidYMid slice"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        style="display: block"
+                                    >
+                                        <defs>
+                                            <pattern
+                                                id="p3f1"
+                                                width="5"
+                                                height="5"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="2.5"
+                                                    cy="2.5"
+                                                    r="0.7"
+                                                    fill="#8e8d86"
+                                                />
+                                            </pattern>
+                                            <pattern
+                                                id="p3f2"
+                                                width="4"
+                                                height="4"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="2"
+                                                    cy="2"
+                                                    r="1.2"
+                                                    fill="#3d3d3a"
+                                                />
+                                            </pattern>
+                                            <pattern
+                                                id="p3f3"
+                                                width="3"
+                                                height="3"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="1.5"
+                                                    cy="1.5"
+                                                    r="1.15"
+                                                    fill="#141412"
+                                                />
+                                            </pattern>
+                                        </defs>
+                                        <rect
+                                            width="200"
+                                            height="200"
+                                            fill="#f4f3ef"
+                                        />
+                                        <rect
+                                            width="200"
+                                            height="200"
+                                            fill="url(#p3f1)"
+                                        />
+                                        <polygon
+                                            points="0,120 40,70 80,110 120,60 160,100 200,80 200,200 0,200"
+                                            fill="url(#p3f2)"
+                                        />
+                                        <g fill="url(#p3f3)">
+                                            <polygon
+                                                points="10,200 25,90 40,200"
+                                            />
+                                            <polygon
+                                                points="50,200 68,110 86,200"
+                                            />
+                                            <polygon
+                                                points="95,200 112,75 129,200"
+                                            />
+                                            <polygon
+                                                points="140,200 156,105 172,200"
+                                            />
+                                            <polygon
+                                                points="170,200 186,120 200,200"
+                                            />
+                                        </g>
+                                        <rect
+                                            x="0"
+                                            y="150"
+                                            width="200"
+                                            height="50"
+                                            fill="url(#p3f3)"
+                                            opacity="0.6"
+                                        />
+                                    </svg>
+                                    <span
+                                        class="lbl"
+                                        style="position: absolute; top: 8px; right: 8px; color: {{accent}};"
+                                        >03</span
+                                    >
+                                    <span
+                                        class="lbl vert"
+                                        style="
+                                            position: absolute;
+                                            top: 8px;
+                                            left: 6px;
+                                        "
+                                        >2024</span
+                                    >
+                                    <span
+                                        style="position: absolute; bottom: 8px; left: 8px; color: {{accent}}; font-size: 12px;"
+                                        >+</span
+                                    >
+                                </div>
+                                <div
+                                    style="
+                                        padding: 14px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 8px;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: space-between;
+                                            font-size: 13px;
+                                            font-weight: 600;
+                                        "
+                                    >
+                                        <span>vector/insights</span
+                                        ><span>↗</span>
+                                    </div>
+                                    <div class="lbl">
+                                        WORK &nbsp;/&nbsp; PRODUCT
+                                    </div>
+                                    <p
+                                        style="
+                                            margin: 0;
+                                            font-size: 11px;
+                                            line-height: 1.6;
+                                            color: #3d3d3a;
+                                        "
+                                    >
+                                        A keyboard-first data exploration
+                                        product. Shipped to ~3k seats.
+                                    </p>
+                                </div>
+                            </div>
 
-      <div style="border: 1px solid #b9b7ae; display: flex; flex-direction: column;">
-        <div class="graph" style="position: relative; height: 150px; border-bottom: 1px solid #b9b7ae; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-          <div style="border: 1px solid #141412; background: #f8f7f4; padding: 8px 12px; font-size: 11px; transform: rotate(-4deg);">cranium · hive mind</div>
-          <span class="lbl" style="position: absolute; top: 8px; right: 8px; color: {{accent}};">02</span>
-          <span class="lbl vert" style="position: absolute; top: 8px; left: 6px;">2026</span>
-          <span style="position: absolute; bottom: 8px; left: 8px; color: {{accent}}; font-size: 12px;">+</span>
-        </div>
-        <div style="padding: 14px; display: flex; flex-direction: column; gap: 8px;">
-          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;"><span>Cranium</span><span>↗</span></div>
-          <div class="lbl">ARCHITECTURE &nbsp;/&nbsp; OPEN SOURCE</div>
-          <p style="margin: 0; font-size: 11px; line-height: 1.6; color: #3d3d3a;">The alignment substrate for AI-augmented engineering teams. System design and standards as context for agents.</p>
-        </div>
-      </div>
+                            <div
+                                style="
+                                    border: 1px solid #b9b7ae;
+                                    display: flex;
+                                    flex-direction: column;
+                                "
+                            >
+                                <div
+                                    style="
+                                        position: relative;
+                                        height: 150px;
+                                        border-bottom: 1px solid #b9b7ae;
+                                        display: grid;
+                                        grid-template-columns: repeat(
+                                            6,
+                                            minmax(0, 1fr)
+                                        );
+                                        gap: 6px;
+                                        padding: 22px;
+                                        overflow: hidden;
+                                    "
+                                >
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="
+                                            border: 1px solid #141412;
+                                            background: #141412;
+                                        "
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid {{accent}};"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412; background: {{accent}};"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="
+                                            border: 1px solid #141412;
+                                            background: #141412;
+                                        "
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="
+                                            border: 1px solid #141412;
+                                            background: #141412;
+                                        "
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid #141412"
+                                    ></div>
+                                    <div
+                                        style="border: 1px solid {{accent}};"
+                                    ></div>
+                                    <span
+                                        class="lbl"
+                                        style="position: absolute; top: 8px; right: 8px; color: {{accent}};"
+                                        >04</span
+                                    >
+                                    <span
+                                        class="lbl vert"
+                                        style="
+                                            position: absolute;
+                                            top: 8px;
+                                            left: 6px;
+                                        "
+                                        >2025</span
+                                    >
+                                    <span
+                                        style="position: absolute; bottom: 8px; left: 8px; color: {{accent}}; font-size: 12px;"
+                                        >+</span
+                                    >
+                                </div>
+                                <div
+                                    style="
+                                        padding: 14px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 8px;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            display: flex;
+                                            justify-content: space-between;
+                                            font-size: 13px;
+                                            font-weight: 600;
+                                        "
+                                    >
+                                        <span>ks-icons</span><span>↗</span>
+                                    </div>
+                                    <div class="lbl">
+                                        OSS &nbsp;/&nbsp; ICON SET
+                                    </div>
+                                    <p
+                                        style="
+                                            margin: 0;
+                                            font-size: 11px;
+                                            line-height: 1.6;
+                                            color: #3d3d3a;
+                                        "
+                                    >
+                                        A 240-glyph monoline icon set for
+                                        terminal apps. Free.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-      <div style="border: 1px solid #b9b7ae; display: flex; flex-direction: column;">
-        <div style="position: relative; height: 150px; border-bottom: 1px solid #b9b7ae; overflow: hidden;">
-<svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="display:block">
-  <defs>
-    <pattern id="p3f1" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="0.7" fill="#8e8d86"/></pattern>
-    <pattern id="p3f2" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#3d3d3a"/></pattern>
-    <pattern id="p3f3" width="3" height="3" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.15" fill="#141412"/></pattern>
-  </defs>
-  <rect width="200" height="200" fill="#f4f3ef"/>
-  <rect width="200" height="200" fill="url(#p3f1)"/>
-  <polygon points="0,120 40,70 80,110 120,60 160,100 200,80 200,200 0,200" fill="url(#p3f2)"/>
-  <g fill="url(#p3f3)">
-    <polygon points="10,200 25,90 40,200"/><polygon points="50,200 68,110 86,200"/><polygon points="95,200 112,75 129,200"/>
-    <polygon points="140,200 156,105 172,200"/><polygon points="170,200 186,120 200,200"/>
-  </g>
-  <rect x="0" y="150" width="200" height="50" fill="url(#p3f3)" opacity="0.6"/>
-</svg>
-          <span class="lbl" style="position: absolute; top: 8px; right: 8px; color: {{accent}};">03</span>
-          <span class="lbl vert" style="position: absolute; top: 8px; left: 6px;">2024</span>
-          <span style="position: absolute; bottom: 8px; left: 8px; color: {{accent}}; font-size: 12px;">+</span>
-        </div>
-        <div style="padding: 14px; display: flex; flex-direction: column; gap: 8px;">
-          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;"><span>vector/insights</span><span>↗</span></div>
-          <div class="lbl">WORK &nbsp;/&nbsp; PRODUCT</div>
-          <p style="margin: 0; font-size: 11px; line-height: 1.6; color: #3d3d3a;">A keyboard-first data exploration product. Shipped to ~3k seats.</p>
-        </div>
-      </div>
+                    <!-- WRITING + FIELD NOTES -->
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: repeat(12, minmax(0, 1fr));
+                            border-bottom: 1px solid #b9b7ae;
+                        "
+                    >
+                        <div
+                            style="
+                                grid-column: span 6;
+                                padding: 20px;
+                                border-right: 1px solid #d9d7d0;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 6px;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 16px;
+                                    margin-bottom: 10px;
+                                "
+                            >
+                                <div
+                                    class="sq"
+                                    style="background: {{accent}};"
+                                ></div>
+                                <span class="lbl-ink"
+                                    >WRITING &nbsp;/&nbsp; NOTES &nbsp;/&nbsp;
+                                    EXPERIMENTS</span
+                                >
+                                <div class="rule-h" style="flex: 1"></div>
+                                <span class="lbl-ink" style="color: {{accent}};"
+                                    >VIEW ALL ↗</span
+                                >
+                            </div>
+                            <div
+                                style="
+                                    display: grid;
+                                    grid-template-columns: 110px 1fr 24px;
+                                    gap: 16px;
+                                    padding: 14px 0;
+                                    border-bottom: 1px solid #d9d7d0;
+                                    align-items: start;
+                                "
+                            >
+                                <span class="lbl">MAY 12, 2026</span>
+                                <div
+                                    style="
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 4px;
+                                    "
+                                >
+                                    <span
+                                        style="
+                                            font-size: 13px;
+                                            font-weight: 600;
+                                        "
+                                        >On small models and small teams</span
+                                    ><span
+                                        style="font-size: 11px; color: #6f6e69"
+                                        >A long argument that small teams should
+                                        ship more, not less.</span
+                                    >
+                                </div>
+                                <span style="text-align: right">→</span>
+                            </div>
+                            <div
+                                style="
+                                    display: grid;
+                                    grid-template-columns: 110px 1fr 24px;
+                                    gap: 16px;
+                                    padding: 14px 0;
+                                    border-bottom: 1px solid #d9d7d0;
+                                    align-items: start;
+                                "
+                            >
+                                <span class="lbl">APR 02, 2026</span>
+                                <div
+                                    style="
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 4px;
+                                    "
+                                >
+                                    <span
+                                        style="
+                                            font-size: 13px;
+                                            font-weight: 600;
+                                        "
+                                        >The case against the "command
+                                        palette"</span
+                                    ><span
+                                        style="font-size: 11px; color: #6f6e69"
+                                        >Command palettes are great until they
+                                        replace the menu.</span
+                                    >
+                                </div>
+                                <span style="text-align: right">→</span>
+                            </div>
+                            <div
+                                style="
+                                    display: grid;
+                                    grid-template-columns: 110px 1fr 24px;
+                                    gap: 16px;
+                                    padding: 14px 0;
+                                    border-bottom: 1px solid #d9d7d0;
+                                    align-items: start;
+                                "
+                            >
+                                <span class="lbl">NOV 04, 2025</span>
+                                <div
+                                    style="
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 4px;
+                                    "
+                                >
+                                    <span
+                                        style="
+                                            font-size: 13px;
+                                            font-weight: 600;
+                                        "
+                                        >Designing for keyboards first</span
+                                    ><span
+                                        style="font-size: 11px; color: #6f6e69"
+                                        >Six rules for keyboard-first interfaces
+                                        that do not suck for mouse users.</span
+                                    >
+                                </div>
+                                <span style="text-align: right">→</span>
+                            </div>
+                        </div>
 
-      <div style="border: 1px solid #b9b7ae; display: flex; flex-direction: column;">
-        <div style="position: relative; height: 150px; border-bottom: 1px solid #b9b7ae; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; padding: 22px; overflow: hidden;">
-          <div style="border: 1px solid #141412;"></div><div style="border: 1px solid #141412; background: #141412;"></div><div style="border: 1px solid #141412;"></div><div style="border: 1px solid {{accent}};"></div><div style="border: 1px solid #141412;"></div><div style="border: 1px solid #141412;"></div>
-          <div style="border: 1px solid #141412;"></div><div style="border: 1px solid #141412;"></div><div style="border: 1px solid #141412; background: {{accent}};"></div><div style="border: 1px solid #141412;"></div><div style="border: 1px solid #141412; background: #141412;"></div><div style="border: 1px solid #141412;"></div>
-          <div style="border: 1px solid #141412; background: #141412;"></div><div style="border: 1px solid #141412;"></div><div style="border: 1px solid #141412;"></div><div style="border: 1px solid #141412;"></div><div style="border: 1px solid #141412;"></div><div style="border: 1px solid {{accent}};"></div>
-          <span class="lbl" style="position: absolute; top: 8px; right: 8px; color: {{accent}};">04</span>
-          <span class="lbl vert" style="position: absolute; top: 8px; left: 6px;">2025</span>
-          <span style="position: absolute; bottom: 8px; left: 8px; color: {{accent}}; font-size: 12px;">+</span>
-        </div>
-        <div style="padding: 14px; display: flex; flex-direction: column; gap: 8px;">
-          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;"><span>ks-icons</span><span>↗</span></div>
-          <div class="lbl">OSS &nbsp;/&nbsp; ICON SET</div>
-          <p style="margin: 0; font-size: 11px; line-height: 1.6; color: #3d3d3a;">A 240-glyph monoline icon set for terminal apps. Free.</p>
-        </div>
-      </div>
+                        <div
+                            style="
+                                grid-column: span 6;
+                                padding: 20px;
+                                display: grid;
+                                grid-template-columns: 1fr 220px 90px;
+                                gap: 20px;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 16px;
+                                "
+                            >
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 12px;
+                                    "
+                                >
+                                    <div
+                                        class="sq"
+                                        style="background: {{accent}};"
+                                    ></div>
+                                    <span class="lbl-ink">FIELD NOTES</span>
+                                </div>
+                                <div
+                                    style="
+                                        font-size: 12px;
+                                        line-height: 1.7;
+                                        white-space: pre-line;
+                                    "
+                                >
+                                    Better tools. Kinder systems. A more
+                                    beautiful internet.
+                                </div>
+                                <div
+                                    class="lbl"
+                                    style="
+                                        white-space: pre-line;
+                                        margin-top: auto;
+                                    "
+                                >
+                                    JARED TUCKER FORWARD DEPLOYED ENGINEER
+                                    SYSTEMS ARCHITECT
+                                </div>
+                                <div class="lbl" style="color: {{accent}};">
+                                    // JT.2026
+                                </div>
+                            </div>
+                            <div
+                                style="
+                                    position: relative;
+                                    height: 220px;
+                                    padding: 8px;
+                                "
+                            >
+                                <div class="c c-tl c-tall"></div>
+                                <div class="c c-tr c-tall"></div>
+                                <div class="c c-bl c-tall"></div>
+                                <div class="c c-br c-tall"></div>
+                                <div style="height: 100%; overflow: hidden">
+                                    <svg
+                                        viewBox="0 0 200 200"
+                                        width="100%"
+                                        height="100%"
+                                        preserveAspectRatio="xMidYMid slice"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        style="display: block"
+                                    >
+                                        <defs>
+                                            <pattern
+                                                id="fnf1"
+                                                width="5"
+                                                height="5"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="2.5"
+                                                    cy="2.5"
+                                                    r="0.7"
+                                                    fill="#8e8d86"
+                                                />
+                                            </pattern>
+                                            <pattern
+                                                id="fnf2"
+                                                width="4"
+                                                height="4"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="2"
+                                                    cy="2"
+                                                    r="1.2"
+                                                    fill="#3d3d3a"
+                                                />
+                                            </pattern>
+                                            <pattern
+                                                id="fnf3"
+                                                width="3"
+                                                height="3"
+                                                patternUnits="userSpaceOnUse"
+                                            >
+                                                <circle
+                                                    cx="1.5"
+                                                    cy="1.5"
+                                                    r="1.15"
+                                                    fill="#141412"
+                                                />
+                                            </pattern>
+                                        </defs>
+                                        <rect
+                                            width="200"
+                                            height="200"
+                                            fill="#f4f3ef"
+                                        />
+                                        <rect
+                                            width="200"
+                                            height="200"
+                                            fill="url(#fnf1)"
+                                        />
+                                        <polygon
+                                            points="0,120 40,70 80,110 120,60 160,100 200,80 200,200 0,200"
+                                            fill="url(#fnf2)"
+                                        />
+                                        <g fill="url(#fnf3)">
+                                            <polygon
+                                                points="10,200 25,90 40,200"
+                                            />
+                                            <polygon
+                                                points="50,200 68,110 86,200"
+                                            />
+                                            <polygon
+                                                points="95,200 112,75 129,200"
+                                            />
+                                            <polygon
+                                                points="140,200 156,105 172,200"
+                                            />
+                                            <polygon
+                                                points="170,200 186,120 200,200"
+                                            />
+                                        </g>
+                                        <rect
+                                            x="0"
+                                            y="150"
+                                            width="200"
+                                            height="50"
+                                            fill="url(#fnf3)"
+                                            opacity="0.6"
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div
+                                class="lbl"
+                                style="
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: space-between;
+                                    padding: 6px 0;
+                                "
+                            >
+                                <span style="white-space: pre-line">· · ·</span>
+                                <span style="white-space: pre-line"
+                                    >SOME PLACES MAKE BETTER PEOPLE.</span
+                                >
+                            </div>
+                        </div>
+                    </div>
 
-    </div>
-  </div>
-
-  <!-- WRITING + FIELD NOTES -->
-  <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); border-bottom: 1px solid #b9b7ae;">
-    <div style="grid-column: span 6; padding: 20px; border-right: 1px solid #d9d7d0; display: flex; flex-direction: column; gap: 6px;">
-      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
-        <div class="sq" style="background: {{accent}};"></div>
-        <span class="lbl-ink">WRITING &nbsp;/&nbsp; NOTES &nbsp;/&nbsp; EXPERIMENTS</span>
-        <div class="rule-h" style="flex: 1;"></div>
-        <span class="lbl-ink" style="color: {{accent}};">VIEW ALL ↗</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 110px 1fr 24px; gap: 16px; padding: 14px 0; border-bottom: 1px solid #d9d7d0; align-items: start;">
-        <span class="lbl">MAY 12, 2026</span>
-        <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 13px; font-weight: 600;">On small models and small teams</span><span style="font-size: 11px; color: #6f6e69;">A long argument that small teams should ship more, not less.</span></div>
-        <span style="text-align: right;">→</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 110px 1fr 24px; gap: 16px; padding: 14px 0; border-bottom: 1px solid #d9d7d0; align-items: start;">
-        <span class="lbl">APR 02, 2026</span>
-        <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 13px; font-weight: 600;">The case against the "command palette"</span><span style="font-size: 11px; color: #6f6e69;">Command palettes are great until they replace the menu.</span></div>
-        <span style="text-align: right;">→</span>
-      </div>
-      <div style="display: grid; grid-template-columns: 110px 1fr 24px; gap: 16px; padding: 14px 0; border-bottom: 1px solid #d9d7d0; align-items: start;">
-        <span class="lbl">NOV 04, 2025</span>
-        <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 13px; font-weight: 600;">Designing for keyboards first</span><span style="font-size: 11px; color: #6f6e69;">Six rules for keyboard-first interfaces that do not suck for mouse users.</span></div>
-        <span style="text-align: right;">→</span>
-      </div>
-    </div>
-
-    <div style="grid-column: span 6; padding: 20px; display: grid; grid-template-columns: 1fr 220px 90px; gap: 20px;">
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <div style="display: flex; align-items: center; gap: 12px;"><div class="sq" style="background: {{accent}};"></div><span class="lbl-ink">FIELD NOTES</span></div>
-        <div style="font-size: 12px; line-height: 1.7; white-space: pre-line;">Better tools.
-Kinder systems.
-A more beautiful internet.</div>
-        <div class="lbl" style="white-space: pre-line; margin-top: auto;">JARED TUCKER
-FORWARD DEPLOYED ENGINEER
-SYSTEMS ARCHITECT</div>
-        <div class="lbl" style="color: {{accent}};">// JT.2026</div>
-      </div>
-      <div style="position: relative; height: 220px; padding: 8px;"><div class="c c-tl c-tall"></div><div class="c c-tr c-tall"></div><div class="c c-bl c-tall"></div><div class="c c-br c-tall"></div><div style="height: 100%; overflow: hidden;">
-<svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="display:block">
-  <defs>
-    <pattern id="fnf1" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="0.7" fill="#8e8d86"/></pattern>
-    <pattern id="fnf2" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#3d3d3a"/></pattern>
-    <pattern id="fnf3" width="3" height="3" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.15" fill="#141412"/></pattern>
-  </defs>
-  <rect width="200" height="200" fill="#f4f3ef"/>
-  <rect width="200" height="200" fill="url(#fnf1)"/>
-  <polygon points="0,120 40,70 80,110 120,60 160,100 200,80 200,200 0,200" fill="url(#fnf2)"/>
-  <g fill="url(#fnf3)">
-    <polygon points="10,200 25,90 40,200"/><polygon points="50,200 68,110 86,200"/><polygon points="95,200 112,75 129,200"/>
-    <polygon points="140,200 156,105 172,200"/><polygon points="170,200 186,120 200,200"/>
-  </g>
-  <rect x="0" y="150" width="200" height="50" fill="url(#fnf3)" opacity="0.6"/>
-</svg>
-      </div></div>
-      <div class="lbl" style="display: flex; flex-direction: column; justify-content: space-between; padding: 6px 0;">
-        <span style="white-space: pre-line;">·
-·
-·</span>
-        <span style="white-space: pre-line;">SOME
-PLACES
-MAKE
-BETTER
-PEOPLE.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <div style="display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 20px;">
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <span class="lbl-ink" style="font-weight: 600;">JT</span>
-      <div class="rule-v" style="height: 16px;"></div>
-      <span class="lbl">DESIGN BETTER SYSTEMS FOR A BRIGHTER TOMORROW.</span>
-    </div>
-    <div style="display: flex; gap: 6px; align-items: center;">
-      <div class="sq" style="background: {{accent}};"></div><div class="sq" style="background: #d9d7d0;"></div><div class="sq" style="background: #d9d7d0;"></div><div class="sq" style="background: #d9d7d0;"></div><div class="sq" style="background: #d9d7d0;"></div><div class="sq" style="background: #d9d7d0;"></div>
-    </div>
-    <div class="lbl" style="display: flex; gap: 14px;">
-      <span>MELBOURNE, AU</span><span>//</span><span style="color: #141412;">jared@rmr.studio</span><span>//</span><span>[ X ]</span><span>[ GH ]</span><span>[ IN ]</span>
-    </div>
-  </div>
-
-</div>
-</div>
-</x-dc>
-<script data-dc-script data-props='{"accent":{"editor":"color","default":"#1d3bff","options":["#1d3bff","#0f22b8","#e2492b","#141412"]}}'>
-class Component extends DCLogic {
-  renderVals() {
-    return { accent: this.props.accent ?? '#1d3bff' };
-  }
-}
-</script>
-</body>
+                    <!-- FOOTER -->
+                    <div
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            height: 44px;
+                            padding: 0 20px;
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                gap: 16px;
+                            "
+                        >
+                            <span class="lbl-ink" style="font-weight: 600"
+                                >JT</span
+                            >
+                            <div class="rule-v" style="height: 16px"></div>
+                            <span class="lbl"
+                                >DESIGN BETTER SYSTEMS FOR A BRIGHTER
+                                TOMORROW.</span
+                            >
+                        </div>
+                        <div
+                            style="display: flex; gap: 6px; align-items: center"
+                        >
+                            <div
+                                class="sq"
+                                style="background: {{accent}};"
+                            ></div>
+                            <div class="sq" style="background: #d9d7d0"></div>
+                            <div class="sq" style="background: #d9d7d0"></div>
+                            <div class="sq" style="background: #d9d7d0"></div>
+                            <div class="sq" style="background: #d9d7d0"></div>
+                            <div class="sq" style="background: #d9d7d0"></div>
+                        </div>
+                        <div class="lbl" style="display: flex; gap: 14px">
+                            <span>MELBOURNE, AU</span><span>//</span
+                            ><span style="color: #141412">jared@rmr.studio</span
+                            ><span>//</span><span>[ X ]</span><span>[ GH ]</span
+                            ><span>[ IN ]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </x-dc>
+        <script
+            data-dc-script
+            data-props='{"accent":{"editor":"color","default":"#1d3bff","options":["#1d3bff","#0f22b8","#e2492b","#141412"]}}'
+        >
+            class Component extends DCLogic {
+                renderVals() {
+                    return { accent: this.props.accent ?? "#1d3bff" };
+                }
+            }
+        </script>
+    </body>
 </html>
