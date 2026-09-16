@@ -8,12 +8,12 @@ export const CtaSection: FC = () => {
   return (
     <section
       id="contact"
-      className="jt-band flex flex-wrap items-center justify-between gap-6"
+      className="band flex flex-wrap items-center justify-between gap-6"
       style={{ padding: "24px 32px", borderBottom: "none" }}
     >
       <div className="flex flex-col gap-1.5">
         <Label>Currently open to new work &mdash; 2026</Label>
-        <p className="jt-display jt-display--heading">
+        <p className="display display--heading">
           Have something worth building?
         </p>
       </div>
@@ -21,7 +21,7 @@ export const CtaSection: FC = () => {
         <Button variant="fill" href={`mailto:${contact.email}`} keyHint="E">
           {contact.email}
         </Button>
-        <Button variant="accent" href={landing.github}>
+        <Button variant="accent" href={landing.github} target="_blank">
           GitHub
         </Button>
       </div>
