@@ -13,14 +13,14 @@ export interface KeyValueProps {
 
 /** Definition list of key/value rows, with an optional live indicator dot. */
 export const KeyValue: FC<KeyValueProps> = ({ rows, className, style }) => {
-  const classes = ['jt-kv', className].filter(Boolean).join(' ');
+  const classes = ['kv', className].filter(Boolean).join(' ');
   return (
     <dl className={classes} style={style}>
       {rows.map((row) => (
         <Fragment key={row.key}>
           <dt>{row.key}:</dt>
           <dd>
-            {row.live && <span className="jt-live" />}
+            {row.live && <span className="live" />}
             {row.value}
           </dd>
         </Fragment>

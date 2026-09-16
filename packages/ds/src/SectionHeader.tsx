@@ -16,12 +16,12 @@ export interface SectionHeaderProps {
 
 /** Section title row with a marker, a rule, and an optional action link. */
 export const SectionHeader: FC<SectionHeaderProps> = ({ title, action, className, style }) => {
-  const classes = ['jt-section-header', className].filter(Boolean).join(' ');
+  const classes = ['section-header', className].filter(Boolean).join(' ');
   return (
     <div className={classes} style={style}>
       <Marker />
-      <span className="jt-label jt-label--ink">{title}</span>
-      <span className="jt-rule" />
+      <span className="label label--ink">{title}</span>
+      <span className="rule" />
       {action && <ArrowLink href={action.href}>{action.label}</ArrowLink>}
     </div>
   );

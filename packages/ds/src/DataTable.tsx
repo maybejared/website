@@ -14,13 +14,13 @@ export interface DataTableProps {
 
 /** Simple data table with left- or right-aligned columns. */
 export const DataTable: FC<DataTableProps> = ({ columns, rows, className, style }) => {
-  const classes = ['jt-table', className].filter(Boolean).join(' ');
+  const classes = ['data-table', className].filter(Boolean).join(' ');
   return (
     <table className={classes} style={style}>
       <thead>
         <tr>
           {columns.map((column) => (
-            <th key={column.key} className={['jt-label', column.align === 'right' && 'jt-table--right'].filter(Boolean).join(' ')}>
+            <th key={column.key} className={['label', column.align === 'right' && 'data-table--right'].filter(Boolean).join(' ')}>
               {column.label}
             </th>
           ))}
@@ -30,7 +30,7 @@ export const DataTable: FC<DataTableProps> = ({ columns, rows, className, style 
         {rows.map((row, rowIndex) => (
           <tr key={rowIndex}>
             {columns.map((column) => (
-              <td key={column.key} className={column.align === 'right' ? 'jt-table--right' : undefined}>
+              <td key={column.key} className={column.align === 'right' ? 'data-table--right' : undefined}>
                 {row[column.key]}
               </td>
             ))}

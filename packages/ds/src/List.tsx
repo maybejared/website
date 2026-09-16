@@ -12,7 +12,7 @@ export interface ListProps {
 
 /** Vertical container for ListRow items. */
 export const List: FC<ListProps> = ({ children, className, style }) => {
-  const classes = ['jt-list', className].filter(Boolean).join(' ');
+  const classes = ['list', className].filter(Boolean).join(' ');
   return (
     <div className={classes} style={style}>
       {children}

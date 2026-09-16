@@ -12,10 +12,10 @@ export interface CrosshairProps {
 
 /** Crosshair mark with a centered dot, sized in pixels. */
 export const Crosshair: FC<CrosshairProps> = ({ size = 80, className, style }) => {
-  const classes = ['jt-crosshair', className].filter(Boolean).join(' ');
+  const classes = ['crosshair', className].filter(Boolean).join(' ');
   return (
     <span className={classes} style={{ width: size, height: size, ...style }}>
-      <span className="jt-crosshair__dot" />
+      <span className="crosshair__dot" />
     </span>
   );
 };

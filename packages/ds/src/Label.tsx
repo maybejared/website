@@ -20,10 +20,10 @@ export interface LabelProps {
 export const Label: FC<LabelProps> = ({ as = 'span', tone = 'muted', vertical, children, className, style }) => {
   const Tag = as;
   const classes = [
-    'jt-label',
-    tone === 'ink' && 'jt-label--ink',
-    tone === 'accent' && 'jt-label--accent',
-    vertical && 'jt-label--vertical',
+    'label',
+    tone === 'ink' && 'label--ink',
+    tone === 'accent' && 'label--accent',
+    vertical && 'label--vertical',
     className,
   ]
     .filter(Boolean)

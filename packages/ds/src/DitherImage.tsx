@@ -20,13 +20,13 @@ export interface DitherImageProps {
 
 /** Image with a dither, halftone, or color treatment that resolves on hover. */
 export const DitherImage: FC<DitherImageProps> = ({ src, alt, mode = 'dither', caption, height, className, style }) => {
-  const classes = ['jt-dither', mode === 'halftone' && 'jt-dither--halftone', mode === 'color' && 'jt-dither--color', className]
+  const classes = ['dither', mode === 'halftone' && 'dither--halftone', mode === 'color' && 'dither--color', className]
     .filter(Boolean)
     .join(' ');
   return (
     <div className={classes} style={{ height, ...style }}>
       <img src={src} alt={alt} />
-      {caption && <span className="jt-label jt-label--ink jt-dither__caption">{caption}</span>}
+      {caption && <span className="label label--ink dither__caption">{caption}</span>}
     </div>
   );
 };

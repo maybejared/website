@@ -18,15 +18,15 @@ export interface ListRowProps {
 
 /** Single clickable row showing a date, title, and optional description. */
 export const ListRow: FC<ListRowProps> = ({ date, title, description, href, className, style }) => {
-  const classes = ['jt-list-row', className].filter(Boolean).join(' ');
+  const classes = ['list-row', className].filter(Boolean).join(' ');
   return (
     <a className={classes} style={style} href={href}>
-      <span className="jt-label jt-list-row__date">{date}</span>
-      <span className="jt-list-row__body">
-        <span className="jt-title">{title}</span>
-        {description && <span className="jt-list-row__desc">{description}</span>}
+      <span className="label list-row__date">{date}</span>
+      <span className="list-row__body">
+        <span className="title">{title}</span>
+        {description && <span className="list-row__desc">{description}</span>}
       </span>
-      <span className="jt-list-row__arrow">→</span>
+      <span className="list-row__arrow">→</span>
     </a>
   );
 };

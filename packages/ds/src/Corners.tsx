@@ -14,13 +14,13 @@ export interface CornersProps {
 
 /** Wraps children with four bracket-style corner marks. */
 export const Corners: FC<CornersProps> = ({ variant = 'square', children, className, style }) => {
-  const classes = ['jt-corners', variant === 'tall' && 'jt-corners--tall', className].filter(Boolean).join(' ');
+  const classes = ['corners', variant === 'tall' && 'corners--tall', className].filter(Boolean).join(' ');
   return (
     <div className={classes} style={style}>
-      <span className="jt-corner jt-corner--tl" />
-      <span className="jt-corner jt-corner--tr" />
-      <span className="jt-corner jt-corner--bl" />
-      <span className="jt-corner jt-corner--br" />
+      <span className="corner corner--tl" />
+      <span className="corner corner--tr" />
+      <span className="corner corner--bl" />
+      <span className="corner corner--br" />
       {children}
     </div>
   );

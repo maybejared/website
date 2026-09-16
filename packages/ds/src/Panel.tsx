@@ -21,22 +21,22 @@ export interface PanelProps {
 
 /** Bordered panel with an optional head, body, and footer. */
 export const Panel: FC<PanelProps> = ({ title, index, ink, footer, children, className, style }) => {
-  const classes = ['jt-panel', ink && 'jt-panel--ink', className].filter(Boolean).join(' ');
+  const classes = ['panel', ink && 'panel--ink', className].filter(Boolean).join(' ');
   return (
     <section className={classes} style={style}>
       {title && (
-        <div className="jt-panel__head">
+        <div className="panel__head">
           <span style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <Marker />
-            <span className="jt-label jt-label--ink">{title}</span>
+            <span className="label label--ink">{title}</span>
           </span>
-          {index && <span className="jt-label jt-label--accent">{index}</span>}
+          {index && <span className="label label--accent">{index}</span>}
         </div>
       )}
       {children}
       {footer && (
-        <div className="jt-panel__foot">
-          <span className="jt-rule" style={{ flex: 'none', height: 1 }} />
+        <div className="panel__foot">
+          <span className="rule" style={{ flex: 'none', height: 1 }} />
           {footer}
         </div>
       )}

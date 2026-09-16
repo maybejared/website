@@ -13,7 +13,7 @@ interface Props {
 
 const tick: CSSProperties = {
   position: "absolute",
-  background: "var(--jt-ink)",
+  background: "var(--color-ink)",
   zIndex: 4,
 };
 
@@ -34,7 +34,7 @@ export const SidebarPanel: FC<Props> = ({
 }) => (
   <div
     className={cn(
-      "relative flex flex-col gap-3 border-b border-(--jt-border) p-5",
+      "relative flex flex-col gap-3 border-b border-border p-5",
       className,
     )}
   >

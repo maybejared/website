@@ -13,7 +13,7 @@ const columns = [
 export const ExperienceSection: FC = () => (
   <section
     id="experience"
-    className="jt-band flex flex-col gap-3.5"
+    className="band flex flex-col gap-3.5"
     style={{ padding: "24px 32px 28px" }}
   >
     <SectionHeader title="Experience" />
@@ -25,8 +25,8 @@ export const ExperienceSection: FC = () => (
           year: entry.date,
           role: (
             <span className="flex flex-col gap-1">
-              <span className="jt-title capitalize">{entry.role}</span>
-              <span className="max-w-[48ch] text-(--jt-ink-3)">
+              <span className="title capitalize">{entry.role}</span>
+              <span className="max-w-[48ch] text-(--color-ink-3)">
                 {entry.detail}
               </span>
             </span>

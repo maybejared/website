@@ -19,30 +19,30 @@ export interface NavProps {
 
 /** Top navigation bar with a brand mark, items, and an optional call to action. */
 export const Nav: FC<NavProps> = ({ brand, tagline, items, cta, className, style }) => {
-  const classes = ['jt-nav', className].filter(Boolean).join(' ');
+  const classes = ['nav', className].filter(Boolean).join(' ');
   return (
     <nav className={classes} style={style}>
-      <div className="jt-nav__brand">
+      <div className="nav__brand">
         <Marker />
-        <span className="jt-label jt-label--ink" style={{ fontWeight: 600 }}>
+        <span className="label label--ink" style={{ fontWeight: 600 }}>
           {brand}
         </span>
-        {tagline && <span className="jt-label">{tagline}</span>}
+        {tagline && <span className="label">{tagline}</span>}
       </div>
-      <div className="jt-nav__items">
+      <div className="nav__items">
         {items.map((item) => (
           <a
             key={item.href}
-            className={['jt-nav__item', 'jt-label', item.active && 'jt-nav__item--active'].filter(Boolean).join(' ')}
+            className={['nav__item', 'label', item.active && 'nav__item--active'].filter(Boolean).join(' ')}
             href={item.href}
           >
-            <span className="jt-nav__index">[{item.index}]</span> {item.label}
+            <span className="nav__index">[{item.index}]</span> {item.label}
           </a>
         ))}
         {cta && (
           <>
-            <span className="jt-rule jt-rule--v" style={{ height: 16 }} />
-            <a className="jt-label jt-label--accent" href={cta.href}>
+            <span className="rule rule--v" style={{ height: 16 }} />
+            <a className="label label--accent" href={cta.href}>
               {cta.label} ↗
             </a>
           </>

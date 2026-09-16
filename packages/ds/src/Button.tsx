@@ -8,6 +8,8 @@ export interface ButtonProps {
   keyHint?: string;
   /** When set, renders an anchor instead of a button. */
   href?: string;
+  /** Opens the link in a new tab; rel is set for you. */
+  target?: '_blank';
   /** Whether the button is disabled. */
   disabled?: boolean;
   /** Click handler for the button. */
@@ -21,19 +23,27 @@ export interface ButtonProps {
 }
 
 /** Bordered mono button, rendered as a link or a native button. */
-export const Button: FC<ButtonProps> = ({ variant = 'outline', keyHint, href, disabled, onClick, children, className, style }) => {
-  const classes = ['jt-btn', variant === 'fill' && 'jt-btn--fill', variant === 'accent' && 'jt-btn--accent', className]
+export const Button: FC<ButtonProps> = ({ variant = 'outline', keyHint, href, target, disabled, onClick, children, className, style }) => {
+  const classes = ['btn', variant === 'fill' && 'btn--fill', variant === 'accent' && 'btn--accent', className]
     .filter(Boolean)
     .join(' ');
   const content = (
     <>
       {children}
-      {keyHint && <span className="jt-key">{keyHint}</span>}
+      {keyHint && <span className="key">{keyHint}</span>}
     </>
   );
   if (href) {
     return (
-      <a className={classes} style={style} href={href} aria-disabled={disabled ? 'true' : undefined} onClick={onClick}>
+      <a
+        className={classes}
+        style={style}
+        href={href}
+        target={target}
+        rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+        aria-disabled={disabled ? 'true' : undefined}
+        onClick={onClick}
+      >
         {content}
       </a>
     );

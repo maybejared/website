@@ -10,7 +10,7 @@ interface Props {
 
 export const PostList: FC<Props> = ({ posts }) => (
   <section
-    className="jt-band flex flex-1 flex-col gap-3"
+    className="band flex flex-1 flex-col gap-3"
     style={{ padding: "24px 32px 28px" }}
   >
     <SectionHeader title="Writing / Notes / Experiments" />

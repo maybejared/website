@@ -24,22 +24,22 @@ export interface ProjectCardProps {
 
 /** Clickable project card with media, a title, tags, and a description. */
 export const ProjectCard: FC<ProjectCardProps> = ({ index, year, title, tags, description, href, media, className, style }) => {
-  const classes = ['jt-card', className].filter(Boolean).join(' ');
+  const classes = ['card', className].filter(Boolean).join(' ');
   return (
     <a className={classes} style={style} href={href}>
-      <div className="jt-card__media">
+      <div className="card__media">
         {media}
-        <span className="jt-label jt-label--accent jt-card__index">{index}</span>
-        <span className="jt-label jt-label--vertical jt-card__year">{year}</span>
-        <span className="jt-card__plus">+</span>
+        <span className="label label--accent card__index">{index}</span>
+        <span className="label label--vertical card__year">{year}</span>
+        <span className="card__plus">+</span>
       </div>
-      <div className="jt-card__body">
-        <span className="jt-card__title jt-title">
+      <div className="card__body">
+        <span className="card__title title">
           <span>{title}</span>
           <span>↗</span>
         </span>
-        <span className="jt-label">{tags.join('  /  ')}</span>
-        <p className="jt-body" style={{ fontSize: 11 }}>
+        <span className="label">{tags.join('  /  ')}</span>
+        <p className="body" style={{ fontSize: 11 }}>
           {description}
         </p>
       </div>

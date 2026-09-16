@@ -1,4 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
+@import "../packages/ds/src/styles.css";
 
 /* Sidebar and nav chrome: one step deeper than the sheet with a faint dot grid. */
 .site-chrome {
@@ -22,26 +24,70 @@
     right: -1px;
     left: -1px;
     height: 25px;
-    background: var(--jt-canvas);
-    border-bottom: 1px solid var(--jt-border);
+    background: var(--color-canvas);
+    border-bottom: 1px solid var(--color-border);
   }
 }
 
 /* Anchored sections land below the sticky nav. */
-.jt-band[id] {
-  scroll-margin-top: var(--jt-bar-h);
+.band[id] {
+  scroll-margin-top: var(--bar-h);
 }
 
 /* Below 1280px the tagline goes so the bar stays one line; phones also wrap the items. */
 @media (max-width: 1279px) {
-  .jt-nav__brand .jt-label:not(.jt-label--ink) {
+  .nav__brand .label:not(.label--ink) {
     display: none;
   }
 }
 @media (max-width: 767px) {
-  .jt-nav__items {
+  .nav__items {
     flex-wrap: wrap;
     white-space: normal;
     gap: 12px 16px;
+  }
+}
+
+/* Hero portrait sits on the panel, whole image kept, caption chip readable over the texture. */
+.hero-portrait {
+  background: transparent;
+}
+.hero-portrait .dither__caption {
+  background: var(--color-panel);
+}
+.hero-portrait img {
+  object-fit: contain;
+}
+
+/* Environment hero bleeds to the section's right edge, so the right corner caps go. */
+.env-corners {
+  padding-right: 0;
+}
+.env-corners .corner--tr,
+.env-corners .corner--br {
+  display: none;
+}
+/* Soft top edge so the image does not cut off hard against the sheet. */
+.env-hero {
+  background: transparent;
+  mask-image: linear-gradient(to bottom, transparent, #000 40px);
+}
+
+/* Below md the portrait leaves the grid and sits faintly behind the hero copy, top right, as texture. */
+@media (max-width: 767px) {
+  .hero-band {
+    position: relative;
+    isolation: isolate;
+  }
+  .hero-band::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--hero-portrait) right top / 80% auto no-repeat;
+    opacity: 0.08;
+    -webkit-mask-image: radial-gradient(circle at top right, #000 20%, transparent 75%);
+    mask-image: radial-gradient(circle at top right, #000 20%, transparent 75%);
+    pointer-events: none;
   }
 }

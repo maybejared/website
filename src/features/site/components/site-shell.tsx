@@ -14,7 +14,7 @@ interface Props {
 
 /** One bordered sheet shared by every route: sticky nav, sidebar, main, CTA, landscape, footer. */
 export const SiteShell: FC<Props> = ({ posts, children }) => (
-  <div className="jt-sheet">
+  <div className="sheet mx-auto w-full max-w-[1440px]">
     <SiteNav />
     <div className="grid grid-cols-1 lg:grid-cols-[288px_minmax(0,1fr)] lg:grid-rows-[1fr_auto]">
       <Sidebar posts={posts} />
