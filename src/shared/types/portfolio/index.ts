@@ -1,27 +1,5 @@
 // Portfolio domain types. Hand-written barrel — the single source of truth for
-// the shape of the terminal portfolio's content and navigation model.
-
-export type SectionKey =
-  | "about"
-  | "experience"
-  | "projects"
-  | "posts"
-  | "contact";
-
-export type SchemeName =
-  | "beige"
-  | "phosphor"
-  | "amber"
-  | "blueprint"
-  | "mono"
-  | "moonlit";
-
-export interface Tab {
-  key: SectionKey;
-  label: string;
-  hasList: boolean;
-  href: string;
-}
+// the shape of the site's content.
 
 export interface PortfolioUser {
   handle: string;
