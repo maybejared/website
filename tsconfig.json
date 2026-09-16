@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@jt/ds": ["./packages/ds/src/index.ts"]
     }
   },
   "include": [
