@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+body { margin: 0; background: #f4f3ef; color: #141412; font-family: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace; font-size: 12px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: #1d3bff; text-decoration: none; } a:hover { color: #0f22b8; }
+.display { font-family: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.03em; }
+.lbl { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #6f6e69; }
+.lbl-ink { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #141412; }
+.sq { width: 8px; height: 8px; background: #1d3bff; flex: none; }
+.c { position: absolute; border-color: #141412; border-style: solid; width: 24px; height: 24px; }
+.c-tl { top: 0; left: 0; border-width: 1px 0 0 1px; }
+.c-tr { top: 0; right: 0; border-width: 1px 1px 0 0; }
+.c-bl { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
+.c-br { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
+.c-tall { width: 20px; height: 64px; }
+.graph { background-image: radial-gradient(#c9c7bf 0.7px, transparent 0.8px); background-size: 12px 12px; }
+.rule-v { width: 1px; background: #d9d7d0; align-self: stretch; }
+.rule-h { height: 1px; background: #d9d7d0; }
+.vert { writing-mode: vertical-rl; transform: rotate(180deg); }
+.btn { display: inline-flex; align-items: center; gap: 10px; height: 32px; padding: 0 12px; border: 1px solid #141412; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #141412; background: transparent; }
+.btn-fill { background: #141412; color: #f4f3ef; }
+.btn-blue { border-color: #1d3bff; color: #1d3bff; }
+.key { font-size: 9px; padding: 1px 4px; border: 1px solid currentColor; opacity: 0.7; }
+  .sw { display: flex; flex-direction: column; gap: 8px; }
+  .chip { height: 72px; border: 1px solid #b9b7ae; }
+  .row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; padding: 20px 0; border-bottom: 1px solid #d9d7d0; align-items: baseline; }
+  </style>
+</helmet>
+<div style="width: 1100px; min-height: 2200px; background: #f4f3ef; padding: 24px; box-sizing: border-box;">
+<div style="border: 1px solid #b9b7ae; background: #f8f7f4; display: flex; flex-direction: column;">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 20px; border-bottom: 1px solid #b9b7ae;">
+    <div style="display: flex; align-items: center; gap: 12px;"><div class="sq"></div><span class="lbl-ink">DESIGN SYSTEM &nbsp;·&nbsp; FOUNDATIONS</span></div>
+    <span class="lbl">JT.DS &nbsp;//&nbsp; V01 &nbsp;//&nbsp; 2026-09-15</span>
+  </div>
+
+  <div style="padding: 32px 28px 28px; border-bottom: 1px solid #b9b7ae; display: flex; flex-direction: column; gap: 14px;">
+    <div class="lbl">00 / PRINCIPLES</div>
+    <h1 class="display" style="margin: 0; font-size: 64px; line-height: 0.95; font-weight: 800;">Technical document,<br>personal archive.</h1>
+    <p style="margin: 0; max-width: 620px; font-size: 12px; line-height: 1.7; color: #3d3d3a;">One document, many panels. Every container is a 1px-bordered rectangle on a warm off-white sheet. Grotesk display type at extreme scale; monospace for everything that informs. Blue marks the active, the numbered and the interactive, never a surface. Environmental imagery renders through the system as dither and halftone.</p>
+  </div>
+
+  <!-- COLOR -->
+  <div style="padding: 24px 28px; border-bottom: 1px solid #b9b7ae; display: flex; flex-direction: column; gap: 18px;">
+    <div style="display: flex; align-items: center; gap: 16px;"><span class="lbl-ink">01 / COLOUR</span><div class="rule-h" style="flex: 1;"></div><span class="lbl">8 TOKENS</span></div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+      <div class="sw"><div class="chip" style="background: #f4f3ef;"></div><span class="lbl-ink">canvas</span><span class="lbl">#F4F3EF · page ground</span></div>
+      <div class="sw"><div class="chip" style="background: #f8f7f4;"></div><span class="lbl-ink">panel</span><span class="lbl">#F8F7F4 · bordered panels</span></div>
+      <div class="sw"><div class="chip" style="background: #d9d7d0;"></div><span class="lbl-ink">rule</span><span class="lbl">#D9D7D0 · inner dividers</span></div>
+      <div class="sw"><div class="chip" style="background: #b9b7ae;"></div><span class="lbl-ink">border</span><span class="lbl">#B9B7AE · panel borders</span></div>
+      <div class="sw"><div class="chip" style="background: #6f6e69;"></div><span class="lbl-ink">ink-3</span><span class="lbl">#6F6E69 · labels, metadata</span></div>
+      <div class="sw"><div class="chip" style="background: #3d3d3a;"></div><span class="lbl-ink">ink-2</span><span class="lbl">#3D3D3A · body copy</span></div>
+      <div class="sw"><div class="chip" style="background: #141412;"></div><span class="lbl-ink">ink</span><span class="lbl">#141412 · headings, marks</span></div>
+      <div class="sw"><div class="chip" style="background: #1d3bff;"></div><span class="lbl-ink" style="color: #1d3bff;">cobalt</span><span class="lbl">#1D3BFF · accent, active, numbers</span></div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+      <div class="sw"><div class="chip" style="height: 32px; background: #0f22b8;"></div><span class="lbl">cobalt-deep #0F22B8 · hover</span></div>
+      <div class="sw"><div class="chip" style="height: 32px; background: #dfe4ff;"></div><span class="lbl">cobalt-tint #DFE4FF · selection only</span></div>
+      <div class="sw"><div class="chip" style="height: 32px; background: #2f9e44;"></div><span class="lbl">status-live #2F9E44 · 8px dot only</span></div>
+      <div class="sw"><div class="chip" style="height: 32px; background: #e2492b;"></div><span class="lbl">signal #E2492B · errors, rare</span></div>
+    </div>
+    <div class="lbl" style="color: #3d3d3a;">RULE: images and image bands carry corner brackets only, never a full border. Blue never fills an area larger than 12 × 12px except in the crosshair marker and highlighted headline text. No gradients. No shadows. No radii.</div>
+  </div>
+
+  <!-- TYPE -->
+  <div style="padding: 24px 28px; border-bottom: 1px solid #b9b7ae; display: flex; flex-direction: column; gap: 4px;">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;"><span class="lbl-ink">02 / TYPOGRAPHY</span><div class="rule-h" style="flex: 1;"></div><span class="lbl">INTER TIGHT + IBM PLEX MONO</span></div>
+    <div class="row"><span class="lbl" style="white-space: pre-line;">DISPLAY / HERO
+Inter Tight 800
+116 / 0.92 / -0.03em</span><span class="display" style="font-size: 116px; line-height: 0.92; font-weight: 800;">Aa Jared</span></div>
+    <div class="row"><span class="lbl" style="white-space: pre-line;">DISPLAY / SECTION
+Inter Tight 800
+64 / 0.95 / -0.03em</span><span class="display" style="font-size: 64px; line-height: 0.95; font-weight: 800;">Field notes from the edge.</span></div>
+    <div class="row"><span class="lbl" style="white-space: pre-line;">HEADING
+Inter Tight 600
+32 / 1.1 / -0.02em</span><span class="display" style="font-size: 32px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em;">Systems that survive contact with people</span></div>
+    <div class="row"><span class="lbl" style="white-space: pre-line;">TITLE
+Plex Mono 600
+13 / 1.4</span><span style="font-size: 13px; font-weight: 600;">signal/cli — a terminal client for our IDE backend</span></div>
+    <div class="row"><span class="lbl" style="white-space: pre-line;">BODY
+Plex Mono 400
+12 / 1.7 · ink-2</span><span style="font-size: 12px; line-height: 1.7; color: #3d3d3a; max-width: 560px; display: block;">Small teams have a structural advantage that large teams spend enormous effort trying to recover: everyone can hold the whole system in their head at once.</span></div>
+    <div class="row"><span class="lbl" style="white-space: pre-line;">LABEL
+Plex Mono 400
+10 / 0.14em / UPPER</span><span class="lbl" style="display: flex; gap: 24px;"><span>01 / WORK</span><span>FIELD NOTES</span><span>SYSTEM</span><span>MAY 12, 2026</span><span>37.8136° S</span></span></div>
+    <div class="row" style="border-bottom: 0;"><span class="lbl" style="white-space: pre-line;">HIGHLIGHT
+cobalt fill on ink text
+box-decoration clone</span><span class="display" style="font-size: 40px; line-height: 1.1; font-weight: 800;"><span style="background: #1d3bff; color: #f4f3ef; padding: 0 8px; box-decoration-break: clone; -webkit-box-decoration-break: clone;">Start with the system.</span></span></div>
+  </div>
+
+  <!-- SPACING + GRID -->
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid #b9b7ae;">
+    <div style="padding: 24px 28px; border-right: 1px solid #d9d7d0; display: flex; flex-direction: column; gap: 16px;">
+      <span class="lbl-ink">03 / SPACING</span>
+      <div style="display: flex; align-items: flex-end; gap: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;"><div style="width: 4px; height: 4px; background: #141412;"></div><span class="lbl">4</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;"><div style="width: 8px; height: 8px; background: #141412;"></div><span class="lbl">8</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;"><div style="width: 12px; height: 12px; background: #141412;"></div><span class="lbl">12</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;"><div style="width: 16px; height: 16px; background: #141412;"></div><span class="lbl">16</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;"><div style="width: 20px; height: 20px; background: #141412;"></div><span class="lbl">20</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;"><div style="width: 24px; height: 24px; background: #141412;"></div><span class="lbl">24</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;"><div style="width: 32px; height: 32px; background: #141412;"></div><span class="lbl">32</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;"><div style="width: 48px; height: 48px; background: #1d3bff;"></div><span class="lbl">48</span></div>
+      </div>
+      <div class="lbl" style="color: #3d3d3a; white-space: pre-line;">PANEL PADDING 20 · HERO PADDING 28–32 · GAP 16
+NAV / FOOTER HEIGHT 44 · CONTROL HEIGHT 32
+PAGE GUTTER 24 · ONE OUTER BORDER, NO CARD SHADOWS</div>
+    </div>
+    <div style="padding: 24px 28px; display: flex; flex-direction: column; gap: 16px;">
+      <span class="lbl-ink">04 / GRID</span>
+      <div class="graph" style="height: 120px; border: 1px solid #b9b7ae; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; padding: 12px;">
+        <div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div><div style="background: #dfe4ff; border: 1px solid #1d3bff;"></div>
+      </div>
+      <div class="lbl" style="color: #3d3d3a; white-space: pre-line;">12 COLUMNS · 16 GUTTER · 1440 MAX
+GRAPH PAPER: 12px DOT, #C9C7BF, ONLY IN IMAGE BANDS AND DIAGRAM PANELS
+SECTIONS ARE PANELS SEPARATED BY 1px BORDER, NOT FLOATING CARDS</div>
+    </div>
+  </div>
+
+  <!-- MARKS -->
+  <div style="padding: 24px 28px; display: flex; flex-direction: column; gap: 18px;">
+    <div style="display: flex; align-items: center; gap: 16px;"><span class="lbl-ink">05 / MARKS &amp; ANNOTATION</span><div class="rule-h" style="flex: 1;"></div><span class="lbl">SPARSE. FUNCTIONAL. 1PX.</span></div>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;"><div style="position: relative; width: 80px; height: 80px;"><div class="c c-tl"></div><div class="c c-tr"></div><div class="c c-bl"></div><div class="c c-br"></div></div><span class="lbl">CORNERS · 24×24</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;"><div style="position: relative; width: 80px; height: 80px;"><div class="c c-tl c-tall"></div><div class="c c-tr c-tall"></div><div class="c c-bl c-tall"></div><div class="c c-br c-tall"></div></div><span class="lbl">CORNERS · 20×64</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;"><div style="position: relative; width: 56px; height: 56px;"><div style="position: absolute; left: 50%; top: 0; width: 1px; height: 100%; background: #1d3bff;"></div><div style="position: absolute; top: 50%; left: 0; height: 1px; width: 100%; background: #1d3bff;"></div><div style="position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; background: #1d3bff;"></div></div><span class="lbl">CROSSHAIR</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;"><div style="width: 56px; height: 56px; display: flex; align-items: center; gap: 6px;"><div class="sq"></div><div class="sq" style="background: #d9d7d0;"></div><div class="sq" style="background: #d9d7d0;"></div></div><span class="lbl">SQUARE / STEP</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;"><div style="width: 56px; height: 56px; display: flex; align-items: center; color: #1d3bff; font-size: 11px;">/ / / / / /</div><span class="lbl">HATCH</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;"><div style="width: 56px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #141412;"><span style="font-size: 10px;">|</span><span class="lbl">56</span><span style="font-size: 10px;">|</span></div><span class="lbl">MEASURE</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;"><div style="width: 56px; height: 56px; display: flex; flex-direction: column; justify-content: center; gap: 2px;" class="lbl"><span style="color: #1d3bff;">[01]</span><span>JT.2026</span><span>37.81° S</span></div><span class="lbl">INDEX / ID</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+</x-dc>
+</body>
+</html>

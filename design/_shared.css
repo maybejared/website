@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+body { margin: 0; background: #f4f3ef; color: #141412; font-family: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace; font-size: 12px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: #1d3bff; text-decoration: none; } a:hover { color: #0f22b8; }
+.display { font-family: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif; letter-spacing: -0.03em; }
+.lbl { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #6f6e69; }
+.lbl-ink { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #141412; }
+.sq { width: 8px; height: 8px; background: #1d3bff; flex: none; }
+.c { position: absolute; border-color: #141412; border-style: solid; width: 24px; height: 24px; }
+.c-tl { top: 0; left: 0; border-width: 1px 0 0 1px; }
+.c-tr { top: 0; right: 0; border-width: 1px 1px 0 0; }
+.c-bl { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
+.c-br { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
+.c-tall { width: 20px; height: 64px; }
+.graph { background-image: radial-gradient(#c9c7bf 0.7px, transparent 0.8px); background-size: 12px 12px; }
+.rule-v { width: 1px; background: #d9d7d0; align-self: stretch; }
+.rule-h { height: 1px; background: #d9d7d0; }
+.vert { writing-mode: vertical-rl; transform: rotate(180deg); }
+.btn { display: inline-flex; align-items: center; gap: 10px; height: 32px; padding: 0 12px; border: 1px solid #141412; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #141412; background: transparent; }
+.btn-fill { background: #141412; color: #f4f3ef; }
+.btn-blue { border-color: #1d3bff; color: #1d3bff; }
+.key { font-size: 9px; padding: 1px 4px; border: 1px solid currentColor; opacity: 0.7; }
