@@ -91,8 +91,28 @@ export interface PostDoc extends Post {
   headings: Heading[];
 }
 
+export interface ApproachItem {
+  title: string;
+  body: string;
+}
+
+/** Copy for the landing page sheet: hero, environment band, approach, footer. */
+export interface LandingContent {
+  kicker: string;
+  tagline: string;
+  roles: string;
+  statement: string;
+  quote: string;
+  coordinates: string;
+  github: string;
+  approach: ApproachItem[];
+  headline: string;
+  footerLine: string;
+}
+
 export interface PortfolioContent {
   user: PortfolioUser;
+  landing: LandingContent;
   about: AboutContent;
   now: NowContent;
   contact: Contact;

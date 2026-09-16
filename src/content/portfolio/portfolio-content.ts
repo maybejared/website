@@ -10,6 +10,33 @@ export const portfolioContent: PortfolioContent = {
     based: "melbourne, au — utc+10",
   },
 
+  landing: {
+    kicker: "Ideas for a brighter tomorrow",
+    tagline: "Software × Engineering × Systems",
+    roles: "Forward Deployed Engineer / Systems Architect",
+    statement:
+      "I design and build thoughtful products, tools, and systems at the intersection of technology, creativity, and a more human future.",
+    quote: "A more open,\nbeautiful internet.",
+    coordinates: "37.8136° S\n144.9631° E",
+    github: "https://github.com/Dawaad",
+    approach: [
+      {
+        title: "01 / Systems first",
+        body: "I start with the parts that repeat. A small, honest set of components beats a pile of one-off screens, and it keeps a product coherent as it grows.",
+      },
+      {
+        title: "02 / Build to learn",
+        body: "Prototypes answer questions documents argue about. I ship something rough early, put it in front of people, and let what I learn redirect the work.",
+      },
+      {
+        title: "03 / Environment matters",
+        body: "The places I spend time in shape the software I make. Calm, legible interfaces come from paying attention to calm, legible surroundings.",
+      },
+    ],
+    headline: "A more beautiful internet",
+    footerLine: "Design better systems for a brighter tomorrow.",
+  },
+
   about: {
     intro: [
       "i am a software engineer, bodybuilder and startup founder focused on architecting, designing and building both systems and my life. I want to research, explore and share everything about thinking better, living better and creating better.",
