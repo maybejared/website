@@ -9,7 +9,6 @@ export const portfolioContent: PortfolioContent = {
   },
 
   landing: {
-    kicker: "Ideas for a brighter tomorrow",
     tagline: "Software × Engineering × Systems",
     roles: "Forward Deployed Engineer / Systems Architect / Engineering Lead",
     statement:
@@ -17,10 +16,11 @@ export const portfolioContent: PortfolioContent = {
     quote: "Give to the world,\n and the world will one day give back.",
     coordinates: "37.8136° S\n144.9631° E",
     github: "https://github.com/Dawaad",
+    linkedin: "https://www.linkedin.com/in/ibuildshitgood/",
     approach: [
       {
         title: "01 / Systems first",
-        body: "I start with the parts that repeat. A small, honest set of components beats a pile of one-off screens, and it keeps a product coherent as it grows.",
+        body: "I always start with the understanding of where a system sits in the bigger picture. How everything is connected and how things can be reused ",
       },
       {
         title: "02 / Build to learn",
@@ -32,7 +32,7 @@ export const portfolioContent: PortfolioContent = {
       },
     ],
     headline: "A more beautiful internet",
-    footerLine: "Design better systems for a brighter tomorrow.",
+    footerLine: "Beautiful engineering for a more beautiful internet.",
   },
 
   about: {
@@ -67,49 +67,39 @@ export const portfolioContent: PortfolioContent = {
 
   experience: [
     {
-      slug: "CTGT (YC F24)",
+      slug: "ctgt",
       date: "2026 — now",
-      org: "CTGT",
+      org: "CTGT (YC F24)",
       role: "Engineering Lead",
       tag: "[engineering]",
       detail:
         "YC backed startup building the deterministic layer for frontier intelligence & AI Governance. Leading a team, with end-to-end ownership of architecture, technical design, implementation infrastructure, and delivery across the company’s core platform and application",
     },
     {
-      slug: "Lyra",
+      slug: "lyra",
       date: "2026 — now",
-      org: "lyra",
+      org: "Lyra",
       role: "Forward Deployed Engineer",
       tag: "[engineering]",
       detail: "Shipping exceptional products for Silicon Valley startups",
     },
     {
-      slug: "cranium",
-      date: "2026 — now",
-      org: "cranium",
-      role: "technical founder",
-      tag: "[architecture]",
-      detail:
-        "The Open Sourced Self Adapting Hive Mind for Engineering Teams. Building the allignment substrate for AI-Augmented engineering teams. Infrastructure that embeds system design, team standards and interactions as context for agentic development and orchestration.",
-    },
-    {
       slug: "leidos",
-      date: "2023 — 2026",
-      org: "leidos",
+      date: "2024 — 2026",
+      org: "Leidos",
       role: "software engineer",
       tag: "[engineering]",
       detail:
-        "Solving the toughest challenges in government intelligence. Worked across a major engineering team to transform and modernise critical government capabilities. Lead the design and development of some critical domains and functionality with distributed systems, data pipelines, and internal tools.",
+        "Solving the toughest challenges in government intelligence. Worked across a major engineering team to transform and modernise critical government capabilities. Lead the design and development of core domains and functionality with distributed systems, data pipelines, and internal tools.",
     },
     {
       slug: "monash",
-      date: "2018 — 2022",
-      org: "monash university",
+      date: "2021 — 2023",
+      org: "Monash University",
       role: "student",
       tag: "[education]",
       detail:
         "Bachelor of Computer Science. This is where I learned to code, and where I fell in love with systems design and architecture.",
     },
   ],
-
 };

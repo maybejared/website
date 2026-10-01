@@ -1,4 +1,4 @@
-import { Label, Marker } from "@jt/ds";
+import { Label, Marker } from "@/src/shared/ui";
 import type { FC } from "react";
 
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
@@ -28,6 +28,10 @@ export const SiteFooter: FC = () => {
         <Label>
           <a href={landing.github} target="_blank" rel="noopener noreferrer">
             [ gh ]
+          </a>{" "}
+          &nbsp;{" "}
+          <a href={landing.linkedin} target="_blank" rel="noopener noreferrer">
+            [ in ]
           </a>{" "}
           &nbsp; <a href={`mailto:${contact.email}`}>[ @ ]</a>
         </Label>

@@ -1,9 +1,9 @@
-import { Button, Corners, DitherImage, KeyValue, Label, Panel } from "@jt/ds";
+import { Button, Corners, DitherImage, KeyValue, Label, Panel } from "@/src/shared/ui";
 import type { CSSProperties, FC } from "react";
 
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
-import { cdnUrl } from "@/src/shared/lib/cdn";
 import { Hotkeys } from "@/src/features/site/components/hotkeys";
+import { cdnUrl } from "@/src/shared/lib/cdn";
 
 export const HeroSection: FC = () => {
   const { user, landing, contact, about } = portfolioContent;
@@ -24,11 +24,10 @@ export const HeroSection: FC = () => {
     >
       <Hotkeys keys={{ w: "#work", e: mailto }} />
       <div className="flex flex-col gap-4">
-        <Label>{landing.kicker} &nbsp;//</Label>
         <h1 className="display text-[clamp(46px,7.5vw,112px)] capitalize">
           {user.name}
         </h1>
-        <Label tone="ink" style={{ letterSpacing: "0.18em" }}>
+        <Label tone="ink" className="tracking-[0.18em]">
           {landing.roles}
         </Label>
         <div className="hatch">/ / / / / / / / / / / /</div>
@@ -72,8 +71,7 @@ export const HeroSection: FC = () => {
           <Label
             as="p"
             tone="ink"
-            className="whitespace-pre-line"
-            style={{ lineHeight: 1.8 }}
+            className="whitespace-pre-line leading-[1.8]"
           >
             &ldquo;{landing.quote}&rdquo;
           </Label>

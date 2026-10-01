@@ -1,4 +1,3 @@
-import { Label, Marker } from "@jt/ds";
 import Image from "next/image";
 import type { FC } from "react";
 
@@ -16,18 +15,9 @@ export const LandscapeBand: FC = () => {
         sizes="100vw"
         className="object-cover object-[50%_40%]"
       />
-      <div className="relative flex h-[460px] flex-col justify-between px-8 py-6 max-md:h-[320px] max-md:px-5">
-        <div className="flex items-center gap-2.5">
-          <Marker style={{ background: "oklch(0.66 0.19 46)" }} />
-          <Label tone="ink" className="bg-(--color-canvas) px-[7px] py-[3px]">
-            {landing.kicker}
-          </Label>
-        </div>
+      <div className="relative flex min-h-[460px] flex-col justify-end gap-10 px-8 py-6 max-md:min-h-[320px] max-md:px-5">
         <div className="flex flex-col items-start gap-3.5">
-          <Label tone="ink" className="bg-(--color-canvas) px-[7px] py-[3px]">
-            Systems for a brighter tomorrow
-          </Label>
-          <h2 className="display text-[clamp(40px,8vw,104px)]">
+          <h2 className="display text-[clamp(40px,8vw,104px)] leading-[1.25]">
             <span className="bg-(--color-canvas) px-2.5 [box-decoration-break:clone]">
               {landing.headline}
             </span>
