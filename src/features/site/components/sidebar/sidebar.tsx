@@ -1,9 +1,8 @@
-import { Label } from "@jt/ds";
+import { Label } from "@/src/shared/ui";
 import type { FC } from "react";
 
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";
 import { SidebarPanel } from "@/src/features/site/components/sidebar/sidebar-panel";
-import { formatPostDate } from "@/src/features/site/lib/format-post-date";
 import type { Post } from "@/src/shared/types/portfolio";
 
 interface Props {
@@ -15,6 +14,7 @@ export const Sidebar: FC<Props> = ({ posts }) => {
   const { now, contact, landing } = portfolioContent;
   const elsewhere = [
     { label: "GitHub", href: landing.github },
+    { label: "LinkedIn", href: landing.linkedin },
     { label: "Email", href: `mailto:${contact.email}` },
   ];
 
@@ -31,7 +31,7 @@ export const Sidebar: FC<Props> = ({ posts }) => {
             ))}
           </div>
         </SidebarPanel>
-        <SidebarPanel
+        {/*<SidebarPanel
           title="Writing & notes"
           action={{ label: "View all", href: "/posts" }}
         >
@@ -47,7 +47,7 @@ export const Sidebar: FC<Props> = ({ posts }) => {
               </a>
             ))}
           </div>
-        </SidebarPanel>
+        </SidebarPanel>*/}
         <SidebarPanel title="Elsewhere" className="border-b-0">
           <div className="flex flex-col gap-2">
             {elsewhere.map((link) => (
