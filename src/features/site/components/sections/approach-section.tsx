@@ -1,4 +1,4 @@
-import { Label, SectionHeader } from "@jt/ds";
+import { Label, SectionHeader } from "@/src/shared/ui";
 import type { FC } from "react";
 
 import { portfolioContent } from "@/src/content/portfolio/portfolio-content";

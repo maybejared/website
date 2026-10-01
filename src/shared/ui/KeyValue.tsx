@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
-import type { FC, ReactNode, CSSProperties } from 'react';
+import type { FC, ReactNode } from 'react';
+import { cn } from './cn';
 
 /** Props for the KeyValue component. */
 export interface KeyValueProps {
@@ -7,15 +8,13 @@ export interface KeyValueProps {
   rows: Array<{ key: string; value: ReactNode; live?: boolean }>;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Definition list of key/value rows, with an optional live indicator dot. */
-export const KeyValue: FC<KeyValueProps> = ({ rows, className, style }) => {
-  const classes = ['kv', className].filter(Boolean).join(' ');
+export const KeyValue: FC<KeyValueProps> = ({ rows, className }) => {
+  const classes = cn('kv', className);
   return (
-    <dl className={classes} style={style}>
+    <dl className={classes}>
       {rows.map((row) => (
         <Fragment key={row.key}>
           <dt>{row.key}:</dt>

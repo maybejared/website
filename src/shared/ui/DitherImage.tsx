@@ -1,4 +1,5 @@
-import type { FC, CSSProperties } from 'react';
+import type { FC } from 'react';
+import { cn } from './cn';
 
 /** Props for the DitherImage component. */
 export interface DitherImageProps {
@@ -10,21 +11,15 @@ export interface DitherImageProps {
   mode?: 'dither' | 'halftone' | 'color';
   /** Optional caption shown over the image. */
   caption?: string;
-  /** Height of the image container in pixels. */
-  height?: number;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Image with a dither, halftone, or color treatment that resolves on hover. */
-export const DitherImage: FC<DitherImageProps> = ({ src, alt, mode = 'dither', caption, height, className, style }) => {
-  const classes = ['dither', mode === 'halftone' && 'dither--halftone', mode === 'color' && 'dither--color', className]
-    .filter(Boolean)
-    .join(' ');
+export const DitherImage: FC<DitherImageProps> = ({ src, alt, mode = 'dither', caption, className }) => {
+  const classes = cn('dither', mode === 'halftone' && 'dither--halftone', mode === 'color' && 'dither--color', className);
   return (
-    <div className={classes} style={{ height, ...style }}>
+    <div className={classes}>
       <img src={src} alt={alt} />
       {caption && <span className="label label--ink dither__caption">{caption}</span>}
     </div>

@@ -1,4 +1,5 @@
-import type { FC, ReactNode, CSSProperties } from 'react';
+import type { FC, ReactNode } from 'react';
+import { cn } from './cn';
 
 /** Props for the Button component. */
 export interface ButtonProps {
@@ -18,15 +19,11 @@ export interface ButtonProps {
   children?: ReactNode;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Bordered mono button, rendered as a link or a native button. */
-export const Button: FC<ButtonProps> = ({ variant = 'outline', keyHint, href, target, disabled, onClick, children, className, style }) => {
-  const classes = ['btn', variant === 'fill' && 'btn--fill', variant === 'accent' && 'btn--accent', className]
-    .filter(Boolean)
-    .join(' ');
+export const Button: FC<ButtonProps> = ({ variant = 'outline', keyHint, href, target, disabled, onClick, children, className }) => {
+  const classes = cn('btn', variant === 'fill' && 'btn--fill', variant === 'accent' && 'btn--accent', className);
   const content = (
     <>
       {children}
@@ -37,7 +34,7 @@ export const Button: FC<ButtonProps> = ({ variant = 'outline', keyHint, href, ta
     return (
       <a
         className={classes}
-        style={style}
+       
         href={href}
         target={target}
         rel={target === '_blank' ? 'noopener noreferrer' : undefined}
@@ -49,7 +46,7 @@ export const Button: FC<ButtonProps> = ({ variant = 'outline', keyHint, href, ta
     );
   }
   return (
-    <button className={classes} style={style} disabled={disabled} onClick={onClick}>
+    <button className={classes} disabled={disabled} onClick={onClick}>
       {content}
     </button>
   );

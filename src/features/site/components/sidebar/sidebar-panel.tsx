@@ -1,4 +1,4 @@
-import { ArrowLink, Label } from "@jt/ds";
+import { ArrowLink, Label } from "@/src/shared/ui";
 import type { CSSProperties, FC, ReactNode } from "react";
 
 import { cn } from "@/src/shared/lib/utils";

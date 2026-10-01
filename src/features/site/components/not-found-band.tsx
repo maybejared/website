@@ -1,4 +1,4 @@
-import { ArrowLink, Label } from "@jt/ds";
+import { ArrowLink, Label } from "@/src/shared/ui";
 import type { FC } from "react";
 
 export const NotFoundBand: FC = () => (

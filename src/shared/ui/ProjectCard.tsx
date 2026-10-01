@@ -1,4 +1,5 @@
-import type { FC, ReactNode, CSSProperties } from 'react';
+import type { FC, ReactNode } from 'react';
+import { cn } from './cn';
 
 /** Props for the ProjectCard component. */
 export interface ProjectCardProps {
@@ -18,15 +19,13 @@ export interface ProjectCardProps {
   media?: ReactNode;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Clickable project card with media, a title, tags, and a description. */
-export const ProjectCard: FC<ProjectCardProps> = ({ index, year, title, tags, description, href, media, className, style }) => {
-  const classes = ['card', className].filter(Boolean).join(' ');
+export const ProjectCard: FC<ProjectCardProps> = ({ index, year, title, tags, description, href, media, className }) => {
+  const classes = cn('card', className);
   return (
-    <a className={classes} style={style} href={href}>
+    <a className={classes} href={href}>
       <div className="card__media">
         {media}
         <span className="label label--accent card__index">{index}</span>
@@ -39,7 +38,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ index, year, title, tags, de
           <span>↗</span>
         </span>
         <span className="label">{tags.join('  /  ')}</span>
-        <p className="body" style={{ fontSize: 11 }}>
+        <p className="body text-[11px]">
           {description}
         </p>
       </div>

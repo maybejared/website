@@ -1,4 +1,4 @@
-import { ProjectCard, SectionHeader } from "@jt/ds";
+import { ProjectCard, SectionHeader } from "@/src/shared/ui";
 import type { FC } from "react";
 
 import { hatchStyle } from "@/src/features/site/lib/hatch";

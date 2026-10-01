@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
-@import "../packages/ds/src/styles.css";
+@import "../src/shared/ui/styles.css";
 
 /* Sidebar and nav chrome: one step deeper than the sheet with a faint dot grid. */
 .site-chrome {

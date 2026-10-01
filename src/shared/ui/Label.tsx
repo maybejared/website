@@ -1,4 +1,5 @@
-import type { FC, ReactNode, CSSProperties } from 'react';
+import type { FC, ReactNode } from 'react';
+import { cn } from './cn';
 
 /** Props for the Label component. */
 export interface LabelProps {
@@ -12,24 +13,14 @@ export interface LabelProps {
   children?: ReactNode;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Small uppercase mono label used throughout the design system. */
-export const Label: FC<LabelProps> = ({ as = 'span', tone = 'muted', vertical, children, className, style }) => {
+export const Label: FC<LabelProps> = ({ as = 'span', tone = 'muted', vertical, children, className }) => {
   const Tag = as;
-  const classes = [
-    'label',
-    tone === 'ink' && 'label--ink',
-    tone === 'accent' && 'label--accent',
-    vertical && 'label--vertical',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const classes = cn('label', tone === 'ink' && 'label--ink', tone === 'accent' && 'label--accent', vertical && 'label--vertical', className);
   return (
-    <Tag className={classes} style={style}>
+    <Tag className={classes}>
       {children}
     </Tag>
   );

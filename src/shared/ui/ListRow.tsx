@@ -1,4 +1,5 @@
-import type { FC, CSSProperties } from 'react';
+import type { FC } from 'react';
+import { cn } from './cn';
 
 /** Props for the ListRow component. */
 export interface ListRowProps {
@@ -12,15 +13,13 @@ export interface ListRowProps {
   href: string;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Single clickable row showing a date, title, and optional description. */
-export const ListRow: FC<ListRowProps> = ({ date, title, description, href, className, style }) => {
-  const classes = ['list-row', className].filter(Boolean).join(' ');
+export const ListRow: FC<ListRowProps> = ({ date, title, description, href, className }) => {
+  const classes = cn('list-row', className);
   return (
-    <a className={classes} style={style} href={href}>
+    <a className={classes} href={href}>
       <span className="label list-row__date">{date}</span>
       <span className="list-row__body">
         <span className="title">{title}</span>

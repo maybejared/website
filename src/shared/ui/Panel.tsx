@@ -1,5 +1,6 @@
-import type { FC, ReactNode, CSSProperties } from 'react';
+import type { FC, ReactNode } from 'react';
 import { Marker } from './Marker';
+import { cn } from './cn';
 
 /** Props for the Panel component. */
 export interface PanelProps {
@@ -15,18 +16,16 @@ export interface PanelProps {
   children?: ReactNode;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Bordered panel with an optional head, body, and footer. */
-export const Panel: FC<PanelProps> = ({ title, index, ink, footer, children, className, style }) => {
-  const classes = ['panel', ink && 'panel--ink', className].filter(Boolean).join(' ');
+export const Panel: FC<PanelProps> = ({ title, index, ink, footer, children, className }) => {
+  const classes = cn('panel', ink && 'panel--ink', className);
   return (
-    <section className={classes} style={style}>
+    <section className={classes}>
       {title && (
         <div className="panel__head">
-          <span style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <span className="flex items-center gap-2.5">
             <Marker />
             <span className="label label--ink">{title}</span>
           </span>
@@ -36,7 +35,7 @@ export const Panel: FC<PanelProps> = ({ title, index, ink, footer, children, cla
       {children}
       {footer && (
         <div className="panel__foot">
-          <span className="rule" style={{ flex: 'none', height: 1 }} />
+          <span className="rule h-px flex-none" />
           {footer}
         </div>
       )}

@@ -1,4 +1,5 @@
-import type { FC, ReactNode, CSSProperties } from 'react';
+import type { FC, ReactNode } from 'react';
+import { cn } from './cn';
 
 /** Props for the ArrowLink component. */
 export interface ArrowLinkProps {
@@ -8,15 +9,13 @@ export interface ArrowLinkProps {
   children?: ReactNode;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Text link with a trailing arrow that steps right on hover. */
-export const ArrowLink: FC<ArrowLinkProps> = ({ href, children, className, style }) => {
-  const classes = ['link', className].filter(Boolean).join(' ');
+export const ArrowLink: FC<ArrowLinkProps> = ({ href, children, className }) => {
+  const classes = cn('link', className);
   return (
-    <a className={classes} style={style} href={href}>
+    <a className={classes} href={href}>
       {children}
       <span className="link__arrow">↗</span>
     </a>

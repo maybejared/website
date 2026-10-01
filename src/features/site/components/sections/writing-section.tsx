@@ -5,7 +5,7 @@ import {
   List,
   ListRow,
   SectionHeader,
-} from "@jt/ds";
+} from "@/src/shared/ui";
 import type { FC } from "react";
 
 import { cdnUrl } from "@/src/shared/lib/cdn";
@@ -49,7 +49,7 @@ export const WritingSection: FC<Props> = ({ posts }) => {
             mode="color"
           />
         </Corners>
-        <Label tone="ink" style={{ lineHeight: 1.9 }}>
+        <Label tone="ink" className="leading-[1.9]">
           Some places make better people.
         </Label>
       </div>

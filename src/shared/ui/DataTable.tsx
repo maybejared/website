@@ -1,4 +1,5 @@
-import type { FC, ReactNode, CSSProperties } from 'react';
+import type { FC, ReactNode } from 'react';
+import { cn } from './cn';
 
 /** Props for the DataTable component. */
 export interface DataTableProps {
@@ -8,19 +9,17 @@ export interface DataTableProps {
   rows: Array<Record<string, ReactNode>>;
   /** Extra class name appended after the DS classes. */
   className?: string;
-  /** Inline style overrides. */
-  style?: CSSProperties;
 }
 
 /** Simple data table with left- or right-aligned columns. */
-export const DataTable: FC<DataTableProps> = ({ columns, rows, className, style }) => {
-  const classes = ['data-table', className].filter(Boolean).join(' ');
+export const DataTable: FC<DataTableProps> = ({ columns, rows, className }) => {
+  const classes = cn('data-table', className);
   return (
-    <table className={classes} style={style}>
+    <table className={classes}>
       <thead>
         <tr>
           {columns.map((column) => (
-            <th key={column.key} className={['label', column.align === 'right' && 'data-table--right'].filter(Boolean).join(' ')}>
+            <th key={column.key} className={cn('label', column.align === 'right' && 'data-table--right')}>
               {column.label}
             </th>
           ))}

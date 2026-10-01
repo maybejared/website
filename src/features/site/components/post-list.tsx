@@ -1,4 +1,4 @@
-import { List, ListRow, SectionHeader } from "@jt/ds";
+import { List, ListRow, SectionHeader } from "@/src/shared/ui";
 import type { FC } from "react";
 
 import { formatPostDate } from "@/src/features/site/lib/format-post-date";
