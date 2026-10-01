@@ -8,19 +8,29 @@ interface Props {
   post: PostDoc;
 }
 
-export const PostArticle: FC<Props> = ({ post }) => (
-  <MdxArticle
-    section="Writing"
-    action={{ label: "All posts", href: "/posts" }}
-    kicker={
-      <>
-        {formatPostDate(post.date)} &nbsp;//&nbsp;{" "}
-        {post.tag.replace(/[[\]]/g, "")} &nbsp;//&nbsp; {post.readTime} min read
-      </>
-    }
-    title={post.title}
-    description={post.description}
-    headings={post.headings}
-    content={post.content}
-  />
-);
+export const PostArticle: FC<Props> = ({ post }) => {
+  const tag = post.tag.replace(/[[\]]/g, "");
+  return (
+    <MdxArticle
+      section="Writing"
+      action={{ label: "All posts", href: "/posts" }}
+      kicker={`${formatPostDate(post.date)} // ${tag} // ${post.readTime} min read`}
+      title={post.title}
+      description={post.description}
+      date={post.date}
+      meta={[
+        { key: "Date", value: formatPostDate(post.date) },
+        { key: "Tag", value: tag },
+        { key: "Read time", value: `${post.readTime} min` },
+      ]}
+      links={post.links ?? []}
+      image={
+        post.image
+          ? { src: post.image, alt: post.imageAlt ?? post.title }
+          : undefined
+      }
+      headings={post.headings}
+      content={post.content}
+    />
+  );
+};

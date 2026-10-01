@@ -8,28 +8,33 @@ interface Props {
   project: ProjectDoc;
 }
 
-export const ProjectArticle: FC<Props> = ({ project }) => (
-  <MdxArticle
-    section="Work"
-    action={{ label: "All projects", href: "/projects" }}
-    kicker={
-      <>
-        {formatPostDate(project.date)} &nbsp;//&nbsp;{" "}
-        {project.tag.replace(/[[\]]/g, "")} &nbsp;//&nbsp; {project.status}
-        {project.repo && (
-          <>
-            {" "}
-            &nbsp;//&nbsp;{" "}
-            <a href={project.repo} target="_blank" rel="noopener noreferrer">
-              Repo ↗
-            </a>
-          </>
-        )}
-      </>
-    }
-    title={project.title}
-    description={project.description}
-    headings={project.headings}
-    content={project.content}
-  />
-);
+export const ProjectArticle: FC<Props> = ({ project }) => {
+  const tag = project.tag.replace(/[[\]]/g, "");
+  const links = [
+    ...(project.repo ? [{ label: "GitHub", href: project.repo }] : []),
+    ...(project.links ?? []),
+  ];
+  return (
+    <MdxArticle
+      section="Work"
+      action={{ label: "All projects", href: "/projects" }}
+      kicker={`${formatPostDate(project.date)} // ${tag} // ${project.status}`}
+      title={project.title}
+      description={project.description}
+      date={project.date}
+      meta={[
+        { key: "Date", value: formatPostDate(project.date) },
+        { key: "Tag", value: tag },
+        { key: "Status", value: project.status },
+      ]}
+      links={links}
+      image={
+        project.image
+          ? { src: project.image, alt: project.imageAlt ?? project.title }
+          : undefined
+      }
+      headings={project.headings}
+      content={project.content}
+    />
+  );
+};

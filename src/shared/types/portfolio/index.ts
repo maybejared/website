@@ -42,7 +42,21 @@ export interface ExperienceEntry extends Identifiable {
   detail: string;
 }
 
-export interface Project extends Identifiable {
+/** An outbound link shown on an article header, such as a repo or a Substack post. */
+export interface ContentLink {
+  label: string;
+  href: string;
+}
+
+/** Optional header art and links a post or project can declare in frontmatter. */
+export interface ArticleMedia {
+  /** CDN key for the header image, such as `ascii/foo.webp`. */
+  image?: string;
+  imageAlt?: string;
+  links?: ContentLink[];
+}
+
+export interface Project extends Identifiable, ArticleMedia {
   /** ISO `YYYY-MM-DD`; the year shows on cards. */
   date: string;
   title: string;
@@ -57,7 +71,7 @@ export interface ProjectDoc extends Project {
   headings: Heading[];
 }
 
-export interface Post extends Identifiable {
+export interface Post extends Identifiable, ArticleMedia {
   /** ISO `YYYY-MM-DD`; formatted to dotted style for display. */
   date: string;
   title: string;
@@ -84,13 +98,13 @@ export interface ApproachItem {
 
 /** Copy for the landing page sheet: hero, environment band, approach, footer. */
 export interface LandingContent {
-  kicker: string;
   tagline: string;
   roles: string;
   statement: string;
   quote: string;
   coordinates: string;
   github: string;
+  linkedin: string;
   approach: ApproachItem[];
   headline: string;
   footerLine: string;

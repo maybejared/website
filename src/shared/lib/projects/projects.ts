@@ -6,6 +6,7 @@ import {
   readEntry,
   type MdxEntry,
 } from "@/src/shared/lib/mdx/collection";
+import { readArticleMedia } from "@/src/shared/lib/mdx/article-media";
 import type { Project, ProjectDoc } from "@/src/shared/types/portfolio";
 
 const CONTENT_DIR = path.join(process.cwd(), "src", "content", "projects");
@@ -18,6 +19,7 @@ const toProject = ({ slug, data }: MdxEntry): Project => ({
   tag: data.tag as string,
   status: data.status as string,
   repo: data.repo as string | undefined,
+  ...readArticleMedia(data),
 });
 
 export async function getAllProjects(): Promise<Project[]> {

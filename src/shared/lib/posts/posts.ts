@@ -7,6 +7,7 @@ import {
   readEntry,
   type MdxEntry,
 } from "@/src/shared/lib/mdx/collection";
+import { readArticleMedia } from "@/src/shared/lib/mdx/article-media";
 import type { Post, PostDoc } from "@/src/shared/types/portfolio";
 
 export { formatDate } from "@/src/shared/lib/posts/format";
@@ -21,6 +22,7 @@ const toPost = ({ slug, data, content }: MdxEntry): Post => ({
   date: data.date as string,
   tag: data.tag as string,
   readTime: calculateReadTime(content),
+  ...readArticleMedia(data),
 });
 
 export async function getAllPosts(): Promise<Post[]> {
